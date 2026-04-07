@@ -42,6 +42,27 @@ type Task
 
   //5. THE GLORIOUS RENDERING
   return(
-    <div></div>
+    <>
+      <div style={{padding: "20px", backgroundColor: "#f0f0f0", fontFamily: "Protest Revolution, sans-serif", fontSize: "24px", color: "#333"}}>
+        <h1>The Witching Hour</h1>
+
+        {/* imput area */}
+        <div>
+          <input type="text" 
+          value={newTaskText} 
+          onChange={(e) => setNewTaskText(e.traget.value)} 
+          placeholder="What we cookin good lookin?" />
+          <button onClick={handleAddTask}>Add Task</button>
+        </div>
+
+<ul style={{ listStyle: 'none', padding: 0 }}>
+  {tasks.map((task) => (
+    <li key={task.id} onClick={() => handleCompleteTask(task.id)} style={{cursor: 'pointer', padding: '10px', textDecoration: task.isComplete ? 'line-through' : 'none', color: task.isCompleted ? 'pink' : 'black'}} > 
+    {task.isCompleted ? "[x] " : "[ ] "} {task.title}
+    </li>
+  ))}
+</ul>
+      </div>
+  </>
   )
-  }
+  };

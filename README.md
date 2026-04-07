@@ -18,8 +18,8 @@ Crawl out of the darkness of your domain, complete your tasks, and let the dopam
 * **💧 Survival Toggles:** Automated, non-negotiable reminders to drink water (every 45 mins) and eat a snack (every 1.5 hours). 
 * **🔮 The Vibe Check (Ambient Audio):** * Click the glowing purple fireplace for crackling fire sounds.
   * Click the gothic window for soothing rain ambiance.
-  * A built-in stereo system to blast MY mixtapes. (if you really want you can clone this and replace the audio files with your own but.....you're not gonna do that <3>)
-* **🐈‍⬛ Loki the Void Kitty:** THERE'S A KET. His name is Loki. He doesn't technically *do* anything, but he's adorable and deserves an honourable mention.
+  * Click the radio to blast MY mixtapes. (if you really want you can clone this and replace the audio files with your own but.....you're not gonna do that <3>) (Design inspired by Hazbin Totel)
+* **🐈‍⬛ Mem Mem ** THERE'S A KET. Their name is Mem.  Mem doesn't technically *do* anything, but he's adorable and deserves an honourable mention.
 
 ## 🛠️ Built With
 
