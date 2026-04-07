@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import "./App.css";
 
 // 1. THE RULEBOOK: Telling the typescript EXACTLY what a "task" looks like.
 type Task
@@ -43,14 +43,14 @@ type Task
   //5. THE GLORIOUS RENDERING
   return(
     <>
-      <div style={{padding: "20px", backgroundColor: "#f0f0f0", fontFamily: "Protest Revolution, sans-serif", fontSize: "24px", color: "#333"}}>
+      <div className="questContainer">
         <h1>The Witching Hour</h1>
 
         {/* imput area */}
         <div>
           <input type="text" 
-          value={newTaskText} 
-          onChange={(e) => setNewTaskText(e.traget.value)} 
+          value={newTaskTitle} 
+          onChange={(e) => setNewTaskTitle(e.target.value)} 
           placeholder="What we cookin good lookin?" />
           <button onClick={handleAddTask}>Add Task</button>
         </div>

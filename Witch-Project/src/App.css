@@ -3,3 +3,18 @@
   font-weight: 400;
   font-style: normal;
 }
+
+.questContainer{
+  font-family: "Protest Revolution", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #342333;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #EDD4D0;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
