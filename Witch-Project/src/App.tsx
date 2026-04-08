@@ -19,6 +19,10 @@ export default function App() {
 
   const [isQuestLogOpen, setIsQuestLogOpen] = useState(false);
 
+  //maximum 5 quests at a time, because we don't want to overwhelm our players with too many quests, that would be mean
+  const canAddMoreTasks = tasks.length < 5;
+
+
   const totalTasks = tasks.length;
 
   //filter through the list and only keep the completed quests
@@ -30,6 +34,10 @@ export default function App() {
   // 3. THE ACTIONS (add a task >:D)
   const handleAddTask = () => {
     if (newTaskTitle.trim() === "") return; //no empty tasks added
+      if (!canAddMoreTasks) {
+        alert("You can only have 5 quests at a time! Complete some quests before adding new ones.");
+        return;
+      }
 
     const newTask: Task = {
       id: Date.now(),  //generates a unique id based on the current timestamp
