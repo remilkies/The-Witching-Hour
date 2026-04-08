@@ -67,7 +67,7 @@ export default function App() {
       
       {!isQuestLogOpen && (
         <div>
-        <img className="questMenuIcon" src={QuestHeader} alt="Quest Log Icon" onClick={() => setIsQuestLogOpen(true)} style={{width: "100px"}}/>
+        <img className="questMenuIcon" src={QuestHeader} alt="Quest Log Icon" onClick={() => setIsQuestLogOpen(true)} style={{width: "150px"}}/>
         </div>
       )}
   

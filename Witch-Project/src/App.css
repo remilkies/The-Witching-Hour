@@ -4,6 +4,15 @@
   font-style: normal;
 }
 
+body{
+  background-image: url("./assets/background.png");
+  background-color: #3A2D34;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  width: 100%;
+}
+
 .questContainer{
   font-family: "Protest Revolution", sans-serif;
   font-weight: 400;
