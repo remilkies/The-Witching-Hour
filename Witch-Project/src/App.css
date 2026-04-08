@@ -12,10 +12,11 @@
   background-color: transparent;
 
   display: flex;
+  position: relative;
   flex-direction: column;
   align-items: center;
 
-
+z-index: 20;
   margin-left: 5rem;
 
   width: fit-content;
@@ -98,6 +99,17 @@
 
 .questContainerHeader{
   position: absolute;
-  z-index: 1;
-  pointer-events: none;
+  z-index: 50;
+
 }
+
+.click-catcher-backdrop{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vh;
+  height: 100vw;
+
+  z-index: 10;
+}
+

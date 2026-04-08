@@ -17,6 +17,8 @@ export default function App() {
   const [tasks, setTasks] = useState<Task[]>([]); // <Task[]> is a "type annotation" that tells typescript that this state variable will be an array of "Task" objects and only items that perfectly match the 'Task' rulebook above 
   const [newTaskTitle, setNewTaskTitle] = useState("");
 
+  const [isQuestLogOpen, setIsQuestLogOpen] = useState(false);
+
   const totalTasks = tasks.length;
 
   //filter through the list and only keep the completed quests
@@ -51,45 +53,60 @@ export default function App() {
     });
     setTasks(updatedTasks);
   };
-
+  // const questContainerHeader = document.querySelector('.questContainerHeader'); THIS IS HOW YOU WOULD SELECT AN ELEMENT IN A NORMAL JAVASCRIPT FILE, BUT IN REACT, WE HANDLE THIS WITH STATE AND CONDITIONAL RENDERING
   //5. THE GLORIOUS RENDERING
   return (
     <>
       {/* CONDITIONAL REMDERERING USING THE && (AND) OPERRATOR - If totalTasks > 0 is TRUE, then remder bar */}
       {totalTasks > 0 && <ProgressBar progress={progress} />}
 
-      <div className="questContainer">
-        <img className="questContainerHeader" src={QuestHeader} alt="Quest Log Header" />
+      {isQuestLogOpen && (
+        <div className="click-catcher-backdrop" onClick={() => setIsQuestLogOpen(false)}
+        />
+      )}
+      
+      {!isQuestLogOpen && (
+        <div>
+        <img className="questMenuIcon" src={QuestHeader} alt="Quest Log Icon" onClick={() => setIsQuestLogOpen(true)} style={{width: "100px"}}/>
+        </div>
+      )}
+  
+{isQuestLogOpen && (
 
+<div className="questContainer">
+        <img className="questContainerHeader" src={QuestHeader} alt="Quest Log Header"  />
         <div className="questContent">
-        <h1>Quest Log</h1>
+          <h1>Quest Log</h1>
 
-        <ul style={{ listStyle: 'none', padding: 0 }}>
-          {tasks.map((task) => (
-            <li key={task.id} onClick={() => handleCompleteTask(task.id)} style={{ cursor: 'pointer', padding: '10px', textDecoration: task.isCompleted ? 'line-through' : 'none', color: task.isCompleted ? '#996E8D' : '#342333' }} >
-              {task.isCompleted ? "[x] " : "[ ] "} {task.title}
-            </li>
-          ))}
-        </ul>
-        {/* imput area */}
-        <div className="questInput">
-          <input type="text"
-            value={newTaskTitle}
-            onChange={(e) => setNewTaskTitle(e.target.value)}
+          <ul style={{ listStyle: 'none', padding: 0 }}>
+            {tasks.map((task) => (
+              <li key={task.id} onClick={() => handleCompleteTask(task.id)} style={{ cursor: 'pointer', padding: '10px', textDecoration: task.isCompleted ? 'line-through' : 'none', color: task.isCompleted ? '#996E8D' : '#342333' }} >
+                {task.isCompleted ? "[x] " : "[ ] "} {task.title}
+              </li>
+            ))}
+          </ul>
 
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                handleAddTask();
-              }
-            }}
+          <div className="questInput">
+            <input type="text"
+              value={newTaskTitle}
+              onChange={(e) => setNewTaskTitle(e.target.value)}
 
-            placeholder="What we cookin good lookin?" />
-          <button className="addTask-btn" onClick={handleAddTask}>
-            <img className="addTask-btn-icon" src={addTaskIcon} alt="Add Quest Icon" /> </button>
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleAddTask();
+                }
+              }}
+
+              placeholder="What we cookin good lookin?" />
+            <button className="addTask-btn" onClick={handleAddTask}>
+              <img className="addTask-btn-icon" src={addTaskIcon} alt="Add Quest Icon" /> </button>
+
+          </div>
+        </div>
 
         </div>
-        </div>
-      </div>
+)}
+      
     </>
   )
 };
