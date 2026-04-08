@@ -156,17 +156,13 @@ z-index: 20;
 }
 
 .clock-face {
-  height: 500px;
-  width: auto;
+  position: relative;
+  height: 600px;
 
 }
 
 .clock-hands {
-  position: absolute;
-  top: -50px;
-  left: -50px;
-  width: auto;
-  height: 50%;
+
 }
 
 .hour-hand {
@@ -183,4 +179,6 @@ z-index: 20;
 
 .clock-origin {
   position: absolute;
+  top: 0;
+  left: 0;
 }
