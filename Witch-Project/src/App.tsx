@@ -3,6 +3,7 @@ import "./App.css";
 import ProgressBar from "./componenets/ProgressBar";
 
 import addTaskIcon from "./assets/addTaskIcon.png";
+import QuestHeader from "./assets/questContainerHeader.png";
 
 // 1. THE RULEBOOK: Telling the typescript EXACTLY what a "task" looks like.
 type Task = {
@@ -56,8 +57,11 @@ export default function App() {
     <>
       {/* CONDITIONAL REMDERERING USING THE && (AND) OPERRATOR - If totalTasks > 0 is TRUE, then remder bar */}
       {totalTasks > 0 && <ProgressBar progress={progress} />}
-      
+
       <div className="questContainer">
+        <img className="questContainerHeader" src={QuestHeader} alt="Quest Log Header" />
+
+        <div className="questContent">
         <h1>Quest Log</h1>
 
         <ul style={{ listStyle: 'none', padding: 0 }}>
@@ -83,6 +87,7 @@ export default function App() {
           <button className="addTask-btn" onClick={handleAddTask}>
             <img className="addTask-btn-icon" src={addTaskIcon} alt="Add Quest Icon" /> </button>
 
+        </div>
         </div>
       </div>
     </>
