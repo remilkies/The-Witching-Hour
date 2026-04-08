@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import ProgressBar from "./componenets/ProgressBar";
+import Timer from "./componenets/Timer";
 
 import addTaskIcon from "./assets/addTaskIcon.png";
 import QuestHeader from "./assets/questContainerHeader.png";
@@ -65,6 +66,8 @@ export default function App() {
   //5. THE GLORIOUS RENDERING
   return (
     <>
+
+      <Timer />
       {/* CONDITIONAL REMDERERING USING THE && (AND) OPERRATOR - If totalTasks > 0 is TRUE, then remder bar */}
       {totalTasks > 0 && <ProgressBar progress={progress} />}
 
@@ -81,6 +84,7 @@ export default function App() {
   
 {isQuestLogOpen && (
 
+<div className="questLog">
 <div className="questContainer">
         <img className="questContainerHeader" src={QuestHeader} alt="Quest Log Header"  />
         <div className="questContent">
@@ -112,6 +116,7 @@ export default function App() {
           </div>
         </div>
 
+        </div>
         </div>
 )}
       

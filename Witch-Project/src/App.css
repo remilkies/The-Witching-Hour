@@ -15,6 +15,18 @@ body{
   position: relative;
 }
 
+.questMenuIcon{
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.questLog{
+  position: absolute;
+  top: 0;
+}
 .questContainer{
   font-family: "Protest Revolution", sans-serif;
   font-weight: 400;
@@ -43,6 +55,11 @@ z-index: 20;
   background-color: transparent;
   padding: 10px;
   width: 100%;
+}
+
+.questContainer input:focus{
+  outline: none;
+  border-bottom: 2px solid #715E72;
 }
 
 .questContent{
@@ -111,7 +128,7 @@ z-index: 20;
 .questContainerHeader{
   position: absolute;
   z-index: 50;
-
+  pointer-events: none;
 }
 
 .click-catcher-backdrop{
@@ -124,3 +141,46 @@ z-index: 20;
   z-index: 10;
 }
 
+.timer-container{
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.clock-container {
+  position: relative;
+  margin: auto;
+}
+
+.clock-face {
+  height: 500px;
+  width: auto;
+
+}
+
+.clock-hands {
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  width: auto;
+  height: 50%;
+}
+
+.hour-hand {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.minute-hand {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.clock-origin {
+  position: absolute;
+}
