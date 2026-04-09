@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import "./App.css";
+
+
 import ProgressBar from "./componenets/ProgressBar";
 import Timer from "./componenets/Timer";
 
 import addTaskIcon from "./assets/addTaskIcon.png";
 import QuestHeader from "./assets/questContainerHeader.png";
+import mainShelf from "./assets/mainShelf.png";
 
 // 1. THE RULEBOOK: Telling the typescript EXACTLY what a "task" looks like.
 type Task = {
@@ -67,7 +70,7 @@ export default function App() {
   return (
     <>
 
-      <Timer />
+      
       {/* CONDITIONAL REMDERERING USING THE && (AND) OPERRATOR - If totalTasks > 0 is TRUE, then remder bar */}
       {totalTasks > 0 && <ProgressBar progress={progress} />}
 
@@ -119,7 +122,12 @@ export default function App() {
         </div>
         </div>
 )}
-      
+
+<Timer />
+<div className="shelfContainer">
+<img className="mainShelf" src={mainShelf} alt="Main Shelf" />
+</div>
+
     </>
   )
 };
