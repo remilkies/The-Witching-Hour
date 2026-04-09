@@ -15,6 +15,34 @@ body{
   position: relative;
 }
 
+.titleContainer{
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  z-index: 100;
+}
+.appTitle{
+  position: relative;
+  font-family: "Protest Revolution", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 60px;
+  width: 100%;
+  color: #EDD4D0;
+  display: flex;
+  justify-content: center;
+  letter-spacing: 15px;
+}
+
+.dreamcatcher{
+  position: absolute;
+  width: auto;
+  height: 500px;
+  transform: translateY(240px) translateX(250px);
+}
 .questMenuIcon{
   position: fixed;
   top: 20px;

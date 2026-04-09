@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./App.css";
 import { Container, Row, Col } from "react-bootstrap";
 
+import dreamcatcher from "./assets/dreamcatcher.png";
 import ProgressBar from "./componenets/ProgressBar";
 import Timer from "./componenets/Timer";
 
@@ -122,7 +123,10 @@ export default function App() {
         </div>
         </div>
 )}
-
+<div className="titleContainer">
+<h1 className="appTitle">The Witching Hour</h1>
+<img className="dreamcatcher" src={dreamcatcher} alt="Dreamcatcher" />
+</div>
 <div className="timer-shelf-container">
 
 <Timer />
