@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-
+import { Container, Row, Col } from "react-bootstrap";
 
 import ProgressBar from "./componenets/ProgressBar";
 import Timer from "./componenets/Timer";
@@ -123,9 +123,14 @@ export default function App() {
         </div>
 )}
 
+<div className="timer-shelf-container">
+
 <Timer />
+
 <div className="shelfContainer">
 <img className="mainShelf" src={mainShelf} alt="Main Shelf" />
+</div>
+
 </div>
 
     </>

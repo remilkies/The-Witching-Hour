@@ -11,12 +11,12 @@ body{
   background-repeat: no-repeat;
   height: 100vh;
   width: 100%;
-  overflow-y: hidden;
+  overflow-x: hidden;
   position: relative;
 }
 
 .questMenuIcon{
-  position: absolute;
+  position: fixed;
   top: 20px;
   left: 20px;
   cursor: pointer;
@@ -98,7 +98,7 @@ z-index: 20;
 }
 
 .progressBarContainer{
-  position: absolute;
+  position: fixed;
   width: 25%;
   margin-left: 3rem;
   margin-bottom: 3rem;
@@ -141,6 +141,13 @@ z-index: 20;
   z-index: 10;
 }
 
+.timer-shelf-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+
+}
 .timer-container{
   display: flex;
   justify-content: center;
@@ -152,11 +159,13 @@ z-index: 20;
 .clock-container {
   position: relative;
   margin: auto;
+  height: 500px;
+  width: 500px;
 }
 
 .clock-face {
   position: relative;
-  height: 500px;
+
 }
 
 
@@ -164,21 +173,21 @@ z-index: 20;
   position: absolute;
   top: 0;
   left: 0;
-  height: 500px;
+
 }
 
 .minute-hand {
   position: absolute;
   top: 0;
   left: 0;
-  height: 500px;
+
 }
 
 .clock-origin {
   position: absolute;
   top: 0;
   left: 0;
-  height: 500px;
+
 }
 
 .shelfContainer{
@@ -196,8 +205,8 @@ z-index: 20;
   bottom: 0;
   left: 0;
   width: auto;
-  height: 500px;
-  transform: translateY(90px);
+  height: 400px;
+  transform: translateY(100px);
   background-color: transparent;
   display: flex;
   justify-content: center;
