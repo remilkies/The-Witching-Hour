@@ -124,7 +124,7 @@ export default function App() {
         </div>
 )}
 <div className="titleContainer">
-<h1 className="appTitle">The Witching Hour</h1>
+<h1 className="appTitle">The Witching H ur</h1>
 <img className="dreamcatcher" src={dreamcatcher} alt="Dreamcatcher" />
 </div>
 <div className="timer-shelf-container">

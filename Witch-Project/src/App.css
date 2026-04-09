@@ -22,26 +22,26 @@ body{
   justify-content: center;
   align-items: center;
   width: 100%;
-  z-index: 100;
 }
 .appTitle{
   position: relative;
   font-family: "Protest Revolution", sans-serif;
   font-weight: 400;
   font-style: normal;
-  font-size: 60px;
+  font-size: 70px;
+  margin-bottom: 0;
   width: 100%;
   color: #EDD4D0;
   display: flex;
   justify-content: center;
-  letter-spacing: 15px;
+  letter-spacing: 30px;
 }
 
 .dreamcatcher{
   position: absolute;
   width: auto;
-  height: 500px;
-  transform: translateY(240px) translateX(250px);
+  height: 600px;
+  transform: translateY(300px) translateX(365px);
 }
 .questMenuIcon{
   position: fixed;
@@ -173,7 +173,10 @@ z-index: 20;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 20px;
+  gap: 15rem;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
 
 }
 .timer-container{
@@ -181,41 +184,44 @@ z-index: 20;
   justify-content: center;
   align-items: center;
   width: 100vw;
+  width: 100%;
   height: 100vh;
 }
 
 .clock-container {
   position: relative;
 
-  transform: translateY(-50px);
 }
 
 .clock-face {
   position: relative;
-  width: 500px;
+  width: 70%;
 }
 
+.clock-face img {
+  width: 500px;
+  height: auto;
+}
 
 .hour-hand {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 70%;
 }
 
 .minute-hand {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 70%;
 }
 
 .clock-origin {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-
+  width: 70%;
 }
 
 .shelfContainer{
@@ -235,7 +241,6 @@ z-index: 20;
 
   width: auto;
   height: 400px;
-  transform: translateY(70px);
   background-color: transparent;
   display: flex;
   justify-content: center;
