@@ -158,14 +158,13 @@ z-index: 20;
 
 .clock-container {
   position: relative;
-  margin: auto;
-  height: 500px;
-  width: 500px;
+
+  transform: translateY(-50px);
 }
 
 .clock-face {
   position: relative;
-
+  width: 500px;
 }
 
 
@@ -173,25 +172,26 @@ z-index: 20;
   position: absolute;
   top: 0;
   left: 0;
-
+  width: 100%;
 }
 
 .minute-hand {
   position: absolute;
   top: 0;
   left: 0;
-
+  width: 100%;
 }
 
 .clock-origin {
   position: absolute;
   top: 0;
   left: 0;
+  width: 100%;
 
 }
 
 .shelfContainer{
-  position: absolute;
+  position: relative;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -202,11 +202,12 @@ z-index: 20;
 }
 
 .mainShelf{
+  position: absolute;
   bottom: 0;
-  left: 0;
+
   width: auto;
   height: 400px;
-  transform: translateY(100px);
+  transform: translateY(70px);
   background-color: transparent;
   display: flex;
   justify-content: center;
