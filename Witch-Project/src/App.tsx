@@ -133,6 +133,9 @@ export default function App() {
 
 </div>
 
+<div className="footer">
+<p>Brought to you by REMByte</p>
+</div>
     </>
   )
 };
