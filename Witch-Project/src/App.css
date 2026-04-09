@@ -40,9 +40,10 @@ body{
 .dreamcatcher{
   position: absolute;
   width: auto;
-  height: 600px;
-  transform: translateY(300px) translateX(365px);
+  height: 70vh;
+  transform: translateY(280px) translateX(363px);
 }
+
 .questMenuIcon{
   position: fixed;
   top: 20px;
@@ -170,59 +171,61 @@ z-index: 20;
 }
 
 .timer-shelf-container{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 15rem;
-  align-items: center;
   width: 100vw;
   height: 100vh;
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10rem;
 }
+
+
+
+
 .timer-container{
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100vw;
   width: 100%;
   height: 100vh;
 }
 
 .clock-container {
   position: relative;
-
+  margin: 3rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
-.clock-face {
-  position: relative;
-  width: 70%;
-}
+  /* center */
+  .clock-face {
+    position: relative;
+    width: 30vw;
+    
+  }
 
-.clock-face img {
-  width: 500px;
-  height: auto;
-}
+  .clock-hands {
+    position: absolute;
+    width: 30vw;
+  }
 
-.hour-hand {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 70%;
-}
+  .hour-hand {
+    position: absolute;
+    width: 30vw;
+  }
 
-.minute-hand {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 70%;
-}
+  .minute-hand {
+    position: absolute;
+    width: 30vw;
+  }
 
-.clock-origin {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 70%;
-}
+  .clock-origin {
+    position: absolute;
+    width: 30vw;
+  }
+
 
 .shelfContainer{
   position: relative;
@@ -238,13 +241,18 @@ z-index: 20;
 .mainShelf{
   position: absolute;
   bottom: 0;
-
-  width: auto;
-  height: 400px;
+  width: 70vw;
   background-color: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
+  pointer-events: none;
+}
+
+.mainShelf img{
+  height: auto;
+  max-width: 100%;
+  max-height: 400px;
 }
 
 .footer{
