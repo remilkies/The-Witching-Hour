@@ -15,7 +15,12 @@ Crawl out of the darkness of your domain, complete your tasks, and let the dopam
 
 * **📝 The Dopamine Machine:** A to-do list that doesn't just cross things off—it throws confetti and plays a little victory tune because you deserve it.
 * **⏳ The Time Lord:** Set your project timers. *Note: You cannot work for more than 4 hours straight. The app will literally yell at you with a giant popup to go touch grass (or at least your living room carpet).*
-* **💧 Survival Toggles:** Automated, non-negotiable wellness reminders to drink water (every 45 mins) and eat a snack (every 1.5 hours). 
+* **💧 Survival Toggles:** Automated, non-negotiable wellness reminders
+* ### 🛑 Aggressive Wellness Timer & Economy
+* **Gamified Pomodoro:** Work for 45 minutes, then get locked out of your task list for a mandatory 15-minute break. No cheating!
+* **Productivity Points (PP):** Earn a base reward of 45 PP just for surviving a continuous focus session.
+* **IRL Side-Quests (WP):** While locked in the break modal, complete optional real-world tasks (like drinking water, resting your eyes, or stretching your goblin spine) to earn bonus Wellness Points!
+* **Dynamic Payouts:** Claim your well-earned PP and WP when the break timer hits zero to unlock your screen and get back to the grind.
 * **🐈‍⬛ Mem Mem:** THERE'S A KET. Their name is Mem.  Mem doesn't technically *do* anything, but he's adorable and deserves an honourable mention.
 
 ## Coming Soon
