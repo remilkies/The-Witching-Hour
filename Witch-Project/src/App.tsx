@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 import "./App.css";
+import { Container, Row, Col } from "react-bootstrap";
+
+
+import dreamcatcher from "./assets/dreamcatcher.png";
 import ProgressBar from "./componenets/ProgressBar";
+import Timer from "./componenets/Timer";
 
 import addTaskIcon from "./assets/addTaskIcon.png";
 import QuestHeader from "./assets/questContainerHeader.png";
+import mainShelf from "./assets/mainShelf.png";
 
 // 1. THE RULEBOOK: Telling the typescript EXACTLY what a "task" looks like.
 type Task = {
@@ -19,6 +25,10 @@ export default function App() {
 
   const [isQuestLogOpen, setIsQuestLogOpen] = useState(false);
 
+  //maximum 5 quests at a time, because we don't want to overwhelm our players with too many quests, that would be mean
+  const canAddMoreTasks = tasks.length < 5;
+
+
   const totalTasks = tasks.length;
 
   //filter through the list and only keep the completed quests
@@ -30,6 +40,10 @@ export default function App() {
   // 3. THE ACTIONS (add a task >:D)
   const handleAddTask = () => {
     if (newTaskTitle.trim() === "") return; //no empty tasks added
+      if (!canAddMoreTasks) {
+        alert("You can only have 5 quests at a time! Complete some quests before adding new ones.");
+        return;
+      }
 
     const newTask: Task = {
       id: Date.now(),  //generates a unique id based on the current timestamp
@@ -57,6 +71,8 @@ export default function App() {
   //5. THE GLORIOUS RENDERING
   return (
     <>
+
+      
       {/* CONDITIONAL REMDERERING USING THE && (AND) OPERRATOR - If totalTasks > 0 is TRUE, then remder bar */}
       {totalTasks > 0 && <ProgressBar progress={progress} />}
 
@@ -73,6 +89,7 @@ export default function App() {
   
 {isQuestLogOpen && (
 
+<div className="questLog">
 <div className="questContainer">
         <img className="questContainerHeader" src={QuestHeader} alt="Quest Log Header"  />
         <div className="questContent">
@@ -105,8 +122,35 @@ export default function App() {
         </div>
 
         </div>
+        </div>
 )}
-      
+
+
+<div className="titleContainer">
+<h1 className="appTitle">The Witching H ur</h1>
+<img className="dreamcatcher" src={dreamcatcher} alt="Dreamcatcher" />
+</div>
+
+
+<Container fluid className="timer-shelf-container">
+<Row>
+
+<Col md={6}>
+<Timer />
+</Col>
+
+<Col md={6}>
+<div className="shelfContainer">
+<img className="mainShelf" src={mainShelf} alt="Main Shelf" />
+</div>
+</Col>
+
+</Row>
+</Container>
+
+<div className="footer">
+<p>Brought to you by REMByte</p>
+</div>
     </>
   )
 };
