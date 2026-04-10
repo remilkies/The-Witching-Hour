@@ -20,11 +20,34 @@ type Task = {
 
 // 2. THE MEMORY
 export default function App() {
-  const [tasks, setTasks] = useState<Task[]>([]); // <Task[]> is a "type annotation" that tells typescript that this state variable will be an array of "Task" objects and only items that perfectly match the 'Task' rulebook above 
+  const [tasks, setTasks] = useState<Task[]>(() => {
+    const savedTasks = localStorage.getItem("tasks");
+    if (savedTasks) return JSON.parse(savedTasks);
+    return []; //first time player empty slate
+  }); // <Task[]> is a "type annotation" that tells typescript that this state variable will be an array of "Task" objects and only items that perfectly match the 'Task' rulebook above 
   const [newTaskTitle, setNewTaskTitle] = useState("");
 
-  const [pp, setPp] = useState(0); //Productivity Points
-  const [wp, setWp] = useState(0); // Wellness Points
+  const [pp, setPp] = useState(() => {
+    const savedPp = localStorage.getItem("witching-pp");
+    if (savedPp) return JSON.parse(savedPp);
+    return savedPp ? parseInt(savedPp) : 0; //first time player starts with 0 points, but if there is a saved value, use that instead
+  }); //Productivity Points
+  const [wp, setWp] = useState(() => {
+    const savedWp = localStorage.getItem("witching-wp");
+    return savedWp ? parseInt(savedWp) : 0; //first time player starts with 0 points, but if there is a saved value, use that instead
+  }); // Wellness Points
+
+  useEffect(() => {
+    localStorage.setItem("witching-tasks", JSON.stringify(tasks));
+  }, [tasks]);
+
+  useEffect(() => {
+    localStorage.setItem("witching-pp", pp.toString());
+  }, [pp]);
+
+  useEffect(() => {
+    localStorage.setItem("witching-wp", wp.toString());
+  }, [wp]);
 
   const [isBreakModalOpen, setIsBreakModalOpen] = useState(false);
   const [completedWellnessTasks, setCompletedWellnessTasks] = useState<string[]>([]);
