@@ -16,13 +16,14 @@ Crawl out of the darkness of your domain, complete your tasks, and let the dopam
 * **📝 The Dopamine Machine:** A to-do list that doesn't just cross things off—it throws confetti and plays a little victory tune because you deserve it.
 * **⏳ The Time Lord:** Set your project timers. *Note: You cannot work for more than 4 hours straight. The app will literally yell at you with a giant popup to go touch grass (or at least your living room carpet).*
 * **💧 Survival Toggles:** Automated, non-negotiable wellness reminders to drink water (every 45 mins) and eat a snack (every 1.5 hours). 
-* **🐈‍⬛ Mem Mem ** THERE'S A KET. Their name is Mem.  Mem doesn't technically *do* anything, but he's adorable and deserves an honourable mention.
+* **🐈‍⬛ Mem Mem:** THERE'S A KET. Their name is Mem.  Mem doesn't technically *do* anything, but he's adorable and deserves an honourable mention.
 
 ## Coming Soon
   
 * **🔮 The Vibe Check (Ambient Audio):** * Click the glowing purple fireplace for crackling fire sounds.
   * Click the gothic window for soothing rain ambiance.
   * Click the radio to blast MY mixtapes. (if you really want you can clone this and replace the audio files with your own but.....you're not gonna do that <3>) (Design inspired by Hazbin Totel)
+  * 
 ## 🛠️ Built With
 
 * **React** (Because components are magic)
@@ -36,8 +37,7 @@ Want to study some spells and run this locally?
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/remilkies/the-witching-hour.git](https://github.com/remilkies/the-witching-hour.git)
-
+   git clone [https://github.com/remilkies/the-witching-hour.git]
 2. **Navigate into the crypt:**
     ```bash
     cd the-witching-hour
