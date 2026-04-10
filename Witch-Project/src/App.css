@@ -52,6 +52,7 @@ body{
   z-index: 100;
 }
 
+
 .questLog{
   position: absolute;
   top: 0;
@@ -73,7 +74,6 @@ z-index: 20;
 
   width: fit-content;
   height: 100%;
-
 
   
 }
@@ -170,6 +170,29 @@ z-index: 20;
   z-index: 10;
 }
 
+.wellnessModalContainer{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.wellnessModal{
+  background-color: #EDD4D0;
+  border: #342333 solid 5px;
+  border-radius: 15px;
+
+  font-family: "Protest Revolution", sans-serif;
+  color: #342333;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem;
+}
+
 .timer-shelf-container{
   width: 100vw;
   height: 100vh;
@@ -177,11 +200,7 @@ z-index: 20;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10rem;
 }
-
-
-
 
 .timer-container{
   display: flex;
