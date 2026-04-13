@@ -19,7 +19,7 @@ export default function Timer() {
   const [toastMsg, setToastMsg] = useState('');
 
   const clockRef = React.useRef<HTMLDivElement>(null);//INSERT SOUNDS TO -PLAY WHEN TIMER GOES OFF
-  const alarmSounds = ['./alarm.mp3', './alarm2.mp3', './alarm3.mp3'];
+  const alarmSounds = ['/alarm.mp3', '/alarm2.mp3', '/alarm3.mp3'];
 
   useEffect(() => {
     const timeInterval = setInterval(() => setCurrentTime(new Date()), 1000);
