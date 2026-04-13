@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "app:dev": "electron .",
-    "app:build": "vite build && electron-builder"
+    "app:build": "vite build && electron-builder",
+    "app:build:win": "vite build && electron-builder --win"
   },
   "dependencies": {
     "bootstrap": "^5.3.8",
