@@ -2,11 +2,17 @@ const { app, BrowserWindow } = require('electron');
 const path = require('path');
 
 function createWindow() {
-    const win = new BrowserWindow({
+    const mainWindow = new BrowserWindow({
         width: 1200,
         height: 800,
         title: "The Witching Hour",
         backgroundColor: "#3A2D34",
+        webPreferences: { //ADDED THIS SO THE TIMER KEEPS RUNNING IN THE BACKGROUND EVEN WHEN I MINIMISE IT OR GO INTO OTHER APPS
+            preload: path.join(__dirname, 'preload.cjs'),
+            nodeIntegration: true,
+
+            backgroundThrottling: false,
+        }
     });
 
     if (app.isPackaged){
