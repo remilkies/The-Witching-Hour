@@ -42,10 +42,12 @@
       "output": "release"
     },
     "mac": {
-      "target": "dmg"
+      "target": "dmg",
+      "icon": "src/assets/appIcon.png"
     },
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "src/assets/appIcon.png"
     },
     "files": [
       "dist/**/*",
