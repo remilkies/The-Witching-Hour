@@ -9,10 +9,16 @@ html{
   background-color: #3A2D34;
   background-position: center;
   background-repeat: no-repeat;
-  
+
+  background-size: cover;
+  min-height: 100vh;
+
+  overflow-x: hidden;
+  width: 100%;
   position: relative;
   font-family: "Protest Revolution", sans-serif;
 }
+
 
 .titleContainer{
   position: relative;
@@ -373,7 +379,7 @@ transition: none;
   position: relative;
   bottom: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   background-color: transparent;
   display: flex;
   justify-content: center;
@@ -389,6 +395,8 @@ transition: none;
   justify-content: center;
   align-items: center;
   pointer-events: none;
+  transform: translateY(50%);
+  z-index: 100;
 }
 
 .mainShelf img{
@@ -401,11 +409,12 @@ transition: none;
   display: flex;
   font-family: "Protest Revolution", sans-serif;
   font-weight: 400;
-
+  position: relative;
   justify-content: center;
   font-style: normal;
   color: #EDD4D0;
   bottom: 0;
   right: 0;
   width: 100%;
+  margin-top: 15rem;
 }

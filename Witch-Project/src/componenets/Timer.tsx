@@ -12,6 +12,7 @@ export default function Timer() {
   const [timerSeconds, setTimerSeconds] = useState(0);
   const [isSetting, setIsSetting] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   const [currentTime, setCurrentTime] = useState(new Date());
 
@@ -70,11 +71,15 @@ export default function Timer() {
     const onMouseMove = (e: MouseEvent) => {
       if (isSetting) handleDrag(e);
     };
+
     const onMouseUp = () => {
       // Stop dragging when mouse is released but wait for confirm click o7
+      setIsDragging(false);
     };
 
-    if (isSetting) {
+
+
+    if (isDragging) {
       window.addEventListener('mousemove', onMouseMove);
       window.addEventListener('mouseup', onMouseUp);
     }
@@ -83,7 +88,7 @@ export default function Timer() {
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseup', onMouseUp);
     };
-  }, [isSetting])
+  }, [isDragging]);
 
   // button stuff
   const handleConfirmAndStart = () => {
@@ -123,6 +128,7 @@ export default function Timer() {
         <div className="clock-wrapper" ref={clockRef} onMouseDown={(e) => {
           if (!isRunning) {
             setIsSetting(true);
+            setIsDragging(true);
             handleDrag(e);
           }
         }}
