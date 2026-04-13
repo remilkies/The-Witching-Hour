@@ -8,17 +8,16 @@ function createWindow() {
         title: "The Witching Hour",
         backgroundColor: "#3A2D34",
         webPreferences: { //ADDED THIS SO THE TIMER KEEPS RUNNING IN THE BACKGROUND EVEN WHEN I MINIMISE IT OR GO INTO OTHER APPS
-            preload: path.join(__dirname, 'preload.cjs'),
             nodeIntegration: true,
-
             backgroundThrottling: false,
         }
     });
 
     if (app.isPackaged){
-        win.loadFile(path.join(__dirname, 'dist', 'index.html'));
+        mainWindow.loadFile(path.join(__dirname, 'dist', 'index.html'));
+        mainWindow.webContents.openDevTools();
     } else {
-        win.loadURL('http://localhost:5173');
+        mainWindow.loadURL('http://localhost:5173');
     }
 }
 
