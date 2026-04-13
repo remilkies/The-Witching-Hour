@@ -7,6 +7,10 @@ import hourHand from "../assets/hourHand.png";
 import minuteHand from "../assets/minuteHand.png";
 import clockOrigin from "../assets/clockOrigin.png";
 
+import alarm1 from "/alarm.mp3";
+import alarm2 from "/alarm2.mp3";
+import alarm3 from "/alarm3.mp3";
+
 export default function Timer() {
   const [timerMinutes, setTimerMinutes] = useState(45);
   const [timerSeconds, setTimerSeconds] = useState(0);
@@ -19,7 +23,7 @@ export default function Timer() {
   const [toastMsg, setToastMsg] = useState('');
 
   const clockRef = React.useRef<HTMLDivElement>(null);//INSERT SOUNDS TO -PLAY WHEN TIMER GOES OFF
-  const alarmSounds = ['/alarm.mp3', '/alarm2.mp3', '/alarm3.mp3'];
+  const alarmSounds = [alarm1, alarm2, alarm3];
 
   useEffect(() => {
     const timeInterval = setInterval(() => setCurrentTime(new Date()), 1000);
