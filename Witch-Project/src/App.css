@@ -9,9 +9,16 @@ html{
   background-color: #3A2D34;
   background-position: center;
   background-repeat: no-repeat;
-  
+
+  background-size: cover;
+  min-height: 100vh;
+
+  overflow-x: hidden;
+  width: 100%;
   position: relative;
+  font-family: "Protest Revolution", sans-serif;
 }
+
 
 .titleContainer{
   position: relative;
@@ -202,10 +209,162 @@ z-index: 20;
 
 .timer-container{
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 100vh;
+  
+  gap: 20px;
+  position: relative;
+}
+
+.toast-notification{
+  position: absolute;
+  top: 15vh;
+  background-color: #EDD4D0;
+  color: #342333;
+  padding: 15px 30px;
+  border: #342333 solid 5px;
+  border-radius: 15px;
+  font-size: 24px;
+  letter-spacing: 2px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  pointer-events: none;
+  z-index: 100;
+  text-align: center;
+}
+
+.toast-notification.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+.digital-display{
+  background-color: #342333;
+  border: #715E72 solid 5px;
+  border-radius: 15px;
+  color: #EDD4D0;
+  padding: 10px 30px;
+  text-align: center;
+  z-index: 10;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.digital-display h1{
+  font-family: "Protest Revolution", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 48px;
+  margin: 0;
+  letter-spacing: 5px;
+}
+
+.staus-text{
+  font-family: "Protest Revolution", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #EDD4D0;
+  font-size: 18px;
+letter-spacing: 2px;
+
+  opacity: 0.8;
+  margin: 5px 0 0 0;
+}
+
+.clock-wrapper{
+  position: relative;
+  width: 35vw;
+  max-width: 500px;
+  min-width: 300px;
+  aspect-ratio: 1 / 1; /*PERFECT SQUARE TYPE SHI*/
+  cursor: grab;
+  z-index: 5;
+}
+
+.clock-wrapper:active{
+  cursor: grabbing;
+}
+
+.clock-body,
+.clock-hands,
+.minute-hand,
+.hour-hand,
+.clock-origin{
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+  .hour-hand, .minute-hand{
+    transform-origin: center center;
+  }
+
+  .minute-hand {
+transition: none;
+  }
+
+.minute-hand .rewind-anim {
+  transition: transform 1.2s cubic-beszier(0.25, 0.1, 0.5, 1);
+}
+
+.controls-row{
+  display: flex;
+  gap: 20px;
+  z-index: 10;
+}
+
+.confirm-btn, .play-pause-btn{
+  font-family: "Protest Revolution", sans-serif;
+  font-size: 24px;
+  letter-spacing: 2px;
+
+  padding: 10px 30px;
+  border: #342333 solid 5px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+
+.confirm-btn{
+  background-color: #EDD4D0;
+  color: #342333;
+  animation: magicalPluse 2s infinite;
+}
+.play-pause-btn{
+  background-color: transparent;
+  color: #EDD4D0;
+  border: none;
+}
+
+.confirm-btn:hover{
+  background-color: #ffffff;
+  transform: scale(1.05);
+}
+
+.play-pause-btn:hover{
+  background-color: #342333;
+  transform: scale(1.05);
+}
+
+@keyframes magicalPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(237, 212, 208, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 0 15px rgba(237, 212, 208, 0);;
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(237, 212, 208, 0);
+  }
 }
 
 .clock-container {
@@ -216,39 +375,11 @@ z-index: 20;
   justify-content: center;
 }
 
-  /* center */
-  .clock-face {
-    position: relative;
-    width: 30vw;
-    
-  }
-
-  .clock-hands {
-    position: absolute;
-    width: 30vw;
-  }
-
-  .hour-hand {
-    position: absolute;
-    width: 30vw;
-  }
-
-  .minute-hand {
-    position: absolute;
-    width: 30vw;
-  }
-
-  .clock-origin {
-    position: absolute;
-    width: 30vw;
-  }
-
-
 .shelfContainer{
   position: relative;
   bottom: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   background-color: transparent;
   display: flex;
   justify-content: center;
@@ -264,6 +395,8 @@ z-index: 20;
   justify-content: center;
   align-items: center;
   pointer-events: none;
+  transform: translateY(50%);
+  z-index: 100;
 }
 
 .mainShelf img{
@@ -276,11 +409,12 @@ z-index: 20;
   display: flex;
   font-family: "Protest Revolution", sans-serif;
   font-weight: 400;
-
+  position: relative;
   justify-content: center;
   font-style: normal;
   color: #EDD4D0;
   bottom: 0;
   right: 0;
   width: 100%;
+  margin-top: 15rem;
 }
