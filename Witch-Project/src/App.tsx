@@ -66,7 +66,7 @@ export default function App() {
   const [breakSecondsLeft, setBreakSecondsLeft] = useState(BREAK_LIMIT_SECONDS);
 
   const [isQuestLogOpen, setIsQuestLogOpen] = useState(false);
-
+const [isCerfewModalOpen, setIsCerfewModalOpen] = useState(false);
   // This is a little ref that we can use to trigger the 7PM alarm only once, 
   const hasTriggered7PM = React.useRef(false);
 
@@ -78,12 +78,13 @@ useEffect(() => {
       hasTriggered7PM.current = false; // Reset the trigger at midnight
     }
 
-    if (now.getHours() === 19 && now.getMinutes() === 0 && !hasTriggered7PM.current) {
+    if (now.getHours() >= 19 && !hasTriggered7PM.current) {
       hasTriggered7PM.current = true; // Set the trigger to prevent multiple alarms
 
-      setIsBreakModalOpen(true);
+      setIsBreakModalOpen(false);
       setIsQuestLogOpen(false); // Force close quest log when break starts
       setBreakSecondsLeft(BREAK_LIMIT_SECONDS); // LOCK THE QUEST LOG FOR THE NIGHT, GO TO SLEEP, DREAM OF GOBLINS
+      setIsCerfewModalOpen(true);
       setCompletedWellnessTasks([]);
 
       console.log("THE 7PM WITCHING HOUR HAS ARRIVED >:D");
@@ -251,6 +252,18 @@ useEffect(() => {
           }}
           >
             {(breakSecondsLeft > 0 && completedWellnessTasks.length < 3) ? "Wait for time OR do 3 quests" : "I DID THE THINGS, LET ME BACK IN"}</button>
+        </div>
+        </div>
+        </div>
+      )}
+
+{isCerfewModalOpen && (
+        <div className="wellness-backdrop">
+          <div className="wellnessModalContainer">
+          <div className="wellnessModal">
+            <h1>STOP WORKING</h1>
+            <h2>IT'S NOW 7PM</h2>
+            <p>For your own well-being, step away from the keyboard, eat some dinner and have good night's rest</p>
         </div>
         </div>
         </div>

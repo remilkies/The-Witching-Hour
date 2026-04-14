@@ -23,6 +23,7 @@ export default function Timer( {isPaused }: {isPaused: boolean}) {
   const [toastMsg, setToastMsg] = useState('');
 
   const clockRef = React.useRef<HTMLDivElement>(null);//INSERT SOUNDS TO -PLAY WHEN TIMER GOES OFF
+  const timerContainerRef = React.useRef<HTMLDivElement>(null);
   const alarmSounds = [alarm1, alarm2, alarm3];
 
   useEffect(() => {
@@ -101,6 +102,21 @@ export default function Timer( {isPaused }: {isPaused: boolean}) {
     };
   }, [isDragging]);
 
+useEffect(() => {
+  const handleClickOutside = (event: MouseEvent) => {
+    if (isSetting && timerContainerRef.current && !timerContainerRef.current.contains(event.target as Node)) {
+      setIsSetting(false); //LEAVE ME ALONE
+      setIsDragging(false);
+    }
+  };
+
+  document.addEventListener('mousedown', handleClickOutside);
+
+  return () => {
+    document.removeEventListener('mousedown', handleClickOutside);
+  };
+}, [isSetting]);
+
   // button stuff
   const handleConfirmAndStart = () => {
     setIsSetting(false);
@@ -121,7 +137,7 @@ export default function Timer( {isPaused }: {isPaused: boolean}) {
   const currentHourAngle = (currentTime.getHours() % 12) * 30 + currentTime.getMinutes() * 0.5;
 
   return (
-      <div className="timer-container">
+      <div className="timer-container" ref={timerContainerRef}>
 
         <div className={`toast-notification ${toastMsg ? 'show' : ''}`}>
           {toastMsg}
