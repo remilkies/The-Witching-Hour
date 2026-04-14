@@ -42,7 +42,7 @@ export default function Timer( {isPaused }: {isPaused: boolean}) {
         } else {
           setIsRunning(false);
           setToastMsg('Time is up! Great Work <3');
-          setTimeout(() => setToastMsg(''), 10000);
+          setTimeout(() => setToastMsg(''), 1000);
           const randomSound = alarmSounds[Math.floor(Math.random() * alarmSounds.length)];
           const audio = new Audio(randomSound);
           audio.play();

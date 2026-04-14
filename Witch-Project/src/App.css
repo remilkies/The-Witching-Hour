@@ -27,6 +27,7 @@ html{
   justify-content: center;
   align-items: center;
   width: 100%;
+  z-index: 0;
 }
 .appTitle{
   position: relative;
@@ -54,14 +55,16 @@ html{
   top: 20px;
   left: 20px;
   cursor: pointer;
-  z-index: 100;
+  z-index: 50;
 }
 
 
 .questLog{
-  position: absolute;
-  top: 0;
+  position: fixed;
+  top: 20px;
+  z-index: 999; /*ABSOLUTE DOMINANCE*/
 }
+
 .questContainer{
   font-family: "Protest Revolution", sans-serif;
   font-weight: 400;
@@ -74,7 +77,7 @@ html{
   flex-direction: column;
   align-items: center;
 
-z-index: 20;
+z-index: 50;
   margin-left: 5rem;
 
   width: fit-content;
@@ -131,6 +134,20 @@ z-index: 20;
   height: 100%;
 }
 
+.deleteTask-btn{
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: #342333;
+  font-size: 16px;
+  padding: '0 5px';
+}
+
+.deleteTask-btn:hover{
+  color: #8b0000;
+  transform: scale(1.2);
+}
+
 .progressBarContainer{
   position: fixed;
   width: 25%;
@@ -169,10 +186,18 @@ z-index: 20;
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vh;
-  height: 100vw;
+  width: 100vw;
+  height: 100vh;
 
-  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); /*for safari people*/
+
+  z-index: 2000;
 }
 
 .wellnessModalContainer{
@@ -182,7 +207,7 @@ z-index: 20;
   justify-content: center;
   align-items: center;
   width: 100%;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .wellnessModal{
@@ -197,6 +222,9 @@ z-index: 20;
   justify-content: center;
   text-align: center;
   padding: 3rem;
+
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  animation: modalFadeIn 0.3s ease;
 }
 
 .timer-shelf-container{
@@ -420,6 +448,17 @@ transition: none;
   margin-top: 15rem;
 }
 
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  
+}
 /* COMING SOON: SCREEN SHAKE FOR CHAOS */
 @keyframes shake {
   0% { transform: translate(0); }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Container, Row, Col } from "react-bootstrap";
 import Confetti from "react-confetti";
@@ -58,7 +58,7 @@ export default function App() {
   const [completedWellnessTasks, setCompletedWellnessTasks] = useState<string[]>([]);
 
   //DEV MODE INITIATED: 5 SECOND TIMER FOR TESTING PURPOSES
-  const WORK_LIMIT_SECONDS = 45 * 60; // change to (45 * 60)
+  const WORK_LIMIT_SECONDS = 5; // change to (45 * 60)
   const BREAK_LIMIT_SECONDS = 15 * 60; // change to (15 * 60)
 
   const [workSeconds, setWorkSeconds] = useState(0);
@@ -148,9 +148,17 @@ export default function App() {
           // If the task is already completed and we click it again, we can choose to uncomplete it (optional)
         return { ...task, isCompleted: !task.isCompleted };
     }
+    return task;
   });
     setTasks(updatedTasks);
   };
+
+  const handleDeleteTask = (taskId: number, e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent triggering the complete task action
+
+    const updatedTasks = tasks.filter(task => task.id !== taskId);
+    setTasks(updatedTasks);
+  }
 
   const handleFinishBreak = () => {
     setPp((prev) => prev + 45);
@@ -195,8 +203,8 @@ export default function App() {
             <div className="wellnessTasks">
               <h3>Optional Wellness Tasks (Complete for Bonus Wellness Points!)</h3>
               <ul style={{ listStyle: 'none'}}>
-                {["Drink a glass of Water + 15 WP", "Streatch your goblin spine + 15 WP","Touch Grass + 15 WP", "Look at a tree + 15 WP", "Get some sun + 15 WP"].map((task) => (
-                  <li key={task} onClick={() => toggleWellnessTask(task)} style={{ cursor: 'pointer', padding: '10px', textDecoration: completedWellnessTasks.includes(task) ? 'line-through' : 'none', color: completedWellnessTasks.includes(task) ? '#996E8D' : '#342333' }} >
+                {["Drink a glass of Water + 15 WP", "Stretch your goblin spine + 15 WP","Touch Grass + 15 WP", "Look at a tree + 15 WP", "Get some sun + 15 WP"].map((task) => (
+                  <li key={task} onClick={() => toggleWellnessTask(task)} style={{ cursor: 'pointer', padding: '10px', textDecoration: completedWellnessTasks.includes(task) ? 'line-through' : 'none', color: completedWellnessTasks.includes(task) ? '#996E8D' : '#342333'}} >
                     {completedWellnessTasks.includes(task) ? "[x] " : "[ ] "} {task}
                   </li>
                 ))}
@@ -234,8 +242,15 @@ export default function App() {
             <p>PP: {pp} | WP: {wp}</p>
               <ul style={{ listStyle: 'none'}}>
                 {tasks.map((task) => (
-                  <li key={task.id} onClick={() => handleCompleteTask(task.id)} style={{ cursor: 'pointer', padding: '10px', textDecoration: task.isCompleted ? 'line-through' : 'none', color: task.isCompleted ? '#996E8D' : '#342333' }} >
+                  <li key={task.id} onClick={() => handleCompleteTask(task.id)} style={{ cursor: 'pointer', padding: '10px', textDecoration: task.isCompleted ? 'line-through' : 'none', color: task.isCompleted ? '#996E8D' : '#342333', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} >
+                    
+                    <span>
                     {task.isCompleted ? "[x] " : "[ ] "} {task.title}
+                    </span>
+
+                    <button className="deleteTask-btn" onClick={(e) => handleDeleteTask(task.id, e)} title="Delete Task">
+                      X
+                    </button>
                   </li>
                 ))}
               </ul>
