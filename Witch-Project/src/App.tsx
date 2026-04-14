@@ -1,7 +1,7 @@
 import React, { useState, useEffect, use } from "react";
 import "./App.css";
 import { Container, Row, Col } from "react-bootstrap";
-
+import Confetti from "react-confetti";
 
 import dreamcatcher from "./assets/dreamcatcher.png";
 import ProgressBar from "./componenets/ProgressBar";
@@ -10,6 +10,9 @@ import Timer from "./componenets/Timer";
 import addTaskIcon from "./assets/addTaskIcon.png";
 import QuestHeader from "./assets/questContainerHeader.png";
 import mainShelf from "./assets/mainShelf.png";
+
+import Yippee from "../public/Yippee.mp3";
+import alarm from "/alarm.mp3";
 
 // 1. THE RULEBOOK: Telling the typescript EXACTLY what a "task" looks like.
 type Task = {
@@ -20,6 +23,8 @@ type Task = {
 
 // 2. THE MEMORY
 export default function App() {
+  const [showConfetti, setShowConfetti] = useState(false);
+
   const [tasks, setTasks] = useState<Task[]>(() => {
     const savedTasks = localStorage.getItem("tasks");
     if (savedTasks) return JSON.parse(savedTasks);
@@ -93,6 +98,12 @@ export default function App() {
       setBreakSecondsLeft(BREAK_LIMIT_SECONDS); // Reset break timer
       setCompletedWellnessTasks([])
       setWorkSeconds(0); // Reset work seconds for the next round
+
+
+
+      console.log("Work limit reached! Time for a break.");
+      const audio = new Audio(alarm);
+      audio.play();
     }
   }, [workSeconds]);
 
@@ -123,12 +134,21 @@ export default function App() {
   // 4. THE DOPAMINE HIT
   const handleCompleteTask = (taskId: number) => {
     const updatedTasks = tasks.map(task => {
-      if (task.id === taskId) {
+      if (task.id === taskId && !task.isCompleted) {
         //TRIGGER VICTORY CONFETTI WHOOP WHOOP
+        setShowConfetti(true);
+        setTimeout(() => setShowConfetti(false), 5000);
+
+        
+        const audio = new Audio(Yippee);
+        audio.play();
+
         return { ...task, isCompleted: !task.isCompleted };
-      }
-      return task; //keep the other tasks unchanged
-    });
+       } else if (task.id === taskId && task.isCompleted) {
+          // If the task is already completed and we click it again, we can choose to uncomplete it (optional)
+        return { ...task, isCompleted: !task.isCompleted };
+    }
+  });
     setTasks(updatedTasks);
   };
 
@@ -158,6 +178,7 @@ export default function App() {
       {/* CONDITIONAL REMDERERING USING THE && (AND) OPERRATOR - If totalTasks > 0 is TRUE, then remder bar */}
       {totalTasks > 0 && <ProgressBar progress={progress} />} 
 
+    {showConfetti && <Confetti />}
       {isQuestLogOpen && (
         <div className="click-catcher-backdrop" onClick={() => setIsQuestLogOpen(false)}
         />
@@ -252,7 +273,7 @@ export default function App() {
         <Row>
 
           <Col md={6}>
-            <Timer />
+            <Timer isPaused={isBreakModalOpen}/>
           </Col>
 
           <Col md={6}>

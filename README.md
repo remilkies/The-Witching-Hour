@@ -58,5 +58,5 @@ Want to study some spells and run this locally?
     npm run dev
 
 
-Remember: You can't code a glass of water. Drink up.
+* **Remember:** You can't code a glass of water. Drink up.
 P.S If anyone figures out how to code water, let me know, so my boyfriend can get off my back (love you babe <3)

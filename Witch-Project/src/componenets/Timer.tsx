@@ -11,7 +11,7 @@ import alarm1 from "/alarm.mp3";
 import alarm2 from "/alarm2.mp3";
 import alarm3 from "/alarm3.mp3";
 
-export default function Timer() {
+export default function Timer( {isPaused }: {isPaused: boolean}) {
   const [timerMinutes, setTimerMinutes] = useState(45);
   const [timerSeconds, setTimerSeconds] = useState(0);
   const [isSetting, setIsSetting] = useState(false);
@@ -32,7 +32,7 @@ export default function Timer() {
 
   useEffect(() => {
     let interval: ReturnType<typeof setInterval> | null = null;
-    if (isRunning) {
+    if (isRunning && !isPaused) {
       interval = setInterval(() => {
         if (timerSeconds > 0) {
           setTimerSeconds((s) => s - 1);
@@ -42,6 +42,7 @@ export default function Timer() {
         } else {
           setIsRunning(false);
           setToastMsg('Time is up! Great Work <3');
+          setTimeout(() => setToastMsg(''), 10000);
           const randomSound = alarmSounds[Math.floor(Math.random() * alarmSounds.length)];
           const audio = new Audio(randomSound);
           audio.play();
@@ -50,6 +51,12 @@ export default function Timer() {
     }
     return () => clearInterval(interval);
   }, [isRunning, timerMinutes, timerSeconds]);
+
+  useEffect(() => {
+    if (isPaused) {
+      setIsRunning(false);
+    }
+  }, [isPaused])
 
   // DRAG THAT MATH
   const handleDrag = (e: MouseEvent | React.MouseEvent) => {
