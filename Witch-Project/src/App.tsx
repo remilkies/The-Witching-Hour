@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import "./App.css";
 import { Container, Row, Col } from "react-bootstrap";
 import Confetti from "react-confetti";
@@ -12,7 +12,8 @@ import QuestHeader from "./assets/questContainerHeader.png";
 import mainShelf from "./assets/mainShelf.png";
 
 import Yippee from "../public/Yippee.mp3";
-import alarm from "/alarm.mp3";
+import alarm from "../public/alarm.mp3";
+import eveningAlarm from "../public/alarmGoodnight.mp3";
 
 // 1. THE RULEBOOK: Telling the typescript EXACTLY what a "task" looks like.
 type Task = {
@@ -66,7 +67,36 @@ export default function App() {
 
   const [isQuestLogOpen, setIsQuestLogOpen] = useState(false);
 
-  //maximum 5 quests at a time, because we don't want to overwhelm our players with too many quests, that would be mean
+  // This is a little ref that we can use to trigger the 7PM alarm only once, 
+  const hasTriggered7PM = React.useRef(false);
+
+useEffect(() => {
+  const curfewInterval = setInterval(() => {
+    const now = new Date();
+
+    if (now.getHours() === 0){
+      hasTriggered7PM.current = false; // Reset the trigger at midnight
+    }
+
+    if (now.getHours() === 19 && now.getMinutes() === 0 && !hasTriggered7PM.current) {
+      hasTriggered7PM.current = true; // Set the trigger to prevent multiple alarms
+
+      setIsBreakModalOpen(true);
+      setIsQuestLogOpen(false); // Force close quest log when break starts
+      setBreakSecondsLeft(BREAK_LIMIT_SECONDS); // LOCK THE QUEST LOG FOR THE NIGHT, GO TO SLEEP, DREAM OF GOBLINS
+      setCompletedWellnessTasks([]);
+
+      console.log("THE 7PM WITCHING HOUR HAS ARRIVED >:D");
+
+      const audio = new Audio(eveningAlarm);
+      audio.play();
+    }
+  }, 1000); // Check time every second
+
+  return () => clearInterval(curfewInterval);
+}, []);
+
+  //maximum 5 quests at a time, because we don't want to overwhelm our users with too many quests, that would be mean
   const canAddMoreTasks = tasks.length < 5;
 
 
