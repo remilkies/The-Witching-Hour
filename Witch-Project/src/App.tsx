@@ -58,8 +58,8 @@ export default function App() {
   const [completedWellnessTasks, setCompletedWellnessTasks] = useState<string[]>([]);
 
   //DEV MODE INITIATED: 5 SECOND TIMER FOR TESTING PURPOSES
-  const WORK_LIMIT_SECONDS = 45 * 60; // change to (45 * 60)
-  const BREAK_LIMIT_SECONDS = 15 * 60; // change to (15 * 60)
+  const WORK_LIMIT_SECONDS = 5; // change to (45 * 60)
+  const BREAK_LIMIT_SECONDS = 10; // change to (15 * 60)
 
   const [workSeconds, setWorkSeconds] = useState(0);
   const [breakSecondsLeft, setBreakSecondsLeft] = useState(BREAK_LIMIT_SECONDS);
@@ -193,7 +193,7 @@ export default function App() {
       )}
 
       {isBreakModalOpen && (
-        <div className="click-catcher-backdrop">
+        <div className="click-catcher-backdrop modal-blur">
           <div className="wellnessModalContainer">
           <div className="wellnessModal">
             <h1>STOP WORKING</h1>

@@ -62,7 +62,7 @@ html{
 .questLog{
   position: fixed;
   top: 20px;
-  z-index: 999; /*ABSOLUTE DOMINANCE*/
+  z-index: 2001; /*ABSOLUTE DOMINANCE*/
 }
 
 .questContainer{
@@ -160,7 +160,7 @@ z-index: 50;
   border: #342333 solid 5px;
   border-radius: 10px;
   margin-top: 20px;
-  z-index: 100;
+  z-index: 50;
 }
 
 .progressBarFill{
@@ -194,10 +194,13 @@ z-index: 50;
   align-items: center;
 
   background-color: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px); /*for safari people*/
 
   z-index: 2000;
+}
+
+.modal-blur{
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); /*for safari people*/
 }
 
 .wellnessModalContainer{
@@ -350,7 +353,7 @@ transition: none;
   z-index: 10;
 }
 
-.confirm-btn, .play-pause-btn{
+.confirm-btn, .play-pause-btn, .finishBreak-btn{
   font-family: "Protest Revolution", sans-serif;
   font-size: 24px;
   letter-spacing: 2px;
@@ -362,12 +365,16 @@ transition: none;
   transition: all 0.2s ease;
 }
 
-
+.finishBreak-btn{
+  background-color: transparent;
+  color: #342333;
+}
 .confirm-btn{
   background-color: #EDD4D0;
   color: #342333;
   animation: magicalPluse 2s infinite;
 }
+
 .play-pause-btn{
   background-color: transparent;
   color: #EDD4D0;
@@ -375,12 +382,19 @@ transition: none;
 }
 
 .confirm-btn:hover{
-  background-color: #ffffff;
+  background-color: #342333;
+  color: #EDD4D0;
   transform: scale(1.05);
 }
 
 .play-pause-btn:hover{
   background-color: #342333;
+  transform: scale(1.05);
+}
+
+.finishBreak-btn:hover{
+  background-color: #342333;
+  color: #EDD4D0;
   transform: scale(1.05);
 }
 
