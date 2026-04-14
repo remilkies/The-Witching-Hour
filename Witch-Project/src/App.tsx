@@ -188,12 +188,12 @@ export default function App() {
 
     {showConfetti && <Confetti />}
       {isQuestLogOpen && (
-        <div className="click-catcher-backdrop" onClick={() => setIsQuestLogOpen(false)}
+        <div className="quest-backdrop" onClick={() => setIsQuestLogOpen(false)}
         />
       )}
 
       {isBreakModalOpen && (
-        <div className="click-catcher-backdrop modal-blur">
+        <div className="wellness-backdrop">
           <div className="wellnessModalContainer">
           <div className="wellnessModal">
             <h1>STOP WORKING</h1>
