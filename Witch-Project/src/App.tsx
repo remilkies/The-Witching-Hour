@@ -27,7 +27,7 @@ export default function App() {
   const [showConfetti, setShowConfetti] = useState(false);
 
   const [tasks, setTasks] = useState<Task[]>(() => {
-    const savedTasks = localStorage.getItem("tasks");
+    const savedTasks = localStorage.getItem("witching-tasks");
     if (savedTasks) return JSON.parse(savedTasks);
     return []; //first time player empty slate
   }); // <Task[]> is a "type annotation" that tells typescript that this state variable will be an array of "Task" objects and only items that perfectly match the 'Task' rulebook above 
