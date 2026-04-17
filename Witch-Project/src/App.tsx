@@ -89,6 +89,8 @@ const [isCerfewModalOpen, setIsCerfewModalOpen] = useState(false);
   // This is a little ref that we can use to trigger the 7PM alarm only once, 
   const hasTriggered7PM = React.useRef(false);
 
+  const [isCustomTimerRunning , setIsCustomTimerRunning] = useState(false); // New state to track if the custom timer is running
+
 useEffect(() => {
   const curfewInterval = setInterval(() => {
     const now = new Date();
@@ -210,12 +212,36 @@ useEffect(() => {
     setTasks(updatedTasks);
   }
 
+  const handleInitiateEarlyBreak = () => {
+    setIsBreakModalOpen(true);
+    setIsQuestLogOpen(false); // Force close quest log when break starts
+    setBreakSecondsLeft(BREAK_LIMIT_SECONDS); // Reset break timer
+    setCompletedWellnessTasks([]);
+    setWorkSeconds(0); // Reset work seconds for the next round
+
+    console.log("Early break initiated! Take a breather.");
+
+    //Note to self: make sound for early break initiation to give users audio feedback that they successfully initiated the break
+    // const audio = new Audio(alarm);
+    // audio.play();
+  };
+
   const handleFinishBreak = () => {
-    setPp((prev) => prev + 45);
+    const secondsSpentOnBreak = BREAK_LIMIT_SECONDS - breakSecondsLeft;
+    const minutesOnBreak = Math.floor(secondsSpentOnBreak / 60); // Calculate minutes spent on break
+    const breakWp = minutesOnBreak > 0 ? minutesOnBreak : 0; // Base wellness points from break time (1 WP per minute, minimum 0)
 
-    const bonusWp = 15 + completedWellnessTasks.length * 15;
-    setWp ((prev) => prev + bonusWp); // Each completed wellness task gives 15 bonus wellness points
+    const bonusWp = completedWellnessTasks.length * 15;
+    setWp ((prev) => prev + breakWp + bonusWp); // Add both base WP from break time and bonus WP from completed wellness tasks
 
+
+
+    if (!isCustomTimerRunning){
+      const minutesWorked = Math.floor(workSeconds / 60);
+      setPp((prev) => prev + minutesWorked); // Add PP based on minutes worked in the session
+    }
+    
+    setWorkSeconds(0); // Reset work seconds for the next session
     setIsBreakModalOpen(false); //BANISH THE MODAL. YOU CAN WORK NOW :D
   };
 
@@ -300,6 +326,13 @@ useEffect(() => {
         onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
           <img src={isSessionActive ? mainPauseBtn : mainPlayBtn} alt={isSessionActive ? "Pause Session" : "Start Session"} style={{ width: "100px", height: "auto" }} />
         </button>
+
+        {isSessionActive &&(
+          <button onClick={handleInitiateEarlyBreak} className="play-pause-btn" style={{ height: "fit-content" }}>
+            ☕ Take Early Break
+          </button>
+        )}
+
       </div>
 
       {isQuestLogOpen && (
@@ -358,7 +391,10 @@ useEffect(() => {
         <Row>
 
           <Col md={6}>
-            <Timer isPaused={isBreakModalOpen}/>
+            <Timer isPaused={isBreakModalOpen || !isSessionActive}
+            onMinutePassed={() => setPp((prev) => prev + 1)} // This callback function is passed down to the Timer component and will be called every time a minute passes while the timer is running. It updates the PP (Productivity Points) state by incrementing it by 1 for each minute of focused work completed. The onMinutePassed prop allows the Timer component to communicate back to the App component whenever a minute has passed, enabling the app to reward the user with PP accordingly.
+            onTimerActiveChange={setIsCustomTimerRunning}
+            />
           </Col>
 
           <Col md={6}>
