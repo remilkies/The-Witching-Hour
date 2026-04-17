@@ -1,4 +1,3 @@
-
 # 🌙 The Witching Hour
 
 > A witchy, lo-fi productivity and survival tool for developers who forget how to be human.
@@ -13,22 +12,27 @@ Crawl out of the darkness of your domain, complete your tasks, and let the dopam
 
 ## ✨ Features
 
-* **📝 The Dopamine Machine:** A to-do list that doesn't just cross things off—it throws confetti and plays a little victory tune because you deserve it, and a little progress bar to keep track of the amazing work you've done <3
-* **⏳ The Time Lord:** Set your project timers and if you don't want to set a timer a play and pause button to start your work session and earn your Productivity Points. *Note: You cannot work for more than 45 minutes straight. The app will literally yell at you with a giant pop-up to go touch grass (or at least your living room carpet).*
-* **💧 Survival Toggles:** Automated, non-negotiable wellness reminders
+* **📝 The Dopamine Machine:** A to-do list that doesn't just cross things off—it throws confetti and plays a little victory tune because you deserve it, and a little progress bar to keep track of the amazing work you've done. *Bonus: Includes persistent LocalStorage so your quests survive the night!* <3
+* **⏳ The Time Lord:** Set your project timers, or if you don't want to set a timer, use the play and pause button to start your work session and earn your Productivity Points. *Note: You cannot work for more than 45 minutes straight. The app will literally yell at you with a giant pop-up to go touch grass (or at least your living room carpet).*
+* **💧 Survival Toggles:** Automated, non-negotiable wellness reminders.
 
-* **🛑 Aggressive Wellness Timer & Economy**
-* **Gamified Pomodoro:** Work for 45 minutes, then get locked out of your task list for a mandatory 15-minute break. No cheating!
-* **Productivity Points (PP):** Earn a base reward of 45 PP just for surviving a continuous focus session.
-* **IRL Side-Quests (WP):** While locked in the break modal, earn a base reward of 15 WP for taking that 15-minute break, complete optional real-world tasks (like drinking water, resting your eyes, or stretching your goblin spine) to earn bonus Wellness Points!
-* **Dynamic Payouts:** Claim your well-earned PP and WP when the break timer hits zero to unlock your screen and get back to the grind.
-* 
-## Coming Soon 
-* **🔮 The Vibe Check (Ambient Audio):** * Click the glowing purple fireplace for crackling fire sounds.
+* **🛑 Aggressive Wellness Timer & Economy (NEW UPDATE!):**
+  * **Gamified Pomodoro:** Work for up to 45 minutes, then get locked out of your task list for a mandatory break.
+  * **☕ Take an Early Break:** Brain melting before the 45 minutes is up? Hit the new Early Break button to freeze your active timers and initiate a resting period.
+  * **Dynamic Productivity Points (PP):** Earn exactly 1 PP for every single minute you spend working. If you set a custom timer, the points drip in minute-by-minute!
+  * **Dynamic IRL Side-Quests (WP):** While locked in the break modal, earn a base reward of 1 WP for *every minute* you spend actively resting. Complete optional real-world tasks (like drinking water, resting your eyes, or stretching your goblin spine) to earn bonus Wellness Point multipliers!
+  * **Dynamic Payouts:** Claim your well-earned PP and WP when you finish your break to unlock your screen and get back to the grind.
+
+* **🦇 The 7 PM Curfew Trap:** A background interval tracker constantly watches the clock. If you are working at exactly 19:00, the app instantly locks you out, blasts an alarm, and tells you to go eat dinner and go to sleep.
+ 
+## 🔮 Coming Soon 
+
+* **The Vibe Check (Ambient Audio):**
+  * Click the glowing purple fireplace for crackling fire sounds.
   * Click the gothic window for soothing rain ambiance.
-  * Click the radio to blast MY mixtapes. (if you really want you can clone this and replace the audio files with your own but.....you're not gonna do that <3>) (Design inspired by Hazbin Totel)
-  * **🐈‍⬛ Mem Mem:** THERE'S A KET. Their name is Mem.  Mem doesn't technically *do* anything, but he's adorable and deserves an honourable mention.
-  * 
+  * Click the radio to blast MY mixtapes. (if you really want you can clone this and replace the audio files with your own but.....you're not gonna do that <3) (Design inspired by Hazbin Hotel)
+* **🐈‍⬛ Mem Mem:** THERE'S A KET. Their name is Mem. Mem doesn't technically *do* anything, but he's adorable and deserves an honourable mention.
+  
 ## 🛠️ Built With
 
 * **React** (Because components are magic)
