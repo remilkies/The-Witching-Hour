@@ -183,7 +183,10 @@ useEffect(() => {
 
           <div className="controls-row">
             {isSetting ? (
+              <>
               <button className="confirm-btn" onClick={handleConfirmAndStart}>Confirm & Start Timer</button>
+              <button className="play-pause-btn" onClick={() => { setIsSetting(false); setIsDragging(false) }}>Cancel</button>
+              </>
             ) : (
               <button className="play-pause-btn" onClick={handlePauseResume}>
                 {isRunning ? '⏸ Pause Timer' : '▶ Resume Timer'}

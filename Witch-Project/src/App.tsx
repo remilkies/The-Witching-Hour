@@ -3,13 +3,15 @@ import "./App.css";
 import { Container, Row, Col } from "react-bootstrap";
 import Confetti from "react-confetti";
 
-import dreamcatcher from "./assets/dreamcatcher.png";
 import ProgressBar from "./componenets/ProgressBar";
 import Timer from "./componenets/Timer";
 
+import dreamcatcher from "./assets/dreamcatcher.png";
 import addTaskIcon from "./assets/addTaskIcon.png";
 import QuestHeader from "./assets/questContainerHeader.png";
 import mainShelf from "./assets/mainShelf.png";
+import mainPlayBtn from "./assets/mainPlayBtn.png";
+import mainPauseBtn from "./assets/mainPauseBtn.png";
 
 import Yippee from "../public/Yippee.mp3";
 import alarm from "../public/alarm.mp3";
@@ -33,6 +35,8 @@ export default function App() {
   }); // <Task[]> is a "type annotation" that tells typescript that this state variable will be an array of "Task" objects and only items that perfectly match the 'Task' rulebook above 
   const [newTaskTitle, setNewTaskTitle] = useState("");
 
+  const [isSessionActive, setIsSessionActive] = useState(false);
+  
   const [pp, setPp] = useState(() => {
     const savedPp = localStorage.getItem("witching-pp");
     if (savedPp) return JSON.parse(savedPp);
@@ -42,6 +46,21 @@ export default function App() {
     const savedWp = localStorage.getItem("witching-wp");
     return savedWp ? parseInt(savedWp) : 0; //first time player starts with 0 points, but if there is a saved value, use that instead
   }); // Wellness Points
+
+const handleToggleSession = () => {
+    if (!isSessionActive) {
+      //THE AUDIO UNLOCK SPELL
+      //play a sound to unlock the audio API in browsers, which is required to play sounds later on when completing tasks and stuff. Most browsers block audio from playing until there has been some sort of user interaction (like a click), so we can use this as a way to "unlock" the ability to play sounds when we actually want to use them in the app.
+      const unlockAudio = new Audio(alarm);
+      unlockAudio.volume = 0.01; // Set volume to a very low level so it's not disruptive 
+      unlockAudio.play().then(() => {
+        unlockAudio.pause(); // Pause immediately after playing to prevent any sound from being heard
+        unlockAudio.currentTime = 0; // Reset the audio to the beginning
+      }).catch(err => console.log("Audio unlock bypassed", err));
+    }
+
+    setIsSessionActive(!isSessionActive); // This toggles the session state between active and inactive. When the session becomes active, it allows the work timer to start counting and the break timer to function properly. When the session is inactive, it essentially pauses all timers and prevents the break modal from triggering, giving the user control over when they want to start their productivity session.
+  };
 
   useEffect(() => {
     localStorage.setItem("witching-tasks", JSON.stringify(tasks));
@@ -112,7 +131,7 @@ useEffect(() => {
   useEffect(() => {
     const interval = setInterval(() => {
 
-      if (!isBreakModalOpen){ // Only count work seconds if the break modal is not open
+      if (!isBreakModalOpen && isSessionActive){ // Only count work seconds if the break modal is not open and session is active
         setWorkSeconds((prev) => prev + 1);
       } else if (isBreakModalOpen && breakSecondsLeft > 0){ // Only count down break seconds if the modal is open and there is time left{
         setBreakSecondsLeft((prev) => prev - 1);
@@ -120,7 +139,7 @@ useEffect(() => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isBreakModalOpen, breakSecondsLeft]);
+  }, [isBreakModalOpen, breakSecondsLeft, isSessionActive]); // This effect sets up an interval that ticks every second. If the break modal is not open, it increments the work seconds. If the break modal is open and there are break seconds left, it decrements the break seconds. The effect also cleans up the interval when the component unmounts or when any of the dependencies change.
 
   useEffect(() => {
     if (workSeconds >= WORK_LIMIT_SECONDS) {
@@ -274,6 +293,14 @@ useEffect(() => {
           <img className="questMenuIcon" src={QuestHeader} alt="Quest Log Icon" onClick={() => setIsQuestLogOpen(true)} style={{ width: "150px" }} />
         </div>
       )}
+
+      <div className="global-session-toggle">
+        <button onClick={handleToggleSession} style={{background: 'transparent', border: 'none', cursor: 'pointer', transition: 'transform 0.2s'}}
+        onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+        onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
+          <img src={isSessionActive ? mainPauseBtn : mainPlayBtn} alt={isSessionActive ? "Pause Session" : "Start Session"} style={{ width: "100px", height: "auto" }} />
+        </button>
+      </div>
 
       {isQuestLogOpen && (
 
