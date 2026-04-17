@@ -13,7 +13,10 @@ Crawl out of the darkness of your domain, complete your tasks, and let the dopam
 ## ✨ Features
 
 * **📝 The Dopamine Machine:** A to-do list that doesn't just cross things off—it throws confetti and plays a little victory tune because you deserve it, and a little progress bar to keep track of the amazing work you've done. *Bonus: Includes persistent LocalStorage so your quests survive the night!* <3
-* **⏳ The Time Lord:** Set your project timers, or if you don't want to set a timer, use the play and pause button to start your work session and earn your Productivity Points. *Note: You cannot work for more than 45 minutes straight. The app will literally yell at you with a giant pop-up to go touch grass (or at least your living room carpet).*
+* **⏳ The Time Lord:**
+* Base Session: Hit the global Play button to start your session. You cannot work for more than 45 minutes straight. The app will literally yell at you with a giant pop-up to go touch grass.
+* Custom Timers: Drag the clock hands to set custom focus blocks.
+* Early Breaks: Brain melting before the 45 minutes is up? Hit the "Take Early Break" button to freeze your timers and initiate a resting period.
 * **💧 Survival Toggles:** Automated, non-negotiable wellness reminders.
 
 * **🛑 Aggressive Wellness Timer & Economy (NEW UPDATE!):**
