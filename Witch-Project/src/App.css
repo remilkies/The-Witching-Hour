@@ -496,6 +496,91 @@ transition: none;
   margin-top: 15rem;
 }
 
+.water-toast{
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 320px;
+  background-color: #342333;
+  color: #EDD4D0;
+
+  border: #715E72 solid 5px;
+  border-radius: 8px;
+  padding: 15px 15px 25px 15px; /* extra bottom padding for the "Drink Now" button */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  overflow: hidden;
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+.water-toast-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.water-toast-header h3 {
+  font-family: "Protest Revolution", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1.1rem;
+  color: #EDD4D0;
+  margin: 0;
+}
+
+.water-toast-close {
+  background: transparent;
+  border: none;
+  color: #EDD4D0;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.water-toast-close:hover {
+  transform: scale(1.2);
+  color: #8b0000;
+}
+
+.water-toast p{
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+/* SHRINKING TIME BAR >:D */
+
+.water-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 5px;
+  background-color: #715E72;
+  width: 100%;
+  animation: shrinkBar 10s linear forwards;
+}
+
+@keyframes shrinkBar {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 @keyframes modalFadeIn {
   from {
     opacity: 0;
