@@ -11,7 +11,16 @@ import alarm1 from "/alarm.mp3";
 import alarm2 from "/alarm2.mp3";
 import alarm3 from "/alarm3.mp3";
 
-export default function Timer( {isPaused }: {isPaused: boolean}) {
+export default function Timer( {
+  isPaused,
+  onMinutePassed,
+  onTinerActiveChange
+}: {
+  isPaused: boolean;
+  onMinutePassed: () => void; // Callback for when a minute passes
+  onTimerActiveChange: (isActive: boolean) => void; // Callback for when timer starts/stops 
+
+}) {
   const [timerMinutes, setTimerMinutes] = useState(45);
   const [timerSeconds, setTimerSeconds] = useState(0);
   const [isSetting, setIsSetting] = useState(false);
@@ -23,6 +32,7 @@ export default function Timer( {isPaused }: {isPaused: boolean}) {
   const [toastMsg, setToastMsg] = useState('');
 
   const clockRef = React.useRef<HTMLDivElement>(null);//INSERT SOUNDS TO -PLAY WHEN TIMER GOES OFF
+  const timerContainerRef = React.useRef<HTMLDivElement>(null);
   const alarmSounds = [alarm1, alarm2, alarm3];
 
   useEffect(() => {
@@ -31,14 +41,15 @@ export default function Timer( {isPaused }: {isPaused: boolean}) {
   }, []);
 
   useEffect(() => {
-    let interval: ReturnType<typeof setInterval> | null = null;
+    let interval: ReturnType<typeof setInterval> | null = null; // Start the timer interval when isRunning becomes true and there are minutes or seconds left
     if (isRunning && !isPaused) {
       interval = setInterval(() => {
-        if (timerSeconds > 0) {
-          setTimerSeconds((s) => s - 1);
-        } else if (timerMinutes > 0) {
-          setTimerMinutes((m) => m - 1);
-          setTimerSeconds(59);
+        if (timerSeconds > 0) { // If there are still seconds left, just decrease seconds
+          setTimerSeconds((s) => s - 1); // Decrease seconds
+        } else if (timerMinutes > 0) {// If seconds are 0 but minutes are still left, decrease minutes and reset seconds to 59
+          onMinutePassed(); // Notify parent that a minute has passed
+          setTimerMinutes((m) => m - 1); // Decrease minutes
+          setTimerSeconds(59); 
         } else {
           setIsRunning(false);
           setToastMsg('Time is up! Great Work <3');
@@ -101,6 +112,21 @@ export default function Timer( {isPaused }: {isPaused: boolean}) {
     };
   }, [isDragging]);
 
+useEffect(() => {
+  const handleClickOutside = (event: MouseEvent) => {
+    if (isSetting && timerContainerRef.current && !timerContainerRef.current.contains(event.target as Node)) {
+      setIsSetting(false); //LEAVE ME ALONE
+      setIsDragging(false);
+    }
+  };
+
+  document.addEventListener('mousedown', handleClickOutside);
+
+  return () => {
+    document.removeEventListener('mousedown', handleClickOutside);
+  };
+}, [isSetting]);
+
   // button stuff
   const handleConfirmAndStart = () => {
     setIsSetting(false);
@@ -121,7 +147,7 @@ export default function Timer( {isPaused }: {isPaused: boolean}) {
   const currentHourAngle = (currentTime.getHours() % 12) * 30 + currentTime.getMinutes() * 0.5;
 
   return (
-      <div className="timer-container">
+      <div className="timer-container" ref={timerContainerRef}>
 
         <div className={`toast-notification ${toastMsg ? 'show' : ''}`}>
           {toastMsg}
@@ -167,7 +193,10 @@ export default function Timer( {isPaused }: {isPaused: boolean}) {
 
           <div className="controls-row">
             {isSetting ? (
+              <>
               <button className="confirm-btn" onClick={handleConfirmAndStart}>Confirm & Start Timer</button>
+              <button className="play-pause-btn" onClick={() => { setIsSetting(false); setIsDragging(false) }}>Cancel</button>
+              </>
             ) : (
               <button className="play-pause-btn" onClick={handlePauseResume}>
                 {isRunning ? '⏸ Pause Timer' : '▶ Resume Timer'}

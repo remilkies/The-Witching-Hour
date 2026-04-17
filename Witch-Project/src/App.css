@@ -64,6 +64,14 @@ html{
   transform: translateY(280px) translateX(363px);
 }
 
+.global-session-toggle{
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  z-index: 50;
+}
+
 .questMenuIcon{
   position: fixed;
   top: 20px;
