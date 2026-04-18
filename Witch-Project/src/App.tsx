@@ -12,9 +12,11 @@ import QuestHeader from "./assets/questContainerHeader.png";
 import mainShelf from "./assets/mainShelf.png";
 import mainPlayBtn from "./assets/mainPlayBtn.png";
 import mainPauseBtn from "./assets/mainPauseBtn.png";
+import breakIcon from "./assets/breakIcon.png";
 
 import Yippee from "../public/Yippee.mp3";
 import alarm from "../public/alarm.mp3";
+import Droplet from "../public/waterDroplet.mp3";
 import eveningAlarm from "../public/alarmGoodnight.mp3";
 
 // 1. THE RULEBOOK: Telling the typescript EXACTLY what a "task" looks like.
@@ -98,7 +100,8 @@ export default function App() {
 
   useEffect(() => {
     if (showWaterToast) {
-      const audio = new Audio(Yippee);
+      const audio = new Audio(Droplet);
+      audio.volume = 0.5; // Set volume to a moderate level
       audio.play();
       const timeout = setTimeout(() => {
         setShowWaterToast(false)
@@ -262,6 +265,7 @@ export default function App() {
 
 
         const audio = new Audio(Yippee);
+        
         audio.play();
 
         return { ...task, isCompleted: !task.isCompleted };
@@ -326,7 +330,7 @@ export default function App() {
             <h3> ݁₊ ⊹ . ݁˖ . ݁Welcome Back ݁₊ ⊹ . ݁˖ . ݁</h3>
 
             <button className="toast-close" onClick={() => setShowBreakOverToast(false)}>X
-              
+
             </button>
 
             </div>
@@ -415,12 +419,12 @@ export default function App() {
         <button onClick={handleToggleSession} style={{ background: 'transparent', border: 'none', cursor: 'pointer', transition: 'transform 0.2s' }}
           onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
           onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
-          <img src={isSessionActive ? mainPauseBtn : mainPlayBtn} alt={isSessionActive ? "Pause Session" : "Start Session"} style={{ width: "100px", height: "auto" }} />
+          <img src={isSessionActive ? mainPauseBtn : mainPlayBtn} alt={isSessionActive ? "Pause Session" : "Start Session"} style={{ width: "30px", height: "auto" }} />
         </button>
 
         {isSessionActive && (
           <button onClick={handleInitiateEarlyBreak} className="play-pause-btn" style={{ height: "fit-content" }}>
-            ☕ Take Early Break
+            <img src={breakIcon} alt="Take Break Early" style={{ width: "30px", height: "auto" }} />
           </button>
         )}
 
