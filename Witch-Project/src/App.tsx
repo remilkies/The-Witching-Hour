@@ -102,11 +102,22 @@ export default function App() {
       audio.play();
       const timeout = setTimeout(() => {
         setShowWaterToast(false)
-      }, 10000);// Hide toast after 10 seconds
+      }, 15000);// Hide toast after 15 seconds
 
       return () => clearTimeout(timeout);
     }
   }, [showWaterToast]);
+
+  const [showBreakOverToast, setShowBreakOverToast] = useState(false);
+
+  useEffect(()=> {
+    if (showBreakOverToast) {
+      const timeout = setTimeout(() => {
+        setShowBreakOverToast(false)
+      }, 100000);// Hide toast after 100 seconds, giving the user ample time to see the notification and claim their points
+      return () => clearTimeout(timeout);
+    }
+  }, [showBreakOverToast]);
 
   const [isCerfewModalOpen, setIsCerfewModalOpen] = useState(false);
   // This is a little ref that we can use to trigger the 7PM alarm only once, 
@@ -212,6 +223,9 @@ export default function App() {
 
     setWorkSeconds(0); // Reset work seconds for the next session
     setIsBreakModalOpen(false); //BANISH THE MODAL. YOU CAN WORK NOW :D
+
+    setIsSessionActive(false); // End the session when the break is finished, giving the user a moment to relax before they decide to start another session
+    setShowBreakOverToast(true); // Show a toast notification that the break is over and points have been awarded
   };
 
   useEffect(() => {
@@ -269,12 +283,17 @@ export default function App() {
 
 
 
-  const toggleWellnessTask = (taskName: string) => {
-    if (completedWellnessTasks.includes(taskName)) {
-      setCompletedWellnessTasks(completedWellnessTasks.filter(t => t !== taskName));
-    } else {
-      setCompletedWellnessTasks([...completedWellnessTasks, taskName]);
-    }
+  const toggleWellnessTask = (taskId: string) => {
+    setCompletedWellnessTasks((prev) =>
+      prev.includes(taskId)
+    ? prev.filter(id => id !== taskId) // If already completed, remove it from the list
+    : [...prev, taskId] // If not completed, add it to the list
+    );
+    // if (completedWellnessTasks.includes(taskName)) {
+    //   setCompletedWellnessTasks(completedWellnessTasks.filter(t => t !== taskName));
+    // } else {
+    //   setCompletedWellnessTasks([...completedWellnessTasks, taskName]);
+    // }
   };
 
   // const questContainerHeader = document.querySelector('.questContainerHeader'); THIS IS HOW YOU WOULD SELECT AN ELEMENT IN A NORMAL JAVASCRIPT FILE, BUT IN REACT, WE HANDLE THIS WITH STATE AND CONDITIONAL RENDERING
@@ -292,12 +311,28 @@ export default function App() {
         {showWaterToast && (
           <div className="water-toast">
             <div className="water-toast-header">
-            <h3>💧 Say hiii Drated</h3>
-            <button className="water-toast-close" onClick={() => setShowWaterToast(false)}>X</button>
+            <h3> ݁₊ ⊹ . ݁˖ . ݁Say hiii Drated ݁₊ ⊹ . ݁˖ . ݁</h3>
+            <button className="toast-close" onClick={() => setShowWaterToast(false)}>X</button>
             </div>
             <p>Drink some water and stay hydrated! Your goblin brain will thank you :D</p>
 
-            <div className="water-progress-bar"></div>
+            <div className="toast-time-bar"></div>
+          </div>
+        )}
+
+        {showBreakOverToast && (
+          <div className="water-toast">
+            <div className="water-toast-header">
+            <h3> ݁₊ ⊹ . ݁˖ . ݁Welcome Back ݁₊ ⊹ . ݁˖ . ݁</h3>
+
+            <button className="toast-close" onClick={() => setShowBreakOverToast(false)}>X
+              
+            </button>
+
+            </div>
+            <p>Break over! Click the Start button to resume your productivity session &lt;3</p>
+
+            <div className="toast-time-bar"></div>
           </div>
         )}
       {isQuestLogOpen && (
@@ -311,18 +346,36 @@ export default function App() {
             <div className="wellnessModal">
               <h1>STOP WORKING</h1>
               <h2>YOU HAVE BEEN WORKING TOO LONG</h2>
-              <p>For your own well-being, step away from the keyboard. <br /> Your Quest Log will unlock in: <strong>{breakSecondsLeft} seconds.</strong></p>
+              <p>Taking a break is just as productive as doing work<br/>For your own well-being, step away from the keyboard. <br /> Your Quest Log will unlock in: <strong>{breakSecondsLeft} seconds.</strong></p>
 
               <div className="wellnessTasks">
                 <h3>Optional Wellness Tasks (Complete for Bonus Wellness Points!)</h3>
-                <ul style={{ listStyle: 'none' }}>
-                  {["Drink a glass of Water + 15 WP", "Stretch your goblin spine + 15 WP", "Touch Grass + 15 WP", "Look at a tree + 15 WP", "Get some sun + 15 WP"].map((task) => (
-                    <li key={task} onClick={() => toggleWellnessTask(task)} style={{ cursor: 'pointer', padding: '10px', textDecoration: completedWellnessTasks.includes(task) ? 'line-through' : 'none', color: completedWellnessTasks.includes(task) ? '#996E8D' : '#342333' }} >
-                      {completedWellnessTasks.includes(task) ? "[x] " : "[ ] "} {task}
-                    </li>
-                  ))}
-                </ul>
+
+                <div className="wellness-quests-container">
+                  {["Drink a glass of Water + 15 WP", "Stretch your goblin spine", "Touch Grass", "Look at a tree", "Get some sun", "Take a shower"].map((task) => {
+                    const isDone = completedWellnessTasks.includes(task);
+                    return (
+                      <div key={task} className="wellness-quest-row">
+                        <span className={isDone ? "quest-text-done" : "quest-text"}>
+                          {task}
+                        </span>
+                        
+                        <button className={`quest-btn ${isDone ? "quest-done" : "quest-pending"}`} onClick={() => toggleWellnessTask(task)}>
+                          {isDone ? "Quest Complete" : "Claim +15 WP"}
+                        </button>
+                      </div>
+                    );
+                  }
+                  // (
+                  //   <li key={task} onClick={() => toggleWellnessTask(task)} style={{ cursor: 'pointer', padding: '10px', textDecoration: completedWellnessTasks.includes(task) ? 'line-through' : 'none', color: completedWellnessTasks.includes(task) ? '#996E8D' : '#342333' }} >
+                  //     {completedWellnessTasks.includes(task) ? "[x] " : "[ ] "} {task}
+                  //   </li>
+                  // )
+                  )}
+                </div>
+
               </div>
+
               <p>Base Reward:  <strong>45 PP + 15 WP</strong><br />
                 Bonus Wellness Reward: <strong>+{completedWellnessTasks.length * 15} WP</strong>
               </p>
