@@ -16,7 +16,7 @@ import breakIcon from "./assets/breakIcon.png";
 
 import Yippee from "../public/Yippee.mp3";
 import alarm from "../public/alarm.mp3";
-import Droplet from "../public/waterDroplet.mp3";
+import Droplet from "../public/waterDroplet.wav";
 import eveningAlarm from "../public/alarmGoodnight.mp3";
 
 // 1. THE RULEBOOK: Telling the typescript EXACTLY what a "task" looks like.
@@ -80,7 +80,7 @@ export default function App() {
   const [completedWellnessTasks, setCompletedWellnessTasks] = useState<string[]>([]);
 
   //DEV MODE INITIATED: 5 SECOND TIMER FOR TESTING PURPOSES
-  const WORK_LIMIT_SECONDS = 45 * 60; // change to (45 * 60)
+  const WORK_LIMIT_SECONDS = 4; // change to (45 * 60)
   const BREAK_LIMIT_SECONDS = 15 * 60; // change to (15 * 60)
 
   const [workSeconds, setWorkSeconds] = useState(0);
@@ -356,16 +356,16 @@ export default function App() {
                 <h3>Optional Wellness Tasks (Complete for Bonus Wellness Points!)</h3>
 
                 <div className="wellness-quests-container">
-                  {["Drink a glass of Water + 15 WP", "Stretch your goblin spine", "Touch Grass", "Look at a tree", "Get some sun", "Take a shower"].map((task) => {
+                  {["Drink a glass of Water", "Stretch your goblin spine", "Touch Grass", "Look at a tree", "Get some sun", "Take a shower"].map((task) => {
                     const isDone = completedWellnessTasks.includes(task);
                     return (
-                      <div key={task} className="wellness-quest-row">
-                        <span className={isDone ? "quest-text-done" : "quest-text"}>
+                      <div key={task} className="wellness-quest-row" style={{textDecoration: completedWellnessTasks.includes(task) ? 'line-through' : 'none', color: completedWellnessTasks.includes(task) ? '#996E8D' : '#342333' }}>
+                        <span className={isDone ? "quest-text-done" : "quest-text"} >
                           {task}
                         </span>
                         
-                        <button className={`quest-btn ${isDone ? "quest-done" : "quest-pending"}`} onClick={() => toggleWellnessTask(task)}>
-                          {isDone ? "Quest Complete" : "Claim +15 WP"}
+                        <button className={`quest-btn ${isDone ? "quest-done" : "quest-pending"}`} onClick={() => toggleWellnessTask(task)} style={{textDecoration: completedWellnessTasks.includes(task) ? 'line-through' : 'none', color: completedWellnessTasks.includes(task) ? '#996E8D' : '#342333' }}>
+                          {isDone ? "[X] Claimed +15 WP" : " [ ] Claim +15 WP"}
                         </button>
                       </div>
                     );
@@ -419,12 +419,12 @@ export default function App() {
         <button onClick={handleToggleSession} style={{ background: 'transparent', border: 'none', cursor: 'pointer', transition: 'transform 0.2s' }}
           onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
           onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
-          <img src={isSessionActive ? mainPauseBtn : mainPlayBtn} alt={isSessionActive ? "Pause Session" : "Start Session"} style={{ width: "30px", height: "auto" }} />
+          <img src={isSessionActive ? mainPauseBtn : mainPlayBtn} alt={isSessionActive ? "Pause Session" : "Start Session"} style={{ width: "60px", height: "auto" }} />
         </button>
 
         {isSessionActive && (
           <button onClick={handleInitiateEarlyBreak} className="play-pause-btn" style={{ height: "fit-content" }}>
-            <img src={breakIcon} alt="Take Break Early" style={{ width: "30px", height: "auto" }} />
+            <img src={breakIcon} alt="Take Break Early" style={{ width: "60px", height: "auto", background: 'transparent'}} />
           </button>
         )}
 
