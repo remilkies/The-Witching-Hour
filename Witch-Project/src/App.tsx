@@ -1,4 +1,4 @@
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Container, Row, Col } from "react-bootstrap";
 import Confetti from "react-confetti";
@@ -12,9 +12,11 @@ import QuestHeader from "./assets/questContainerHeader.png";
 import mainShelf from "./assets/mainShelf.png";
 import mainPlayBtn from "./assets/mainPlayBtn.png";
 import mainPauseBtn from "./assets/mainPauseBtn.png";
+import breakIcon from "./assets/breakIcon.png";
 
 import Yippee from "../public/Yippee.mp3";
 import alarm from "../public/alarm.mp3";
+import Droplet from "../public/waterDroplet.wav";
 import eveningAlarm from "../public/alarmGoodnight.mp3";
 
 // 1. THE RULEBOOK: Telling the typescript EXACTLY what a "task" looks like.
@@ -36,7 +38,7 @@ export default function App() {
   const [newTaskTitle, setNewTaskTitle] = useState("");
 
   const [isSessionActive, setIsSessionActive] = useState(false);
-  
+
   const [pp, setPp] = useState(() => {
     const savedPp = localStorage.getItem("witching-pp");
     if (savedPp) return JSON.parse(savedPp);
@@ -47,7 +49,7 @@ export default function App() {
     return savedWp ? parseInt(savedWp) : 0; //first time player starts with 0 points, but if there is a saved value, use that instead
   }); // Wellness Points
 
-const handleToggleSession = () => {
+  const handleToggleSession = () => {
     if (!isSessionActive) {
       //THE AUDIO UNLOCK SPELL
       //play a sound to unlock the audio API in browsers, which is required to play sounds later on when completing tasks and stuff. Most browsers block audio from playing until there has been some sort of user interaction (like a click), so we can use this as a way to "unlock" the ability to play sounds when we actually want to use them in the app.
@@ -85,38 +87,73 @@ const handleToggleSession = () => {
   const [breakSecondsLeft, setBreakSecondsLeft] = useState(BREAK_LIMIT_SECONDS);
 
   const [isQuestLogOpen, setIsQuestLogOpen] = useState(false);
-const [isCerfewModalOpen, setIsCerfewModalOpen] = useState(false);
+
+  const [showWaterToast, setShowWaterToast] = useState(false);
+
+  useEffect(() => {
+    const waterInterval = setInterval(() => {
+      setShowWaterToast(true);
+    }, 30 * 60 * 1000); // Show toast every 30 minutes
+
+    return () => clearInterval(waterInterval);
+  }, []);
+
+  useEffect(() => {
+    if (showWaterToast) {
+      const audio = new Audio(Droplet);
+      audio.volume = 0.5; // Set volume to a moderate level
+      audio.play();
+      const timeout = setTimeout(() => {
+        setShowWaterToast(false)
+      }, 15000);// Hide toast after 15 seconds
+
+      return () => clearTimeout(timeout);
+    }
+  }, [showWaterToast]);
+
+  const [showBreakOverToast, setShowBreakOverToast] = useState(false);
+
+  useEffect(()=> {
+    if (showBreakOverToast) {
+      const timeout = setTimeout(() => {
+        setShowBreakOverToast(false)
+      }, 100000);// Hide toast after 100 seconds, giving the user ample time to see the notification and claim their points
+      return () => clearTimeout(timeout);
+    }
+  }, [showBreakOverToast]);
+
+  const [isCerfewModalOpen, setIsCerfewModalOpen] = useState(false);
   // This is a little ref that we can use to trigger the 7PM alarm only once, 
   const hasTriggered7PM = React.useRef(false);
 
-  const [isCustomTimerRunning , setIsCustomTimerRunning] = useState(false); // New state to track if the custom timer is running
+  const [isCustomTimerRunning, setIsCustomTimerRunning] = useState(false); // New state to track if the custom timer is running
 
-useEffect(() => {
-  const curfewInterval = setInterval(() => {
-    const now = new Date();
+  useEffect(() => {
+    const curfewInterval = setInterval(() => {
+      const now = new Date();
 
-    if (now.getHours() === 0){
-      hasTriggered7PM.current = false; // Reset the trigger at midnight
-    }
+      if (now.getHours() === 0) {
+        hasTriggered7PM.current = false; // Reset the trigger at midnight
+      }
 
-    if (now.getHours() >= 19 && !hasTriggered7PM.current) {
-      hasTriggered7PM.current = true; // Set the trigger to prevent multiple alarms
+      if (now.getHours() >= 19 && !hasTriggered7PM.current) {
+        hasTriggered7PM.current = true; // Set the trigger to prevent multiple alarms
 
-      setIsBreakModalOpen(false);
-      setIsQuestLogOpen(false); // Force close quest log when break starts
-      setBreakSecondsLeft(BREAK_LIMIT_SECONDS); // LOCK THE QUEST LOG FOR THE NIGHT, GO TO SLEEP, DREAM OF GOBLINS
-      setIsCerfewModalOpen(true);
-      setCompletedWellnessTasks([]);
+        setIsBreakModalOpen(false);
+        setIsQuestLogOpen(false); // Force close quest log when break starts
+        setBreakSecondsLeft(BREAK_LIMIT_SECONDS); // LOCK THE QUEST LOG FOR THE NIGHT, GO TO SLEEP, DREAM OF GOBLINS
+        setIsCerfewModalOpen(true);
+        setCompletedWellnessTasks([]);
 
-      console.log("THE 7PM WITCHING HOUR HAS ARRIVED >:D");
+        console.log("THE 7PM WITCHING HOUR HAS ARRIVED >:D");
 
-      const audio = new Audio(eveningAlarm);
-      audio.play();
-    }
-  }, 1000); // Check time every second
+        const audio = new Audio(eveningAlarm);
+        audio.play();
+      }
+    }, 1000); // Check time every second
 
-  return () => clearInterval(curfewInterval);
-}, []);
+    return () => clearInterval(curfewInterval);
+  }, []);
 
   //maximum 5 quests at a time, because we don't want to overwhelm our users with too many quests, that would be mean
   const canAddMoreTasks = tasks.length < 5;
@@ -133,9 +170,9 @@ useEffect(() => {
   useEffect(() => {
     const interval = setInterval(() => {
 
-      if (!isBreakModalOpen && isSessionActive){ // Only count work seconds if the break modal is not open and session is active
+      if (!isBreakModalOpen && isSessionActive) { // Only count work seconds if the break modal is not open and session is active
         setWorkSeconds((prev) => prev + 1);
-      } else if (isBreakModalOpen && breakSecondsLeft > 0){ // Only count down break seconds if the modal is open and there is time left{
+      } else if (isBreakModalOpen && breakSecondsLeft > 0) { // Only count down break seconds if the modal is open and there is time left{
         setBreakSecondsLeft((prev) => prev - 1);
       }
     }, 1000);
@@ -158,6 +195,41 @@ useEffect(() => {
       audio.play();
     }
   }, [workSeconds]);
+
+  const handleInitiateEarlyBreak = () => {
+    setIsBreakModalOpen(true);
+    setIsQuestLogOpen(false); // Force close quest log when break starts
+    setBreakSecondsLeft(BREAK_LIMIT_SECONDS); // Reset break timer
+    setCompletedWellnessTasks([]);
+    setWorkSeconds(0); // Reset work seconds for the next round
+
+    console.log("Early break initiated! Take a breather.");
+
+    //Note to self: make sound for early break initiation to give users audio feedback that they successfully initiated the break
+    // const audio = new Audio(alarm);
+    // audio.play();
+  };
+
+  const handleFinishBreak = () => {
+    const secondsSpentOnBreak = BREAK_LIMIT_SECONDS - breakSecondsLeft;
+    const minutesOnBreak = Math.floor(secondsSpentOnBreak / 60); // Calculate minutes spent on break
+    const breakWp = minutesOnBreak > 0 ? minutesOnBreak : 0; // Base wellness points from break time (1 WP per minute, minimum 0)
+
+    const bonusWp = completedWellnessTasks.length * 15;
+    setWp((prev) => prev + breakWp + bonusWp); // Add both base WP from break time and bonus WP from completed wellness tasks
+
+
+    if (!isCustomTimerRunning) {
+      const minutesWorked = Math.floor(workSeconds / 60);
+      setPp((prev) => prev + minutesWorked); // Add PP based on minutes worked in the session
+    }
+
+    setWorkSeconds(0); // Reset work seconds for the next session
+    setIsBreakModalOpen(false); //BANISH THE MODAL. YOU CAN WORK NOW :D
+
+    setIsSessionActive(false); // End the session when the break is finished, giving the user a moment to relax before they decide to start another session
+    setShowBreakOverToast(true); // Show a toast notification that the break is over and points have been awarded
+  };
 
   useEffect(() => {
     if (isBreakModalOpen && breakSecondsLeft <= 0) {
@@ -191,17 +263,18 @@ useEffect(() => {
         setShowConfetti(true);
         setTimeout(() => setShowConfetti(false), 5000);
 
-        
+
         const audio = new Audio(Yippee);
+        
         audio.play();
 
         return { ...task, isCompleted: !task.isCompleted };
-       } else if (task.id === taskId && task.isCompleted) {
-          // If the task is already completed and we click it again, we can choose to uncomplete it (optional)
+      } else if (task.id === taskId && task.isCompleted) {
+        // If the task is already completed and we click it again, we can choose to uncomplete it (optional)
         return { ...task, isCompleted: !task.isCompleted };
-    }
-    return task;
-  });
+      }
+      return task;
+    });
     setTasks(updatedTasks);
   };
 
@@ -212,45 +285,19 @@ useEffect(() => {
     setTasks(updatedTasks);
   }
 
-  const handleInitiateEarlyBreak = () => {
-    setIsBreakModalOpen(true);
-    setIsQuestLogOpen(false); // Force close quest log when break starts
-    setBreakSecondsLeft(BREAK_LIMIT_SECONDS); // Reset break timer
-    setCompletedWellnessTasks([]);
-    setWorkSeconds(0); // Reset work seconds for the next round
-
-    console.log("Early break initiated! Take a breather.");
-
-    //Note to self: make sound for early break initiation to give users audio feedback that they successfully initiated the break
-    // const audio = new Audio(alarm);
-    // audio.play();
-  };
-
-  const handleFinishBreak = () => {
-    const secondsSpentOnBreak = BREAK_LIMIT_SECONDS - breakSecondsLeft;
-    const minutesOnBreak = Math.floor(secondsSpentOnBreak / 60); // Calculate minutes spent on break
-    const breakWp = minutesOnBreak > 0 ? minutesOnBreak : 0; // Base wellness points from break time (1 WP per minute, minimum 0)
-
-    const bonusWp = completedWellnessTasks.length * 15;
-    setWp ((prev) => prev + breakWp + bonusWp); // Add both base WP from break time and bonus WP from completed wellness tasks
 
 
-
-    if (!isCustomTimerRunning){
-      const minutesWorked = Math.floor(workSeconds / 60);
-      setPp((prev) => prev + minutesWorked); // Add PP based on minutes worked in the session
-    }
-    
-    setWorkSeconds(0); // Reset work seconds for the next session
-    setIsBreakModalOpen(false); //BANISH THE MODAL. YOU CAN WORK NOW :D
-  };
-
-  const toggleWellnessTask = (taskName: string) => {
-    if (completedWellnessTasks.includes(taskName)) {
-      setCompletedWellnessTasks(completedWellnessTasks.filter(t => t !== taskName));
-    } else {
-      setCompletedWellnessTasks([...completedWellnessTasks, taskName]);
-    }
+  const toggleWellnessTask = (taskId: string) => {
+    setCompletedWellnessTasks((prev) =>
+      prev.includes(taskId)
+    ? prev.filter(id => id !== taskId) // If already completed, remove it from the list
+    : [...prev, taskId] // If not completed, add it to the list
+    );
+    // if (completedWellnessTasks.includes(taskName)) {
+    //   setCompletedWellnessTasks(completedWellnessTasks.filter(t => t !== taskName));
+    // } else {
+    //   setCompletedWellnessTasks([...completedWellnessTasks, taskName]);
+    // }
   };
 
   // const questContainerHeader = document.querySelector('.questContainerHeader'); THIS IS HOW YOU WOULD SELECT AN ELEMENT IN A NORMAL JAVASCRIPT FILE, BUT IN REACT, WE HANDLE THIS WITH STATE AND CONDITIONAL RENDERING
@@ -260,9 +307,38 @@ useEffect(() => {
 
 
       {/* CONDITIONAL REMDERERING USING THE && (AND) OPERRATOR - If totalTasks > 0 is TRUE, then remder bar */}
-      {totalTasks > 0 && <ProgressBar progress={progress} />} 
+      {totalTasks > 0 && <ProgressBar progress={progress} />}
 
-    {showConfetti && <Confetti />}
+      {showConfetti && <Confetti />}
+
+      {/* HYDRATION TOAST */}
+        {showWaterToast && (
+          <div className="water-toast">
+            <div className="water-toast-header">
+            <h3> ݁₊ ⊹ . ݁˖ . ݁Say hiii Drated ݁₊ ⊹ . ݁˖ . ݁</h3>
+            <button className="toast-close" onClick={() => setShowWaterToast(false)}>X</button>
+            </div>
+            <p>Drink some water and stay hydrated! Your goblin brain will thank you :D</p>
+
+            <div className="toast-time-bar"></div>
+          </div>
+        )}
+
+        {showBreakOverToast && (
+          <div className="water-toast">
+            <div className="water-toast-header">
+            <h3> ݁₊ ⊹ . ݁˖ . ݁Welcome Back ݁₊ ⊹ . ݁˖ . ݁</h3>
+
+            <button className="toast-close" onClick={() => setShowBreakOverToast(false)}>X
+
+            </button>
+
+            </div>
+            <p>Break over! Click the Start button to resume your productivity session &lt;3</p>
+
+            <div className="toast-time-bar"></div>
+          </div>
+        )}
       {isQuestLogOpen && (
         <div className="quest-backdrop" onClick={() => setIsQuestLogOpen(false)}
         />
@@ -271,46 +347,65 @@ useEffect(() => {
       {isBreakModalOpen && (
         <div className="wellness-backdrop">
           <div className="wellnessModalContainer">
-          <div className="wellnessModal">
-            <h1>STOP WORKING</h1>
-            <h2>YOU HAVE BEEN WORKING TOO LONG</h2>
-            <p>For your own well-being, step away from the keyboard. <br/> Your Quest Log will unlock in: <strong>{breakSecondsLeft} seconds.</strong></p>
+            <div className="wellnessModal">
+              <h1>STOP WORKING</h1>
+              <h2>YOU HAVE BEEN WORKING TOO LONG</h2>
+              <p>Taking a break is just as productive as doing work<br/>For your own well-being, step away from the keyboard. <br /> Your Quest Log will unlock in: <strong>{breakSecondsLeft} seconds.</strong></p>
 
-            <div className="wellnessTasks">
-              <h3>Optional Wellness Tasks (Complete for Bonus Wellness Points!)</h3>
-              <ul style={{ listStyle: 'none'}}>
-                {["Drink a glass of Water + 15 WP", "Stretch your goblin spine + 15 WP","Touch Grass + 15 WP", "Look at a tree + 15 WP", "Get some sun + 15 WP"].map((task) => (
-                  <li key={task} onClick={() => toggleWellnessTask(task)} style={{ cursor: 'pointer', padding: '10px', textDecoration: completedWellnessTasks.includes(task) ? 'line-through' : 'none', color: completedWellnessTasks.includes(task) ? '#996E8D' : '#342333'}} >
-                    {completedWellnessTasks.includes(task) ? "[x] " : "[ ] "} {task}
-                  </li>
-                ))}
-              </ul>
+              <div className="wellnessTasks">
+                <h3>Optional Wellness Tasks (Complete for Bonus Wellness Points!)</h3>
+
+                <div className="wellness-quests-container">
+                  {["Drink a glass of Water", "Stretch your goblin spine", "Touch Grass", "Look at a tree", "Get some sun", "Take a shower"].map((task) => {
+                    const isDone = completedWellnessTasks.includes(task);
+                    return (
+                      <div key={task} className="wellness-quest-row" style={{textDecoration: completedWellnessTasks.includes(task) ? 'line-through' : 'none', color: completedWellnessTasks.includes(task) ? '#996E8D' : '#342333' }}>
+                        <span className={isDone ? "quest-text-done" : "quest-text"} >
+                          {task}
+                        </span>
+                        
+                        <button className={`quest-btn ${isDone ? "quest-done" : "quest-pending"}`} onClick={() => toggleWellnessTask(task)} style={{textDecoration: completedWellnessTasks.includes(task) ? 'line-through' : 'none', color: completedWellnessTasks.includes(task) ? '#996E8D' : '#342333' }}>
+                          {isDone ? "[X] Claimed +15 WP" : " [ ] Claim +15 WP"}
+                        </button>
+                      </div>
+                    );
+                  }
+                  // (
+                  //   <li key={task} onClick={() => toggleWellnessTask(task)} style={{ cursor: 'pointer', padding: '10px', textDecoration: completedWellnessTasks.includes(task) ? 'line-through' : 'none', color: completedWellnessTasks.includes(task) ? '#996E8D' : '#342333' }} >
+                  //     {completedWellnessTasks.includes(task) ? "[x] " : "[ ] "} {task}
+                  //   </li>
+                  // )
+                  )}
+                </div>
+
+              </div>
+
+              <p>Base Reward:  <strong>45 PP + 15 WP</strong><br />
+                Bonus Wellness Reward: <strong>+{completedWellnessTasks.length * 15} WP</strong>
+              </p>
+
+              <button className="finishBreak-btn" onClick={handleFinishBreak}
+                disabled={breakSecondsLeft > 0 && completedWellnessTasks.length < 3} //button locked unitl shit hits 0, boohoo, touch grass
+                style={{
+                  cursor: (breakSecondsLeft > 0 && completedWellnessTasks.length < 3) ? 'not-allowed' : 'pointer'
+
+                }}
+              >
+                {(breakSecondsLeft > 0 && completedWellnessTasks.length < 3) ? "Wait for time OR do 3 quests" : "I DID THE THINGS, LET ME BACK IN"}</button>
+            </div>
           </div>
-          <p>Base Reward:  <strong>45 PP + 15 WP</strong><br />
-          Bonus Wellness Reward: <strong>+{completedWellnessTasks.length * 15} WP</strong>
-          </p>
-
-          <button className="finishBreak-btn" onClick={handleFinishBreak}
-          disabled={breakSecondsLeft > 0 && completedWellnessTasks.length < 3} //button locked unitl shit hits 0, boohoo, touch grass
-          style={{cursor: (breakSecondsLeft > 0 && completedWellnessTasks.length < 3) ? 'not-allowed' : 'pointer'
-
-          }}
-          >
-            {(breakSecondsLeft > 0 && completedWellnessTasks.length < 3) ? "Wait for time OR do 3 quests" : "I DID THE THINGS, LET ME BACK IN"}</button>
-        </div>
-        </div>
         </div>
       )}
 
-{isCerfewModalOpen && (
+      {isCerfewModalOpen && (
         <div className="wellness-backdrop">
           <div className="wellnessModalContainer">
-          <div className="wellnessModal">
-            <h1>STOP WORKING</h1>
-            <h2>IT'S NOW 7PM</h2>
-            <p>For your own well-being, step away from the keyboard, eat some dinner and have good night's rest</p>
-        </div>
-        </div>
+            <div className="wellnessModal">
+              <h1>STOP WORKING</h1>
+              <h2>IT'S NOW 7PM</h2>
+              <p>For your own well-being, step away from the keyboard, eat some dinner and have good night's rest</p>
+            </div>
+          </div>
         </div>
       )}
 
@@ -321,15 +416,15 @@ useEffect(() => {
       )}
 
       <div className="global-session-toggle">
-        <button onClick={handleToggleSession} style={{background: 'transparent', border: 'none', cursor: 'pointer', transition: 'transform 0.2s'}}
-        onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
-        onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
-          <img src={isSessionActive ? mainPauseBtn : mainPlayBtn} alt={isSessionActive ? "Pause Session" : "Start Session"} style={{ width: "100px", height: "auto" }} />
+        <button onClick={handleToggleSession} style={{ background: 'transparent', border: 'none', cursor: 'pointer', transition: 'transform 0.2s' }}
+          onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+          onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
+          <img src={isSessionActive ? mainPauseBtn : mainPlayBtn} alt={isSessionActive ? "Pause Session" : "Start Session"} style={{ width: "60px", height: "auto" }} />
         </button>
 
-        {isSessionActive &&(
+        {isSessionActive && (
           <button onClick={handleInitiateEarlyBreak} className="play-pause-btn" style={{ height: "fit-content" }}>
-            ☕ Take Early Break
+            <img src={breakIcon} alt="Take Break Early" style={{ width: "60px", height: "auto", background: 'transparent'}} />
           </button>
         )}
 
@@ -342,13 +437,13 @@ useEffect(() => {
             <img className="questContainerHeader" src={QuestHeader} alt="Quest Log Header" />
             <div className="questContent">
               <h1>Quest Log</h1>
-            <p>PP: {pp} | WP: {wp}</p>
-              <ul style={{ listStyle: 'none'}}>
+              <p>PP: {pp} | WP: {wp}</p>
+              <ul style={{ listStyle: 'none' }}>
                 {tasks.map((task) => (
                   <li key={task.id} onClick={() => handleCompleteTask(task.id)} style={{ cursor: 'pointer', padding: '10px', textDecoration: task.isCompleted ? 'line-through' : 'none', color: task.isCompleted ? '#996E8D' : '#342333', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} >
-                    
+
                     <span>
-                    {task.isCompleted ? "[x] " : "[ ] "} {task.title}
+                      {task.isCompleted ? "[x] " : "[ ] "} {task.title}
                     </span>
 
                     <button className="deleteTask-btn" onClick={(e) => handleDeleteTask(task.id, e)} title="Delete Task">
@@ -392,8 +487,8 @@ useEffect(() => {
 
           <Col md={6}>
             <Timer isPaused={isBreakModalOpen || !isSessionActive}
-            onMinutePassed={() => setPp((prev) => prev + 1)} // This callback function is passed down to the Timer component and will be called every time a minute passes while the timer is running. It updates the PP (Productivity Points) state by incrementing it by 1 for each minute of focused work completed. The onMinutePassed prop allows the Timer component to communicate back to the App component whenever a minute has passed, enabling the app to reward the user with PP accordingly.
-            onTimerActiveChange={setIsCustomTimerRunning}
+              onMinutePassed={() => setPp((prev) => prev + 1)} // This callback function is passed down to the Timer component and will be called every time a minute passes while the timer is running. It updates the PP (Productivity Points) state by incrementing it by 1 for each minute of focused work completed. The onMinutePassed prop allows the Timer component to communicate back to the App component whenever a minute has passed, enabling the app to reward the user with PP accordingly.
+              onTimerActiveChange={setIsCustomTimerRunning}
             />
           </Col>
 
