@@ -26,6 +26,62 @@ type Task = {
   isCompleted: boolean;
 };
 
+const WELLNESS_POOLS = {
+  red: [
+    "Massage",
+    "Walk",
+    "Streach your goblin spine",
+    "Nappy Nap Time",
+    "Swim",
+    "Pedicure",
+    "DO YOU EVEN LIFT BRO??? (workout)",
+    "Yoga"
+  ],
+  orange: [
+    "Gratitude",
+    "Journal",
+    "Meditate",
+    "Music",
+    "Get Outside",
+    "Relax",
+    "Give Back",
+    "Art",
+    "Laugh"
+  ],
+  yellow: [
+    "Read",
+    "Forgive",
+    "Go Out",
+    "Sing",
+    "BFF Date",
+    "Try Something New",
+    "Bubble Bath"
+  ],
+  green: [
+    "Have a Snacky Snack",
+    "Unplug",
+    "Cook a meal",
+    "Bake",
+    "Take a break (free space basically, you're welcome",
+    "Set Bounderies",
+    "Go To Bed Early"
+  ],
+  blue: [
+    "Tidy Up",
+    "Drink Water",
+    "Deep Breaths",
+    "To-Do List",
+    "Ask for Help"
+  ],
+  purple: [
+    "Vent",
+    "Positive Self Talk",
+    "Hot Shower",
+    "Dance",
+    "Cuddles"
+  ]
+};
+
 // 2. THE MEMORY
 export default function App() {
   const [showConfetti, setShowConfetti] = useState(false);
@@ -77,7 +133,56 @@ export default function App() {
   }, [wp]);
 
   const [isBreakModalOpen, setIsBreakModalOpen] = useState(false);
-  const [completedWellnessTasks, setCompletedWellnessTasks] = useState<string[]>([]);
+
+  const [dailyTasks, setDailyTasks] = useState<string[]>(() => {
+    const saved = localStorage.getItem("witching-daily-tasks");
+    return saved ? JSON.parse(saved) : [];
+  })
+  const [completedWellnessTasks, setCompletedWellnessTasks] = useState<string[]>(() => {
+    const saved = localStorage.getItem("witching-completed-tasks");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  //THE MIDNIGHT QUEST REST & QUEST GENERATOR
+  useEffect(() => {  //this a react hook and the epty dependency [] at the very end means this specific spell ONLY runs once: the moment the app first loads
+    const today = new Date().toDateString();// grab today's date as a string
+    const savedDate = localStorage.getItem("witching-daily-date"); //cheak browsers local memory to see the last datte we rolled out quests
+
+ //if the saved date doesn't match today's date, mimidnight has passed (or it's a bran new user)
+    if (savedDate !== today){ // trigger to wipe the board and roll a freash set of quests
+
+      console.log("A new day dawns...rolling new daily quests!");
+
+      //constructing the new daily quests array
+      const newQuests = [
+        //Math.random() generates a decimal between 0 and 1. Multiply the number by the no. of items in the pool,  
+        // and Math.floor() rounds it down to a whole numberand use that number to pick a random task for the array >:D
+        WELLNESS_POOLS.red[Math.floor(Math.random() * WELLNESS_POOLS.red.length)],
+        WELLNESS_POOLS.yellow[Math.floor(Math.random() * WELLNESS_POOLS.yellow.length)],
+        WELLNESS_POOLS.green[Math.floor(Math.random() * WELLNESS_POOLS.green.length)],
+        WELLNESS_POOLS.orange[Math.floor(Math.random() * WELLNESS_POOLS.orange.length)],
+        WELLNESS_POOLS.blue[Math.floor(Math.random() * WELLNESS_POOLS.blue.length)],
+        WELLNESS_POOLS.purple[Math.floor(Math.random() * WELLNESS_POOLS.purple.length)],
+      ];
+
+      setDailyTasks(newQuests); //Update live react state so the app shows new tasks immidietly 
+      setCompletedWellnessTasks([]); //wipe completed list for the next day and so users can't use yesterday's points to skip today's breaks (haha, nice try devs) o7
+
+      //save everything into localStorage immidietly so if they reload the page 5 seconds later the app remembers today's date and doesn't re-roll their quests again
+      //svae the new day's data
+      localStorage.setItem("witching-daily-task", JSON.stringify(newQuests));
+      localStorage.getItem("witching-completed-tasks", JSON.stringify([]));
+      localStorage.getItem("witching-daily-date", today);
+    }
+  }, []); // useEffect is told to only run the thing once because of empty dependency
+
+  //THE AUTO-SAVE SPELL
+  useEffect(() => { //seperate useEffect bc 'completedWellnessTasks' is in the dependancy array at the bottom.
+   //take whatever is currently in the completed list and hard-saves it to the browser's memeory
+    localStorage.setItem("witching-completed-tasks", JSON.stringify(completedWellnessTasks));
+  }, [completedWellnessTasks]); //spell triggers enerytime the user completes or un-completes a quest
+
+
 
   //DEV MODE INITIATED: 5 SECOND TIMER FOR TESTING PURPOSES
   const WORK_LIMIT_SECONDS = 45 * 60; // change to (45 * 60)
@@ -143,7 +248,7 @@ export default function App() {
         setIsQuestLogOpen(false); // Force close quest log when break starts
         setBreakSecondsLeft(BREAK_LIMIT_SECONDS); // LOCK THE QUEST LOG FOR THE NIGHT, GO TO SLEEP, DREAM OF GOBLINS
         setIsCerfewModalOpen(true);
-        setCompletedWellnessTasks([]);
+        // setCompletedWellnessTasks([]);
 
         console.log("THE 7PM WITCHING HOUR HAS ARRIVED >:D");
 
@@ -156,7 +261,7 @@ export default function App() {
   }, []);
 
   //maximum 5 quests at a time, because we don't want to overwhelm our users with too many quests, that would be mean
-  const canAddMoreTasks = tasks.length < 5;
+  const canAddMoreTasks = tasks.length < 5; //REMEMBER TO TEST IF THE SYSTEM TOAST OVERLAYS EVERYTHING EVEN WHEN IT'S JUST OPEN IN THE BACKGROUND OR MINIMISED >:D PLEEEAAASE, IRLL LOOK SO COOL ?///T-T
 
 
   const totalTasks = tasks.length;
@@ -185,7 +290,7 @@ export default function App() {
       setIsBreakModalOpen(true);
       setIsQuestLogOpen(false); // Force close quest log when break starts
       setBreakSecondsLeft(BREAK_LIMIT_SECONDS); // Reset break timer
-      setCompletedWellnessTasks([])
+      
       setWorkSeconds(0); // Reset work seconds for the next round
 
 
@@ -200,7 +305,7 @@ export default function App() {
     setIsBreakModalOpen(true);
     setIsQuestLogOpen(false); // Force close quest log when break starts
     setBreakSecondsLeft(BREAK_LIMIT_SECONDS); // Reset break timer
-    setCompletedWellnessTasks([]);
+    
     setWorkSeconds(0); // Reset work seconds for the next round
 
     console.log("Early break initiated! Take a breather.");
@@ -302,6 +407,8 @@ export default function App() {
 
   // const questContainerHeader = document.querySelector('.questContainerHeader'); THIS IS HOW YOU WOULD SELECT AN ELEMENT IN A NORMAL JAVASCRIPT FILE, BUT IN REACT, WE HANDLE THIS WITH STATE AND CONDITIONAL RENDERING
   //5. THE GLORIOUS RENDERING
+
+
   return (
     <>
 
@@ -356,7 +463,7 @@ export default function App() {
                 <h3>Optional Wellness Tasks (Complete for Bonus Wellness Points!)</h3>
 
                 <div className="wellness-quests-container">
-                  {["Drink a glass of Water", "Stretch your goblin spine", "Touch Grass", "Look at a tree", "Get some sun", "Take a shower"].map((task) => {
+                  {dailyTasks.map((task) => {
                     const isDone = completedWellnessTasks.includes(task);
                     return (
                       <div key={task} className="wellness-quest-row" style={{textDecoration: completedWellnessTasks.includes(task) ? 'line-through' : 'none', color: completedWellnessTasks.includes(task) ? '#996E8D' : '#342333' }}>
