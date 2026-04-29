@@ -408,6 +408,40 @@ export default function App() {
   // const questContainerHeader = document.querySelector('.questContainerHeader'); THIS IS HOW YOU WOULD SELECT AN ELEMENT IN A NORMAL JAVASCRIPT FILE, BUT IN REACT, WE HANDLE THIS WITH STATE AND CONDITIONAL RENDERING
   //5. THE GLORIOUS RENDERING
 
+  //THE BRIDGING SPELL: using fetch to get the islands of front-end and backend to drop the draw bridge and speak to eachother >:D
+
+  const syncToCloud = async () => {
+    console.log("🪄 Casting the bridge spell...");
+
+    try{
+      const response = await fetch('http://localhost:5001/api/save-progress', {
+        method: 'POST', //cause we're sendind data
+        headers: {
+          'Content-Type': 'application/json', //telling the bouncers HEY JSON IS AT THE DOOR
+        },
+        body: JSON.stringify({
+          //the actual data payload >:D
+
+          //DEV MODE: HARD CODED FOR TESTING
+          email: "apprentice@test.com",
+          pp: 10,
+          wp: 5,
+          completedTasks: ["Test the Bridge"]
+        })
+      });
+
+      //wait for the bouncer's reply and read it
+      const data = await response.json();
+
+      if (response.ok){
+        console.log("Draw bridge down!", data.message);
+      } else {
+        console.log("The Bouncers said no:", data);
+      }
+    } catch (error) {
+      console.error("💀 The bridge collapsed:", error);
+    }
+  };
 
   return (
     <>
@@ -523,6 +557,11 @@ export default function App() {
       )}
 
       <div className="global-session-toggle">
+
+<button onClick={syncToCloud}>
+  ☁️ Test Cloud Sync
+</button>
+
         <button onClick={handleToggleSession} style={{ background: 'transparent', border: 'none', cursor: 'pointer', transition: 'transform 0.2s' }}
           onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
           onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
