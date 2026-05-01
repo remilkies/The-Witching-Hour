@@ -61,6 +61,36 @@ app.post('/api/save-progress', async (req, res) => {
     }
 })
 
+app.post('/api/consume-elixir', async (req, res) => {
+    console.log("🧪 Someone is trying to drink the Midnight Elixir!");
+    try {
+        const { email } = req.body;
+        const today = new Date().toDateString();
+
+        //WHO GOES THERE WITCH?
+        const user = await User.findOne({ email: email });
+
+        if (!user) {
+            return res.status(404).json({ messege: "Witch not found!!" });
+        }
+
+        //DID YOU DRINK TODAY??
+        if(user.elixirUsedDate === today) {
+            return res.status(403).json({ messege: "You already consumed your elixir today! Go to sleep!" });
+        }
+
+        //UPDATE THE DB TO COMSUMED
+        user.hasMidnightElixir = false;
+        user.elixirUsedDate = today;
+        await user.save();
+
+        res.json({ message: "🧪 Elixir consumed! You have 15 minutes.", user: user });
+
+    } catch (error) {
+        res.status(500).json({ message: "The elixir exploded", error: error.message });
+    }
+});
+
 //SERVER START >:D
 app.listen(PORT, () => {
     console.log(`🔮 Server summond successfully on http://localhost:${PORT}`);

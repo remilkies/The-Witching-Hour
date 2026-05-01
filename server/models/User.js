@@ -28,6 +28,10 @@ const UserSchema = new mongoose.Schema({
 
     //MIDNIGHT REST TRAP HEH
     lastLoginDate: { type: String, default: new Date().toDateString() }
+
+    //MIDNIGHT ELIXER
+    hasMidnightElixir: { type: Boolean, default: true },
+    elixirUsedDate: { type: String, default: ""},
 });
 
 module.exports = mongoose.model('User', UserSchema);
