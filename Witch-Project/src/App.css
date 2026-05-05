@@ -709,20 +709,38 @@ transition: none;
   
 }
 
-@keyframes shake {
-  10%, 90% { transform: translate3d(-2px, 0, 0); }
-  20%, 80% { transform: translate3d(4px, 0, 0); }
-  30%, 50%, 70% { transform: translate3d(-8px, 0, 0); }
-  40%, 60% { transform: translate3d(8px, 0, 0); }
+@keyframes 
+  shake {
+    10%, 90% { transform: translate3d(-2px, 0, 0); }
+    20%, 80% { transform: translate3d(4px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-8px, 0, 0); }
+    40%, 60% { transform: translate3d(8px, 0, 0); }
 }
 
+@keyframes /*defines a timeline from 0% (the start of the animation) to 100% (the very end). Tell css what the element should look like at specific percentages AAAND the browser does all the hard math to smoothly transition between them >:D */
+/*generic blueprint type thing for making an element float like a spoooopy ghost :P*/
+floatGhost { /*floastGhost is just a variable name*/
+  0% { 
+    transform: translateY(0px); /*start at the normal position*/
+  }
+  50% {
+    transform: translateY(-20px); /*move up 20px halfway through*/
+  }
+  100% {
+    transform: translateY(0px); /* float back down to the start*/
+  }
+  
+  /* QUICK PERCENTAGE CRASH COURSE */
+  /*  you can add as many stops as you want (10%, 23%, 88%). If you only have a strat and end, you can use from { ... } and to { ... }, instead of 0% and 100%*/
+}
 
 /* COMING SOON: SCREEN SHAKE FOR CHAOS */
-@keyframes shake {
-  0% { transform: translate(0); }
-  25% { transform: translate(-2px, 2px); }
-  50% { transform: translate(2px, -2px); }
-  75% { transform: translate(-2px, -2px); }
-  100% { transform: translate(0); }
+@keyframes 
+  shakeChaos { /*vaiable name - you can make it whatever you want*/
+    0% { transform: translate(0); } /* start at normal position*/
+    25% { transform: translate(-2px, 2px); }
+    50% { transform: translate(2px, -2px); } /*move hoever many pixels halfway throuch*/
+    75% { transform: translate(-2px, -2px); }
+    100% { transform: translate(0); } /* come back to the start */
 }
 
