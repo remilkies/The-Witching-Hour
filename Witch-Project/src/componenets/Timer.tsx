@@ -14,7 +14,7 @@ import alarm3 from "/alarm3.mp3";
 export default function Timer( {
   isPaused,
   onMinutePassed,
-  onTinerActiveChange
+  onTimerActiveChange
 }: {
   isPaused: boolean;
   onMinutePassed: () => void; // Callback for when a minute passes
