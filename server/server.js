@@ -17,6 +17,12 @@ const PORT = process.env.PORT || 5001;
 app.use(cors()); //allows react to talk to this server
 app.use(express.json()); //allows the server to read incoming json data
 
+//connects the authentication router thingy
+const witchRoutes = require('./routes/witch')
+app.use('/api', witchRoutes);
+
+//all the database connections and other routes can go under here
+
 const sacredKey = process.env.MONGO_URI; //LOCAL CONSTANT CAUSE I'M TIRED OF BEING GASLIT BY MY CONSOLE
 
 console.log("--- Connection Ritual Starting ---");
