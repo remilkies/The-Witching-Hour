@@ -616,6 +616,34 @@ transition: none;
 }
 
 /* THE WITCHING HOUR AUTH STYLES */
+
+.login-titleContainer{
+  display: flex;
+  justify-content: center;
+}
+
+.login-appTitle{
+  position: relative;
+  font-family: "Protest Revolution", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 3rem;
+  margin-bottom: 0;
+  width: 100%;
+  color: #EDD4D0;
+  display: flex;
+  justify-content: center;
+  letter-spacing: 30px;
+}
+.login-dreamcatcher{
+  height: 100%;
+  position: absolute;
+  width: auto;
+  height: 20vh;
+  /* transform: translateY(280px) translateX(363px); */
+}
+
+
 .auth-container {
   display: flex;
   flex-direction: column;
@@ -634,12 +662,24 @@ transition: none;
   display: flex;
   flex-direction: row;
   min-height: 75vh;
-  /* align-items: center; */
+  width: 100vw !important;
+  align-items: center;
+  justify-content: space-between;
 }
 
+.login-col{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+}
+
+.login-shelf-container{
+  max-width: 400px;
+}
 .login-shelf{
   height: 100%;
-  width: 25vw;
+  width: 35vw;
 }
 .login-card{
   background-color: #EDD4D0;
@@ -651,7 +691,7 @@ transition: none;
   max-width: 400px;
   box-shadow: 0 10px 25pc rgba(0, 0, 0,0.5);
   transition: all 0.5s ease-in-out;
-  z-index: 10;
+  z-index: -1;
 }
 
 .login-card h2{

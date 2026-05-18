@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import "../App.css";
+// import 'bootstrap/dist/css/bootstrap.min.css';
+import '../App.css';
 import { Container, Row, Col } from "react-bootstrap";
 import mainShelf from "../assets/mainShelf.png";
 import AuthClock from "../componenets/AuthenticationClock"
@@ -58,13 +59,13 @@ export default function Login() {
   return (
     <>
       {/* Tiele faes out for QTE loop */}
-      <div className={`titleContainer ${authStage === 'ritual' ? 'fade-out-witchcraft' : ''}`}>
-        <h1 className="appTitle">The Witching H ur</h1>
-        <img className="dreamcatcher" src={dreamcatcher} alt="Dreamcatcher" />
+      <div className={`login-titleContainer ${authStage === 'ritual' ? 'fade-out-witchcraft' : ''}`}>
+        <h1 className="login-appTitle">The Witching H ur</h1>
+        <img className="login-dreamcatcher" src={dreamcatcher} alt="Dreamcatcher" />
       </div>
 
-      <Container fluid className="login-container">
-        <Row className="w-100 align-items-center">
+      <Container fluid >
+        <Row className="login-container">
 
           <Col md={4} className={`${authStage === 'ritual' ? 'fade-out-witchcraft' : ''}`}>
             <img src={Window} alt="bat window" className="bat-window" />
@@ -86,10 +87,11 @@ export default function Login() {
             </div>
           </Col> */}
 
-          <Col md={4}>
+          <Col md={4} className="login-col">
           <div className="login-shelf-container">
                 <img className="login-shelf" src={mainShelf} alt="Main Shelf" />
               </div>
+              
               <div className="login-card">
                 <h2>Login</h2>
                 {errorMessage && <div className="error-scroll"> 💀{errorMessage}</div>}
