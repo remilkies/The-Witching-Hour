@@ -64,15 +64,15 @@ export default function Login() {
         <img className="login-dreamcatcher" src={dreamcatcher} alt="Dreamcatcher" />
       </div>
 
-      <Container fluid >
-        <Row className="login-container">
-
-          <Col md={4} className={`${authStage === 'ritual' ? 'fade-out-witchcraft' : ''}`}>
+      <Container fluid className="login-authetication-container">
+{/* THIS IS FOR THE AUTHENTICATION TRANSITION */}
+        <Row className="authentication-container">
+                    {/* <Col md={4} className={`${authStage === 'ritual' ? 'fade-out-witchcraft' : ''}`}>
             <img src={Window} alt="bat window" className="bat-window" />
           </Col>
 
 
-          {/* <Col md={4} className={`clock-col ${authStage === 'ritual' ? 'ritual-active' : ''}`}>
+          <Col md={4} className={`clock-col ${authStage === 'ritual' ? 'ritual-active' : ''}`}>
             <AuthClock onSuccess={handleClockSuccess} />
 
 
@@ -85,13 +85,25 @@ export default function Login() {
               
 
             </div>
+          </Col>
+
+<Col md={4} className={`${authStage === 'ritual' ? 'fade-out-witchcraft' : ''}`}>
+            <img src={Window} alt="bat window" className="bat-window" />
           </Col> */}
+        </Row>
+
+
+        <Row className="login-container">
+
+<Col md={4}>
+            <img src={Window} alt="bat window" className="bat-window" />
+          </Col>
 
           <Col md={4} className="login-col">
           <div className="login-shelf-container">
                 <img className="login-shelf" src={mainShelf} alt="Main Shelf" />
               </div>
-              
+
               <div className="login-card">
                 <h2>Login</h2>
                 {errorMessage && <div className="error-scroll"> 💀{errorMessage}</div>}
@@ -130,7 +142,7 @@ export default function Login() {
           </Col>
 
 
-          <Col md={4} className={`text-center ${authStage === 'ritual' ? 'fade-out-witchcraft' : ''}`}>
+          <Col md={4}>
             <img src={Window} alt="bat window" className="bat-window" />
           </Col>
         </Row>
