@@ -92,7 +92,7 @@ try{
         message: `Witching Hour initiated, Welcome back ${witch.username} `,
         token: token,
         witch: {
-            id: witch_id, //so the frontend know the user id >:D
+            id: witch._id, //so the frontend know the user id >:D
             username: witch.username,
             //aaaand all the stuff that we need to send to the UI to update the stats and quests
             pp: witch.pp, 
@@ -102,7 +102,7 @@ try{
             hasMidnightElixir: witch.hasMidnightElixir}
      });
 } catch (error) {
-    res.status(500).json({ "YOU DON DUCKED UP WITCH": error.message });
+    res.status(500).json({ message: `YOU DON DUCKED UP WITCH: ${error.message}` });
 }
 });
 
