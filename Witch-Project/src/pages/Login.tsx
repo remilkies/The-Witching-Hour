@@ -99,12 +99,15 @@ export default function Login() {
             <img src={Window} alt="bat window" className="bat-window" />
           </Col>
 
-          <Col md={4} className="login-col">
-          <div className="login-shelf-container">
+          <Col md={4} className={`login-col witch-alter-col ${authStage === 'ritual' ? 'ritual-active' : ''}`}>
+
+          <AuthClock onSuccess={handleClockSuccess} isActive={authStage === 'ritual'} /> {/* passing in the isActive prop */}
+
+          <div className={`login-shelf-container ${authStage === 'ritual' ? 'fade-out-witchcraft' : ''}`}>
                 <img className="login-shelf" src={mainShelf} alt="Main Shelf" />
               </div>
 
-              <div className="login-card">
+              <div className={`login-card ${authStage === 'ritual' ? 'fade-out-witchcraft' : ''}`}>
                 <h2>Login</h2>
                 {errorMessage && <div className="error-scroll"> 💀{errorMessage}</div>}
 
@@ -142,7 +145,7 @@ export default function Login() {
           </Col>
 
 
-          <Col md={4}>
+          <Col md={4} className={`${authStage === 'ritual' ? 'fade-out-witchcraft' : ''}`}>
             <img src={Window} alt="bat window" className="bat-window" />
           </Col>
         </Row>

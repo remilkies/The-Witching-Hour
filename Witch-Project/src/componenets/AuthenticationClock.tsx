@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect} from "react";
 import "../App.css";
 
 
 import clockBody from "../assets/clockBody.png";
 import handImg from "../assets/minuteHand.png";
+import hourHand from "../assets/hourHand.png";
 import clockOrigin from "../assets/clockOrigin.png";
 
 //Once the user's hashed password is verified, they must prove their humanity under pressure by timing the exact moment the hand strikes the witching hour.
@@ -13,18 +14,49 @@ interface WitchingHourProps {
 
   //this is a locked door, the parent (aka app) passes the key (onSeccess) to the clock, the clock's only job is to hold onto that key and say "Riddle me this mortal, can you overcome my trials? If you can, I'll give you the key to unlock the door and enter the witching hour..."
   onSuccess: () => void; //the key function to call when the user successfully completes the clock puzzle
+  isActive: boolean; //so the auth trap doesn't immidetly start
 }
 
-export default function WitchingHourAuth({ onSuccess }: WitchingHourProps) {
+// UMMONING CIRCLE - invite props into the component itself or react thinks it doesn't exist
+export default function WitchingHourAuth({ onSuccess, isActive }: WitchingHourProps) {
 
   //React has the meory of a goldfish, every time the screen updates, it forgets everything. useState FORCES react to rember things.
   //and he's what it needs to rember
   const [targetHour, setTargetHour] = useState(12); //what number they need to hit
   const [targetAngle, setTargetAngle] = useState(360); //exactly where that is in degrees
-  const [currentAngle, setCurrentAngle] = useState(0);//where the hand is currectly
+  const [currentAngle, setCurrentAngle] = useState(0);//where the hand is currectly/ MAIN AUTHENTICATION HAND
+  const [hourAngle, setHourAngle] = useState(0);
 
   const [isTicking, setIsTicking] = useState(false); //wether the trap is running hehehe
   const [authStatus, setAuthStatus] = useState<'idle' | 'failed' | 'success'>('idle'); //aaaand the unlimate verdict of the trial
+
+
+
+//REAL WORLD TIME TELLING CLOCK SPELL 
+useEffect(() => {
+  if (!isActive) {
+    const updateRealTime = () => {
+      const now = new Date();
+      const hours = now.getHours() % 12;
+      const minutes = now.getMinutes();
+
+      //to clculate the real world angles of the hands :D
+      const realHourAngle = (hours * 30) + (minutes * 0.5);
+      const realMinuteAngle = minutes * 6;
+
+      setHourAngle(realHourAngle);
+      setCurrentAngle(realMinuteAngle);
+
+    };
+
+    updateRealTime(); //runs IMMIDIETLY
+    const timeInterval = setInterval(updateRealTime, 60000) //60000ms = every minute
+
+    return () => clearInterval(timeInterval);
+  }
+}, [isActive]); //only run once dependancy
+
+
 
   //THE RITUAL SETUP
   const generateNewTrap = () => {
@@ -45,10 +77,18 @@ export default function WitchingHourAuth({ onSuccess }: WitchingHourProps) {
     setIsTicking(true);
   };
 
-  //start the ritual trap on first load >:D
+  //start the ritual trap on load >:D
+  // useEffect(() => {
+  //   generateNewTrap();
+  // }, []); //empty dependancy "only run this spell one time when the user first walks into the room", set up first trap >:D
+
+
+  //TRIGGER TRAP RITUAL ONLY WHEN ACTIVATED
   useEffect(() => {
-    generateNewTrap();
-  }, []); //empty dependancy "only run this spell one time when the user first walks into the room", set up first trap >:D
+    if (isActive) {
+      generateNewTrap();
+    }
+  }, [isActive]); //run once on the condition of isActive in the dependancy
 
   //ticking heartbeat
   useEffect(() => {
@@ -107,30 +147,42 @@ export default function WitchingHourAuth({ onSuccess }: WitchingHourProps) {
   };
 
   return (
-    <div className={`auth-container ${authStatus === 'failed' ? 'flash-red' : ''}`}>
-
-      <div className="auth-header">
+    <div className={`auth-container 
+   ${isActive ? 'ritual-mode' : 'wall-mode'} ${authStatus === 'failed' ? 'flash-red' : ''}`}>
+{isActive && (
+  <div className="auth-header">
         <h1>PROVE YOU ARE THE HUMAN YOU CLAIM</h1>
         <p>Click VERIFY when the hand strikes <strong>{targetHour}</strong>...</p>
       </div>
+)}
+      
 
       <div className={`auth-clock-wrapper ${authStatus === 'failed' ? 'shake-anim' : ''}`}>
         <img src={clockBody} alt="Clock Face" className="auth-clock-body" />
 
         <div className="auth-clock-hands">
+
+        <img
+              src={hourHand}
+              className="auth-hour-hand" alt="hour hand"
+              style={{ transform: `rotate(${hourAngle}deg)` }}
+            />
+            
           <img
-            src={handImg} className="auth-hour-hand"
+            src={handImg} className="auth-minute-hand"
             alt="witching hand"
             style={{ 
               transform: `rotate(${currentAngle}deg)`,
               filter: authStatus === 'success' ? 'drop-shadow(0 0 10px #F0DBBE)' : 'none'
           }}
           />
+
       <img src={clockOrigin} alt="Center Gem" className="auth-clock-origin" />
         </div>
       </div>
 
-      <div className="auth-controls">
+{isActive && (
+  <div className="auth-controls">
         <button
           className="verify-btn"
           onClick={handleVerifyClick}
@@ -139,6 +191,8 @@ export default function WitchingHourAuth({ onSuccess }: WitchingHourProps) {
             {authStatus === 'success' ? 'ACCESS GRANTED' : 'VERIFY'}
           </button>
       </div>
+)}
+      
 
     </div>
   );
