@@ -59,38 +59,13 @@ export default function Login() {
   return (
     <>
       {/* Tiele faes out for QTE loop */}
-      <div className={`login-titleContainer ${authStage === 'ritual' ? 'fade-out-witchcraft' : ''}`}>
+      {/* <div className={`login-titleContainer ${authStage === 'ritual' ? 'fade-out-witchcraft' : ''}`}>
         <h1 className="login-appTitle">The Witching H ur</h1>
         <img className="login-dreamcatcher" src={dreamcatcher} alt="Dreamcatcher" />
-      </div>
+      </div> */}
 
       <Container fluid className="login-authetication-container">
 {/* THIS IS FOR THE AUTHENTICATION TRANSITION */}
-        <Row className="authentication-container">
-                    {/* <Col md={4} className={`${authStage === 'ritual' ? 'fade-out-witchcraft' : ''}`}>
-            <img src={Window} alt="bat window" className="bat-window" />
-          </Col>
-
-
-          <Col md={4} className={`clock-col ${authStage === 'ritual' ? 'ritual-active' : ''}`}>
-            <AuthClock onSuccess={handleClockSuccess} />
-
-
-            <div className={`w-100 d-flex flex-column align-item-center ${authStage === 'ritual' ? 'fade-out-witchcraft' : ''}`}>
-
-              <div className={`shelfContainer w-100`}>
-                <img className="mainShelf" src={mainShelf} alt="Main Shelf" />
-              </div>
-
-              
-
-            </div>
-          </Col>
-
-<Col md={4} className={`${authStage === 'ritual' ? 'fade-out-witchcraft' : ''}`}>
-            <img src={Window} alt="bat window" className="bat-window" />
-          </Col> */}
-        </Row>
 
 
         <Row className="login-container">

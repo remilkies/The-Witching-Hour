@@ -91,7 +91,9 @@ try{
     res.status(200).json({ 
         message: `Witching Hour initiated, Welcome back ${witch.username} `,
         token: token,
-        witch: {username: witch.username,
+        witch: {
+            id: witch_id, //so the frontend know the user id >:D
+            username: witch.username,
             //aaaand all the stuff that we need to send to the UI to update the stats and quests
             pp: witch.pp, 
             wp: witch.wp, 

@@ -3,7 +3,7 @@ require('dotenv').config();
 // const express = require('cors'): This is like trying to build a house using the "No Trespassing" sign as the foundation. You need the actual express library to build the server structure.
 const express = require('express');//fixed
 const cors = require('cors');
-const { default: mongoose } = require('mongoose');// npm install mongoose
+const mongoose = require('mongoose');// npm install mongoose
 
 // THE DEV DEBUG PROTOCOL
 console.log("Cheaking the sacred keys...");
@@ -45,12 +45,12 @@ app.post('/api/save-progress', async (req, res) => {
     console.log("🔔 Ding Dong! Someone is at the door!");
     console.log("Request Body:", req.body);
     try{
-        const { pp, wp, completedTasks } = req.body;
+        const { username, pp, wp, completedTasks } = req.body;
 
-        //find user by email and update stats
+        //find user by username (or is it more secure to use email?) and update stats
         //{ upsert: true } means "If they dont exist, create them o7"
         const updatedUser = await User.findOneAndUpdate(
-            { email: email }, //who to find
+            { username: username }, //who to find
             { pp, wp, completedTasks }, //what to update/change
             { new: true, upsert: true } //return the updated user OR chreate one :D
         );
@@ -64,11 +64,11 @@ app.post('/api/save-progress', async (req, res) => {
 app.post('/api/consume-elixir', async (req, res) => {
     console.log("🧪 Someone is trying to drink the Midnight Elixir!");
     try {
-        const { email } = req.body;
+        const { username } = req.body;
         const today = new Date().toDateString();
 
         //WHO GOES THERE WITCH?
-        const user = await User.findOne({ email: email });
+        const user = await User.findOne({ username: username });
 
         if (!user) {
             return res.status(404).json({ messege: "Witch not found!!" });

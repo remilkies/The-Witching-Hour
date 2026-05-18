@@ -671,7 +671,7 @@ transition: none;
   width: 100vw !important;
   align-items: center;
   justify-content: space-around;
-  /* padding: 5em; */
+  padding-top: 5em;
 
 }
 
@@ -685,7 +685,7 @@ transition: none;
 .login-shelf-container{
   max-width: 400px;
   z-index: 100;
-  transform: translateX(-40px);
+  transform: translateX(-83px);
 }
 .login-shelf{
   height: 100%;
@@ -796,12 +796,12 @@ transition: none;
 }
 
 /* might need some editting idk */
-.auth-header h1{
+/* .auth-header h1{
   position: relative;
   font-family: "Protest Revolution", sans-serif;
   font-weight: 400;
   font-style: normal;
-  font-size: 70px;
+  font-size: 50rem;
   margin-bottom: 0;
   width: 100%;
   color: #EDD4D0;
@@ -810,11 +810,11 @@ transition: none;
 .auth-header p{
   color: #EDD4D0;
   font-size: 1.5rem;
-}
+} */
 
 .bat-window{
   width: auto;
-  height: 70vh;
+  height: 90vh;
 }
 
 .bat-window img{
