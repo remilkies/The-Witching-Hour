@@ -38,21 +38,21 @@ app.get('/api/health', (req, res) => {
     res.json({messege: "The Bouncers are ready to bounce"});
 });
 
-const User = require('./models/User'); //Importing the user cookie cutter(blueprint) (node and js speak the same language so you don't need the extention ".js" to introduce them <33)
+const User = require('./models/Witch'); //Importing the user cookie cutter(blueprint) (node and js speak the same language so you don't need the extention ".js" to introduce them <33)
 
 //THE SAVE PROGRESS PORTAL 
 app.post('/api/save-progress', async (req, res) => {
     console.log("🔔 Ding Dong! Someone is at the door!");
     console.log("Request Body:", req.body);
     try{
-        const { email, pp, wp, completedTasks } = req.body;
+        const { pp, wp, completedTasks } = req.body;
 
         //find user by email and update stats
         //{ upsert: true } means "If they dont exist, create them o7"
         const updatedUser = await User.findOneAndUpdate(
-            { email: email },
-            { pp, wp, completedTasks },
-            { new: true, upsert: true }
+            { email: email }, //who to find
+            { pp, wp, completedTasks }, //what to update/change
+            { new: true, upsert: true } //return the updated user OR chreate one :D
         );
 
         res.json({ message: "✨Progress synced to the Cloud Domain✨", user: updatedUser });

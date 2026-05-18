@@ -622,13 +622,136 @@ transition: none;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #1a1a1a;
+  background-color: #1a1a1a8b;
   transition: background-color 0.2s ease-in-out;
 }
 
 .auth-container.flash-red{
   background-color: #67161F; /*THIS IS TOLEN FROM SPOILT MILK SO MAYYYYYBE THINK OF CHNAGING THIS MAYBE*/
 }
+
+.login-container{
+  display: flex;
+  flex-direction: row;
+  min-height: 75vh;
+  /* align-items: center; */
+}
+
+.login-shelf{
+  height: 100%;
+  width: 25vw;
+}
+.login-card{
+  background-color: #EDD4D0;
+  border: 5px solid #342333;
+  border-radius: 20px;
+  padding: 2rem;
+  margin-top: -2rem; /* slightly above so it goes under the shelfy shelf >:D*/
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 10px 25pc rgba(0, 0, 0,0.5);
+  transition: all 0.5s ease-in-out;
+  z-index: 10;
+}
+
+.login-card h2{
+  font-family: "Protest Revolution", sans-serif;
+  color: #342333;
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.witch-input-group{
+  margin-bottom: 1.5rem;
+}
+
+.witch-input-group label {
+  display: block;
+  font-size: 1.1rem;
+  color: #342333;
+  margin-bottom: 0.5rem;
+  letter-spacing: 1px;
+}
+
+.witch-input{
+  width: 100%;
+  padding: 12px;
+  border: 3px solid #342333;
+  border-radius: 10px;
+  background-color: transparent;
+  font-family: sans-serif;
+  font-size: 1rem;
+  color: #342333;
+  font-weight: bold;
+}
+
+.witch-input:focus{
+  outline: none;
+  border-color: #715E72;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.submit-ritual-btn{
+  width: 100%;
+  padding: 12px;
+  font-family: "Protest Revolution", sans-serif;
+  font-size: 1.5rem;
+  background-color: #342333;
+  color: #EDD4D0;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.submit-ritual-btn:hover{
+  transform: scale(1.03);
+  background-color: #715E72;
+}
+
+.error-scroll{
+  color: #8b0000; /* THE BIG RED SCARY COLOUR */
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+/* SCALLING AUTH CLOCK*/
+.clock-col{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* adjust layout smooooothly */
+.clock-col.ritual-active {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  z-index: 999;
+  background-color: #1a1a1a8b;
+}
+
+/* zooms clock face to center stage */
+.clock-col.ritual-active .auth-clock-wrapper{
+  transform: scale(1.4);
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* smoooothly hides element during rutual transition */
+.fade-out-witchcraft{
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(30px);
+  transition: all 0.5 ease-in-out;
+}
+
 
 
 /* might need some editting idk */
@@ -647,6 +770,48 @@ transition: none;
   color: #EDD4D0;
   font-size: 1.5rem;
 }
+
+.bat-window{
+  width: auto;
+  height: 70vh;
+}
+
+.bat-window img{
+  width: 100%;
+  height: 100%;
+}
+
+.auth-clock-wrapper{
+  position: relative;
+  width: 35vw;
+  max-width: 500px;
+  min-width: 300px;
+  aspect-ratio: 1 / 1; /*PERFECT SQUARE TYPE SHI*/
+  cursor: grab;
+  z-index: 5;
+}
+
+.auth-clock-wrapper:active{
+  cursor: grabbing;
+}
+
+.auth-clock-body,
+.auth-hour-hand,
+.auth-clock-origin{
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+  .auth-hour-hand{
+    transform-origin: center center;
+  }
+
+
 
 .verify-btn{
   margin-top: 2rem;

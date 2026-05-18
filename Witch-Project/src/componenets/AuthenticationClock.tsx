@@ -6,6 +6,9 @@ import clockBody from "../assets/clockBody.png";
 import handImg from "../assets/minuteHand.png";
 import clockOrigin from "../assets/clockOrigin.png";
 
+//Once the user's hashed password is verified, they must prove their humanity under pressure by timing the exact moment the hand strikes the witching hour.
+
+// Bots are really bad at timing-based, dynamic visual interactions WHICH MEANS highly secure, custom bot-trap.(hopefully also ai proof)
 interface WitchingHourProps { 
 
   //this is a locked door, the parent (aka app) passes the key (onSeccess) to the clock, the clock's only job is to hold onto that key and say "Riddle me this mortal, can you overcome my trials? If you can, I'll give you the key to unlock the door and enter the witching hour..."
@@ -54,7 +57,7 @@ export default function WitchingHourAuth({ onSuccess }: WitchingHourProps) {
     if (isTicking) {
       timer = setInterval(() => { //the heart beats every 20ms, shoving the clock hand foreward by 2deg
         setCurrentAngle((prevAngle) => {
-          const nextAngle = prevAngle + 2; //SPEEEEEEEED OF THE HAND FOR HARCORE SPEED MODE
+          const nextAngle = prevAngle + 1.5; //SPEEEEEEEED OF THE HAND FOR HARCORE SPEED MODE
 
           //auto-fail if the hand passes the target by more that 15 degrees :P
           if (nextAngle > targetAngle + 15) {
@@ -65,6 +68,14 @@ export default function WitchingHourAuth({ onSuccess }: WitchingHourProps) {
         });
       }, 20); //20ms fir a smooooth buttery sweep
     }
+
+    //THE CLEAN UP SPELL: Kills the heartbeat when the trap resets or a user fails, preventing memory leaks and ensuring the clock doesn't keep ticking in the background after a failed attempt and start moving at the speed of light when the next trap starts >:D
+
+    return () => {
+      if (timer) {
+        clearInterval(timer);
+      }
+    };
   }, [isTicking, targetAngle]);
 
   //THE STRAP IS SPRUNG
@@ -103,20 +114,19 @@ export default function WitchingHourAuth({ onSuccess }: WitchingHourProps) {
         <p>Click VERIFY when the hand strikes <strong>{targetHour}</strong>...</p>
       </div>
 
-      <div className={`clock-wrapper ${authStatus === 'failed' ? 'shake-anim' : ''}`}>
-        <img src={clockBody} alt="Clock Face" className="clock-body" />
+      <div className={`auth-clock-wrapper ${authStatus === 'failed' ? 'shake-anim' : ''}`}>
+        <img src={clockBody} alt="Clock Face" className="auth-clock-body" />
 
-        <div className="clock-hands">
+        <div className="auth-clock-hands">
           <img
-            src={handImg}
-            className="hour-hand"
+            src={handImg} className="auth-hour-hand"
             alt="witching hand"
             style={{ 
               transform: `rotate(${currentAngle}deg)`,
-              filter: authStatus === 'success' ? 'drop-shadow(0 0 10px #F0DBBE' : 'none'
+              filter: authStatus === 'success' ? 'drop-shadow(0 0 10px #F0DBBE)' : 'none'
           }}
           />
-      <img src={clockOrigin} alt="Center Gem" className="clock-origin" />
+      <img src={clockOrigin} alt="Center Gem" className="auth-clock-origin" />
         </div>
       </div>
 

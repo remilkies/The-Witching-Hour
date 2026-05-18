@@ -82,6 +82,8 @@ const WELLNESS_POOLS = {
   ]
 };
 
+//ADD OPTION TO SET TIMER FOR EARLY BREAKS
+
 // 2. THE MEMORY
 export default function App() {
   const [showConfetti, setShowConfetti] = useState(false);
@@ -611,7 +613,7 @@ export default function App() {
                   }}
 
                   placeholder="What we cookin good lookin?" />
-                <button className="addTask-btn" onClick={handleAddTask}>
+                <button className="addTask-btn" onClick={handleAddTask} >
                   <img className="addTask-btn-icon" src={addTaskIcon} alt="Add Quest Icon" /> </button>
 
               </div>
