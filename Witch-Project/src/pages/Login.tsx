@@ -2,8 +2,11 @@ import React, { useState } from "react";
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 import { Container, Row, Col } from "react-bootstrap";
-import mainShelf from "../assets/mainShelf.png";
+
 import AuthClock from "../componenets/AuthenticationClock"
+import TrophyRoom from "../componenets/TrophyRoom";
+
+import mainShelf from "../assets/mainShelf.png";
 import dreamcatcher from "../assets/dreamcatcher.png";
 import Window from "../assets/stainWindow.png";
 
@@ -17,6 +20,10 @@ export default function Login() {
   // to track is a witch is logging in, logged in or creating an account
   const [isRegistering, setIsRegistering] = useState(false);
   const [currentWitch, setCurrentWitch] = useState<any>(null);
+
+//flag to trach if they rigistered THIS SESSION so we know which badge to award
+const [wasRegistrationSuccessful, setWasRegistrationSuccessful] = useState(false);
+const [isTrophyRoomOpen, setIsTrophyRoomOpen] = useState(false);
 
   //authetication phase engine >:D
   const [authStage, setAuthStage] = useState<'form' | 'ritual' | 'passed'>('form');
@@ -45,6 +52,7 @@ export default function Login() {
 
       if (isRegistering) {
         setSuccessMessage("✨ Witch registed successfully! Enter your credentials to begin");
+        setWasRegistrationSuccessful(true); //MARK THAT THEY'VE SUCCESSFULLY JOINED THE COVERN!
         setIsRegistering(false);
         setPassword("");
       } else {
@@ -54,6 +62,8 @@ export default function Login() {
         setCurrentWitch(data.witch); //keeps track of the user id and progress stats
         console.log("Password passed! Activating the Witching Hour ritual setup...")
         setAuthStage('ritual'); //TRIGGERS THE ZOOMIES SCALE UP LAYPUT THING
+
+        // I KINDA WANNA ADD A CRYPT KEEPER BADGE FOR GETTING JSW TOKEN HUNCHUCNHECHUE
       }
 
 
@@ -70,6 +80,14 @@ export default function Login() {
 
     //redirect user to the dashbpord room
     //window.location.href = "/dashboard"
+
+    //ACHIEVENMT BADGED AWARDED RIGHT BEFORE UPDATING THE STATE >:D
+    if (wasRegistrationSuccessful) {
+      localStorage.setItem("witching-just-registered", "true");
+    } else {
+      localStorage.setItem("witching-just-logged-in", "true");
+    }
+
   };
 
   //LOGOUT SPELL
@@ -79,6 +97,7 @@ export default function Login() {
     setAuthStage('form');
     setUsername("");
     setPassword("");
+    setWasRegistrationSuccessful(false); //reset session flags
     setSuccessMessage("Logged out safely. The shadows consume your presence")
   }
 
@@ -91,7 +110,7 @@ export default function Login() {
 
     try {
       //HITS BACKEND ROUTER.DELETE("/:id") ENPOINT
-      const response = await fetch(`http://localhost:5001?api?${currentWitch.id}`, {
+      const response = await fetch(`http://localhost:5001/api/${currentWitch.id}`, {
         method: "DELETE"
       });
 
@@ -133,6 +152,18 @@ export default function Login() {
                 <h2>Welcome, {currentWitch.username}!</h2>
                 <p>Productivity Points: {currentWitch.pp} | Wellness Point: {currentWitch.wp}</p>
                 <hr />
+
+              <button onClick={() => setIsTrophyRoomOpen(true)} className="submit-ritual-btn" style={{ marginBottom: '10px'}}>
+                View Grimoire Achievments
+              </button>
+
+              {/* THE GLORIOUS TROPHY ROOM RENDERING >:D */}
+              <TrophyRoom
+                isOpen={isTrophyRoomOpen}
+                onClose={() => setIsTrophyRoomOpen(false)}
+                achievments={currentWitch?.achievments}
+                />
+
                 <button onClick={handleLogout} className="submit-ritual-btn">
                   Leave Coven (Logout)
                 </button>
@@ -143,6 +174,7 @@ export default function Login() {
               </div>
 
             ) : (
+
               <>
               <AuthClock onSuccess={handleClockSuccess} isActive={authStage === 'ritual'} /> {/* passing in the isActive prop */}
 

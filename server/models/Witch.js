@@ -33,6 +33,17 @@ const Witch = new mongoose.Schema({
     dailyTasks: [String],
     completedTasks: [String],
 
+    // 🏆 DEV THE TROPHY ROOM (Achievemnt Badges because i love praise and have a very low selse of self worth coupled with imposter syndrome :D)
+    achivements: [{
+        title: { type: String, required: true },
+        // Architect of the MEARN Sanctum (for sbuilding the entire full-stack application)
+        // Master of Two Realms (For succesfully connecting the frontend and the backend)
+        // Crypt Keeper of the Keys (For successfully implementing secure jwt and bcrypt authentication)
+        // Frontend Sorcerer (For bringing wireframs to life >:D)
+        dateEarned: { type: Date, default: Date.now },
+        iconUrl: { type: String, default: "" }
+    }],
+
     //MIDNIGHT REST TRAP HEH
     lastLoginDate: { type: String, default: new Date().toDateString() },
 
