@@ -1,3 +1,5 @@
+//CASTLE GATES: Setpup that connects the bouncers and tells the server what port to listen to :D
+
 require('dotenv').config();
 
 // const express = require('cors'): This is like trying to build a house using the "No Trespassing" sign as the foundation. You need the actual express library to build the server structure.

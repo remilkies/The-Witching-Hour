@@ -4,7 +4,7 @@ import '../App.css';
 import { Container, Row, Col } from "react-bootstrap";
 
 import AuthClock from "../componenets/AuthenticationClock"
-import TrophyRoom from "../componenets/TrophyRoom";
+import TrophyRoom from "../componenets/Grimoire";
 
 import mainShelf from "../assets/mainShelf.png";
 import dreamcatcher from "../assets/dreamcatcher.png";
@@ -21,9 +21,9 @@ export default function Login() {
   const [isRegistering, setIsRegistering] = useState(false);
   const [currentWitch, setCurrentWitch] = useState<any>(null);
 
-//flag to trach if they rigistered THIS SESSION so we know which badge to award
-const [wasRegistrationSuccessful, setWasRegistrationSuccessful] = useState(false);
-const [isTrophyRoomOpen, setIsTrophyRoomOpen] = useState(false);
+  //flag to trach if they rigistered THIS SESSION so we know which badge to award
+  const [wasRegistrationSuccessful, setWasRegistrationSuccessful] = useState(false);
+  const [isTrophyRoomOpen, setIsTrophyRoomOpen] = useState(false);
 
   //authetication phase engine >:D
   const [authStage, setAuthStage] = useState<'form' | 'ritual' | 'passed'>('form');
@@ -153,15 +153,15 @@ const [isTrophyRoomOpen, setIsTrophyRoomOpen] = useState(false);
                 <p>Productivity Points: {currentWitch.pp} | Wellness Point: {currentWitch.wp}</p>
                 <hr />
 
-              <button onClick={() => setIsTrophyRoomOpen(true)} className="submit-ritual-btn" style={{ marginBottom: '10px'}}>
-                View Grimoire Achievments
-              </button>
+                <button onClick={() => setIsTrophyRoomOpen(true)} className="submit-ritual-btn" style={{ marginBottom: '10px' }}>
+                  View Grimoire achievements
+                </button>
 
-              {/* THE GLORIOUS TROPHY ROOM RENDERING >:D */}
-              <TrophyRoom
-                isOpen={isTrophyRoomOpen}
-                onClose={() => setIsTrophyRoomOpen(false)}
-                achievments={currentWitch?.achievments}
+                {/* THE GLORIOUS TROPHY ROOM RENDERING >:D */}
+                <TrophyRoom
+                  isOpen={isTrophyRoomOpen}
+                  onClose={() => setIsTrophyRoomOpen(false)}
+                  achievements={currentWitch?.achievements}
                 />
 
                 <button onClick={handleLogout} className="submit-ritual-btn">
@@ -176,65 +176,65 @@ const [isTrophyRoomOpen, setIsTrophyRoomOpen] = useState(false);
             ) : (
 
               <>
-              <AuthClock onSuccess={handleClockSuccess} isActive={authStage === 'ritual'} /> {/* passing in the isActive prop */}
+                <AuthClock onSuccess={handleClockSuccess} isActive={authStage === 'ritual'} /> {/* passing in the isActive prop */}
 
-            <div className={`login-shelf-container ${authStage === 'ritual'}`}>
-              <img className="login-shelf" src={mainShelf} alt="Main Shelf" />
-            </div>
-
-            <div className={`login-card ${authStage === 'ritual' ? 'fade-out-witchcraft' : ''}`}>
-              <h2>{isRegistering ? "Join Coven" : "Login"}</h2>
-
-
-              {errorMessage && <div className="error-scroll"> 💀{errorMessage}</div>}
-              {successMessage && <div className="success-note">{successMessage}</div>}
-              <form onSubmit={handleFormSubmit}>
-                <div className="witch-input-group">
-                  <label>Username</label>
-                  <input
-                    type="text"
-                    placeholder="Witch420"
-                    className="witch-input"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required />
+                <div className={`login-shelf-container ${authStage === 'ritual'}`}>
+                  <img className="login-shelf" src={mainShelf} alt="Main Shelf" />
                 </div>
 
-                <div className="witch-input-group">
-                  <label>Password</label>
-                  <input
-                    type="password"
-                    placeholder="asabovesobelow"
-                    className="witch-input"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
+                <div className={`login-card ${authStage === 'ritual' ? 'fade-out-witchcraft' : ''}`}>
+                  <h2>{isRegistering ? "Join Coven" : "Login"}</h2>
+
+
+                  {errorMessage && <div className="error-scroll"> 💀{errorMessage}</div>}
+                  {successMessage && <div className="success-note">{successMessage}</div>}
+                  <form onSubmit={handleFormSubmit}>
+                    <div className="witch-input-group">
+                      <label>Username</label>
+                      <input
+                        type="text"
+                        placeholder="Witch420"
+                        className="witch-input"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required />
+                    </div>
+
+                    <div className="witch-input-group">
+                      <label>Password</label>
+                      <input
+                        type="password"
+                        placeholder="asabovesobelow"
+                        className="witch-input"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                      />
+                    </div>
+
+                    <button type="submit" className="submit-ritual-btn">
+                      {isRegistering ? "Create Cover Record" : "Begin Ritual"}
+                      {/* user enters password and username and the app dilivers POST request to backend and if the input is worng the error is triggered >:D */}
+                    </button>
+
+                  </form>
+
+                  {/* WAIT? IS HE SWITCHING MODES?? */}
+                  <div className="switch-modes">
+                    <button
+                      type="button"
+                      onClick={() => { setIsRegistering(!isRegistering); setErrorMessage(""); }}
+                      style={{ background: 'none', border: 'none', color: "#715E72", textDecoration: 'underline', cursor: 'pointer' }}
+                    >
+                      {isRegistering ? "Already a Witch? Login instead" : "New Witch? Claim a username"}
+                    </button>
+                  </div>
                 </div>
+              </>
 
-                <button type="submit" className="submit-ritual-btn">
-                  {isRegistering ? "Create Cover Record" : "Begin Ritual"}
-                  {/* user enters password and username and the app dilivers POST request to backend and if the input is worng the error is triggered >:D */}
-                </button>
+            )}
 
-              </form>
-
-              {/* WAIT? IS HE SWITCHING MODES?? */}
-              <div className="switch-modes">
-                <button
-                type="button"
-                onClick={() => { setIsRegistering(!isRegistering); setErrorMessage("");}}
-                style={{background: 'none', border: 'none', color: "#715E72", textDecoration: 'underline', cursor: 'pointer'}}
-                >
-                  {isRegistering ? "Already a Witch? Login instead" : "New Witch? Claim a username"}
-                </button>
-              </div>
-            </div>
-            </>
-         
-)}
-
- </Col>
+          </Col>
 
           <Col md={4} className={`${authStage === 'ritual' ? 'fade-out-witchcraft' : ''}`}>
             <img src={Window} alt="bat window" className="bat-window" />

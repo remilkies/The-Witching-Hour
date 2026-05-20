@@ -34,8 +34,11 @@ const Witch = new mongoose.Schema({
     completedTasks: [String],
 
     // 🏆 DEV THE TROPHY ROOM (Achievemnt Badges because i love praise and have a very low selse of self worth coupled with imposter syndrome :D)
-    achivements: [{
+    achievements: [{
         title: { type: String, required: true },
+        description: { type: String, required: true, default: "A mysterious mark of honour." }, //mini hover description
+        longDescription: { type: String, required: true, default: "Woven from deep nocturnal sessions..." }, //long
+
         // Architect of the MEARN Sanctum (for sbuilding the entire full-stack application)
         // Master of Two Realms (For succesfully connecting the frontend and the backend)
         // Crypt Keeper of the Keys (For successfully implementing secure jwt and bcrypt authentication)
@@ -44,12 +47,19 @@ const Witch = new mongoose.Schema({
         iconUrl: { type: String, default: "" }
     }],
 
+    // { this is to add it directly to mongoDB for cutom dev badges
+    //     "title": "Master of Two Realms",
+    //     "description": "Successfully connected the floating frontend to the backend underworld.",
+    //     "longDescription": "After wrestling with CORS errors, network logs, and countless server crashes, the gateway was finally forced open. The frontend and backend now speak fluent magic.",
+    //     "iconUrl": "/badges/master-realm.png", 
+    //     "dateEarned": "2026-05-15T12:00:00.000Z"
+    //   }
     //MIDNIGHT REST TRAP HEH
     lastLoginDate: { type: String, default: new Date().toDateString() },
 
     //MIDNIGHT ELIXER (incase they want to cheat (they being me) and drink it multiple times a day, we need to track when they last drank it)
     hasMidnightElixir: { type: Boolean, default: true },
-    elixirUsedDate: { type: String, default: ""},
+    elixirUsedDate: { type: String, default: "" },
 });
 
 

@@ -1,3 +1,4 @@
+//The individual rooms wihtin the realm
 //tell them to do something every time the
 
 const express = require('express');
@@ -21,15 +22,21 @@ const jwt = require('jsonwebtoken'); //for token generation
 //     }
 // );
 
+// ====================================
+// 1. THE REGISTRATION SPELL (create)
+// ====================================
+
 router.post('/register', async (req, res) => {// write method that goeing to extract values from the font end
     try{
 
-    const { username, password } = req.body;
+    const { username, password } = req.body; //extracr username and password from the frontend
     const existingWitch = await Witch.findOne({ username });
     if (existingWitch) {
+        //look into the crystal ball (database) to see if the username is taken
         return res.status(400).json({ message: 'That name is already claimed by anouther Witch T-T' });
     }
 
+    //Genertae salt (some random ahh characters) to mix with the password
     const salt = await bcrypt.genSalt(10); //THE COST FACTOR (How many times should the cauldren is stirred while throwing random ingredients in it) (the higher the number, the more secure but also the longer it takes to hash-- for development, 10 is a good balance)
 
 // .eg.
@@ -39,11 +46,13 @@ router.post('/register', async (req, res) => {// write method that goeing to ext
 
 const hashedPassword = await bcrypt.hash(password, salt); //the password is thrown into the cauldren and stirred with the salt to create a hashed password
 
+//create a brand new Witch object using the schema :D
 const newWitch = new Witch({
     username: username,
-    password: hashedPassword
+    password: hashedPassword // SAVED THE NEW SALTED POTION, NEVER THE RAW INGRIDIENTS
 });
 
+//permenantly save this new witch in to MongoDB so the database can foresee their login
     const savedWitch = await newWitch.save();
     res.status(201).json({ message: "Witch registered successfully",
     witch: savedWitch });
@@ -66,21 +75,51 @@ const newWitch = new Witch({
 //     }
 // })
 
+
+
+// ===================================
+// 2. THE LOGIN SPELL (AUTHENTICATE)
+// ===================================
 router.post('/login', async (req, res) => {
 try{
     const { username, password } = req.body;
 
+    //find the witch in the crystal ball (database :P)
     const witch = await Witch.findOne({ username });
     if (!witch) {
         return res.status(404).json({ message: 'Witch not found. Are you an imposter?' });
     }
 
+    //compare the raw password with the potion connected to their witch._id
     const validPassword = await bcrypt.compare(password, witch.password); //compare the password they entered with the hashed password in the database
 
     if (!validPassword) {
+
         return res.status(401).json({ message: 'Invalid password! The bouncers reject you' });
     }
 
+    // ? in case a witch has no achievements array yet >:D
+const hasCryptKeeperBadge = witch.achievements?.some(badge => badge.title === "Crypt Keeper fo the Token");
+
+let updatedWitch = witch;
+
+if (!hasCryptKeeperBadge) {
+    updatedWitch = await Witch.findByIdAndUpdate(
+        witch._id,
+        {
+            $push:{
+                achievements: {
+                    title: "Crypt Keeper of the Token",
+                    description: "Successfully implemented secure JWT and bcrypt authentication potections.",
+                    longDescription: "The shadows themselves cannot pierce this encryption. By stirring bcrypt salts into the database cauldron and sealing sessions with custom JSON Web Tokens, the sanctum remains safe from rogue elements.",
+                    iconUrl: "/badges/crypt-keeper.png", //maps to public folder
+                    dateEarned: new Date()
+                }
+            }
+        },
+        { new: true}
+    )
+}
     //etch ID and username into their secret sacred key
     const token = jwt.sign(
         { _id: witch._id, username: witch.username },
@@ -88,18 +127,20 @@ try{
         { expiresIn: '1h' }
     );
 
-    res.status(200).json({ 
-        message: `Witching Hour initiated, Welcome back ${witch.username} `,
+
+    res.status(200).json({  //can only send one response per request
+        message: `Witching Hour initiated, Welcome back ${updatedWitch.username} `,
         token: token,
         witch: {
-            id: witch._id, //so the frontend know the user id >:D
-            username: witch.username,
+            id: updatedWitch._id, //so the frontend know the user id >:D
+            username: updatedWitch.username,
             //aaaand all the stuff that we need to send to the UI to update the stats and quests
-            pp: witch.pp, 
-            wp: witch.wp, 
-            dailyTasks: witch.dailyTasks, 
-            completedTasks: witch.completedTasks, 
-            hasMidnightElixir: witch.hasMidnightElixir}
+            pp: updatedWitch.pp, 
+            wp: updatedWitch.wp, 
+            dailyTasks: updatedWitch.dailyTasks, 
+            completedTasks: updatedWitch.completedTasks, 
+            hasMidnightElixir: updatedWitch.hasMidnightElixir},
+            achievements: updatedWitch.achievements
      });
 } catch (error) {
     res.status(500).json({ message: `YOU DON DUCKED UP WITCH: ${error.message}` });
