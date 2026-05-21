@@ -53,13 +53,13 @@ app.post('/api/save-progress', async (req, res) => {
     console.log("🔔 Ding Dong! Someone is at the door!");
     console.log("Request Body:", req.body);
     try{
-        const { username, pp, wp, completedTasks } = req.body;
+        const { username, pp, wp, completedTasks, achievements } = req.body;
 
         //find user by username (or is it more secure to use email?) and update stats
         //{ upsert: true } means "If they dont exist, create them o7"
         const updatedUser = await User.findOneAndUpdate(
             { username: username }, //who to find
-            { pp, wp, completedTasks }, //what to update/change
+            { pp, wp, completedTasks, achievements }, //what to update/change
             { new: true, upsert: true } //return the updated user OR chreate one :D
         );
 
