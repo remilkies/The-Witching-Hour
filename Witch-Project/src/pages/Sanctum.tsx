@@ -86,6 +86,7 @@ export default function Sanctum() {
             Turn to the Couldrom
         </button>
 
+<div className="ritual-controls">
 <button onClick={handleLogout} className="submit-ritual-btn">
     Leave Coven
 </button>
@@ -93,6 +94,7 @@ export default function Sanctum() {
 <button onClick={handleDeleteAccount} className="submit-ritual-btn delete-account-btn">
     Banish Self from Coven
 </button>
+</div>
 
         <Grimoire
             isOpen={isGrimoireOpen}

@@ -635,8 +635,16 @@ export default function App() {
 
           <Col md={6}>
             <Timer isPaused={isBreakModalOpen || !isSessionActive}
-              onMinutePassed={() => setPp((prev) => prev + 1)} // This callback function is passed down to the Timer component and will be called every time a minute passes while the timer is running. It updates the PP (Productivity Points) state by incrementing it by 1 for each minute of focused work completed. The onMinutePassed prop allows the Timer component to communicate back to the App component whenever a minute has passed, enabling the app to reward the user with PP accordingly.
-              onTimerActiveChange={setIsCustomTimerRunning}
+            //curly brackets make multiple actions easier to fire
+              onMinutePassed={() => {
+                setPp((prev) => prev + 1); 
+                console.log("A minute of hard work has passed! +1 Productivity Point Awarded")
+              }} // This callback function is passed down to the Timer component and will be called every time a minute passes while the timer is running. It updates the PP (Productivity Points) state by incrementing it by 1 for each minute of focused work completed. The onMinutePassed prop allows the Timer component to communicate back to the App component whenever a minute has passed, enabling the app to reward the user with PP accordingly.
+
+              onTimerActiveChange={(isActive) => {
+                setIsCustomTimerRunning(isActive);
+                setIsSessionActive(isActive); // IGNITES THE GLO0BAL SESSION
+              }}
             />
           </Col>
 

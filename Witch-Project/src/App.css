@@ -774,6 +774,7 @@ transition: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  transform: translateY(0);
   transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
@@ -923,8 +924,11 @@ transition: none;
   min-width: 150px;
 }
 .ritual-mode.auth-container{
-  height: auto;
+  height: 100vh;
   background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .ritual-mode .auth-clock-wrapper {
@@ -1070,6 +1074,11 @@ transition: none;
   animation: basketWiggle 2.5s infinite ease-in-out;
 }
 
+/* =============================== */
+/* THE INNER SANCTUM */
+/* =============================== */
+
+
 /* 1. The Room Background (Never moves, hides the overflow) */
 .sanctum-wallpaper-wrapper {
   width: 100vw;
@@ -1110,10 +1119,11 @@ transition: none;
   background: rgba(20, 15, 25, 0.4); 
 }
 
-.open-grimoire-btn{
+.open-grimoire-btn{ /* THIS IS FOR THE BOOK STAND THINGY*/
   background: transparent;
   border: none;
   cursor: pointer;
+  animation: basketWiggle 2.5s infinite ease-in-out;
 }
 /* Make image act like a button */
 .clickable-image {
