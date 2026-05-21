@@ -28,9 +28,9 @@ export default function Grimoire({ isOpen, onClose, achievements = [] }: Grimoir
     //maybe make this a tab tin the little bat menu that says badges and then anouther that says questlog >:D
     return (
         <>
-            <div className="wellness-backdrop" onClick={onClose}>
+            <div className="grimoire-backdrop" onClick={onClose}>
 
-                <div className="grimore-container" onClick={(e) => e.stopPropagation()}> {/* THE MEANS STOP THE CLICK FROM BUBBLING OUT*/}
+                <div className="grimoire-container" onClick={(e) => e.stopPropagation()}> {/* THE MEANS STOP THE CLICK FROM BUBBLING OUT*/}
 
                     <div className="grimoire-content">
                         <h1>🏆 Your Grimoire achievements</h1>
@@ -45,8 +45,9 @@ export default function Grimoire({ isOpen, onClose, achievements = [] }: Grimoir
                                         //for every badge in my list, clone the bootsrap col and fill it with the badge's details: tyile, dateEarned aaaand ofc the badgeIcon
                                         <div key={index}
                                             className="grimoire-badge-wrapper"
-                                            onClick={() => setSelectedBadge(badge)} {/* //when we click on a badge, set it as the selected badge to show details */}
-                                            style={{ animationDelay: `${index * 150}ms` }} {/*FADES ION ONE BY ONE >:D*/}
+                                            onClick={() => setSelectedBadge(badge)}
+                                             
+                                            style={{ animationDelay: `${index * 150}ms` }} 
                                         >
                                             {/* INDIVIDUAL BADGES */}
 

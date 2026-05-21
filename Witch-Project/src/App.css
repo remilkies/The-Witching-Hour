@@ -942,8 +942,24 @@ transition: none;
 /* GRIMOIRE BOOK KEEPER BADGES */
 /* =============================== */
 
+.grimoire-backdrop{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  z-index: 2000;
+  -webkit-backdrop-filter: blur(8px);  /*for safari people*/
+}
 /* Layout structure for the open book content */
-.grimoire-book-container {
+.grimoire-container {
   position: relative;
   width: 750px;
   height: 550px;
@@ -1052,6 +1068,61 @@ transition: none;
 .shaking-basket{
   cursor: pointer;
   animation: basketWiggle 2.5s infinite ease-in-out;
+}
+
+/* 1. The Room Background (Never moves, hides the overflow) */
+.sanctum-wallpaper-wrapper {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden; /* Hides the other half of the room! */
+
+  background-size: cover;
+  background-position: center;
+}
+
+/* 2. The Slider Track (200% width, side-by-side) */
+.sanctum-slider {
+  display: flex;
+  width: 200vw; /* Twice the width of the screen! */
+  height: 100vh;
+  transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1); /* Smooth pan effect */
+}
+
+/* 3. The Camera Pan Action! */
+.slide-to-app {
+  transform: translateX(-100vw); /* Slides the whole track to the left */
+}
+
+.sanctum-container{
+  flex-direction: row;
+  display: flex;
+
+}
+/* 4. The Individual Room Sections (Dashboard vs App) */
+.sanctum-section {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px;
+  /* Add a subtle dark overlay if you want the wallpaper to be less bright */
+  background: rgba(20, 15, 25, 0.4); 
+}
+
+.open-grimoire-btn{
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+/* Make image act like a button */
+.clickable-image {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.clickable-image:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 10px rgba(153, 110, 141, 0.8));
 }
 
 @keyframes basketWiggle{

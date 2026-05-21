@@ -2,6 +2,7 @@ import React, { useState } from "react";
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 import { Container, Row, Col } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 import AuthClock from "../componenets/AuthenticationClock"
 import TrophyRoom from "../componenets/Grimoire";
@@ -12,6 +13,7 @@ import Window from "../assets/stainWindow.png";
 
 export default function Login() {
 
+  const navigate = useNavigate(); //magical compuss
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -80,6 +82,7 @@ export default function Login() {
 
     //redirect user to the dashbpord room
     //window.location.href = "/dashboard"
+  
 
     //ACHIEVENMT BADGED AWARDED RIGHT BEFORE UPDATING THE STATE >:D
     if (wasRegistrationSuccessful) {
@@ -88,41 +91,10 @@ export default function Login() {
       localStorage.setItem("witching-just-logged-in", "true");
     }
 
-  };
-
-  //LOGOUT SPELL
-  const handleLogout = () => {
-    localStorage.removeItem("witch_temp_token");
-    setCurrentWitch(null);
-    setAuthStage('form');
-    setUsername("");
-    setPassword("");
-    setWasRegistrationSuccessful(false); //reset session flags
-    setSuccessMessage("Logged out safely. The shadows consume your presence")
-  }
-
-  //THE SPELL OF BANISHMENT (DELETE ACCOUNT FROM DATABASE)
-  const handleDeleteAccount = async () => {
-    if (!currentWitch?.id) return;
-
-    const doubleCheak = window.confirm("Are you sure you wish to be banished from the coven? This spellconnot be undone!");
-    if (!doubleCheak) return;
-
-    try {
-      //HITS BACKEND ROUTER.DELETE("/:id") ENPOINT
-      const response = await fetch(`http://localhost:5001/api/${currentWitch.id}`, {
-        method: "DELETE"
-      });
-
-      if (!response.ok) throw new Error("Banishment failed. Your soul stays here.");
-
-      alert("💀 Account permanantly deleted");
-      handleLogout();
-
-    } catch (err: any) {
-      setErrorMessage(err.message);
-
-    }
+    //TELEPORTATION SPELL!
+    //carriirs the witches stats in the state backpack to the sanctum
+    //add a button to the grimoire to flip pages to user details
+    navigate('/sanctum', {state: {witch: currentWitch} });
   };
 
   return (
