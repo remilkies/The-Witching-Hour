@@ -6,6 +6,7 @@ import Grimoire from "../componenets/Grimoire";
 import MainApp from "../App";
 import Window from "../assets/stainWindow.png";
 import GrimoireHolder from "../assets/grimoireHolder.png";
+import floor from "../assets/floor.png";
 
 export default function Sanctum() {
     const location = useLocation();
@@ -78,9 +79,7 @@ export default function Sanctum() {
           {/* MAIN ALTER LOGIN/REGISTRATION COL */}
           <Col md={4}>
         {/* bookshelf and grimoire */}
-        <button className="open-grimoire-btn" onClick={() => setIsGrimoireOpen(true)}>
-            <img src={GrimoireHolder} alt="grimoire holder" className="grimoire-holder" />
-        </button>
+        
 
         <button onClick={() => setIsLookingAtApp(true)} className="submit-ritual-btn">
             Turn to the Couldrom
@@ -96,6 +95,11 @@ export default function Sanctum() {
 </button>
 </div>
 
+<button className="open-grimoire-btn" onClick={() => setIsGrimoireOpen(true)}>
+            <img src={GrimoireHolder} alt="grimoire holder" className="grimoire-holder" />
+        </button>
+
+
         <Grimoire
             isOpen={isGrimoireOpen}
             onClose={() => setIsGrimoireOpen(false)}
@@ -110,7 +114,7 @@ export default function Sanctum() {
         </Row>
       </Container>
 
-
+<img src={floor} alt="wood floor" className="sanctum-floor" />
 
         </div>
         </div>

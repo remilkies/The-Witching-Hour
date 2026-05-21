@@ -38,40 +38,18 @@ export default function Grimoire({ isOpen, onClose, achievements = [] }: Grimoir
                         <hr className="grinoire-divider" />
 
                         <div className="achievemnt-grid">
-                            {achievements.length > 0 ? (
+                            {achievements && achievements.length > 0 ? (
                                 //  do we have more than zero badges if yes, get em, if no: then no relics T-T 
                                 <div className="badges-flex-layout">
-                                    {achievements.map((badge, index) => (
-                                        //for every badge in my list, clone the bootsrap col and fill it with the badge's details: tyile, dateEarned aaaand ofc the badgeIcon
-                                        <div key={index}
-                                            className="grimoire-badge-wrapper"
-                                            onClick={() => setSelectedBadge(badge)}
-                                             
-                                            style={{ animationDelay: `${index * 150}ms` }} 
-                                        >
-                                            {/* INDIVIDUAL BADGES */}
-
-                                            <div className="badge-icon-frame">
-                                                <img
-                                                    src={badge.iconUrl || "../assets/default-badge.png"}
-                                                    alt={badge.title}
-                                                    className="grimoire-badge-icon"
-                                                />
-                                            </div>
-
-                                            {/* COOL HOVER BADGE TOOLTIP THINGY */}
-                                            <div className="badge-hover-info">
-                                                <h5>{badge.title}</h5>
-                                                <p>{badge.description}</p>
-                                                <small className="click-prompt">✨ Click to read logs ✨</small>
-                                            </div>
-
-
-
-                                        </div>
-
-                                    ))}
-                                </div>
+    {achievements.map((badge, index) => (
+        <WitchingBadge 
+            key={index} 
+            badge={badge} 
+            index={index} 
+            onSelect={() => setSelectedBadge(badge)} 
+        />
+    ))}
+</div>
                             ) : (
                                 <p style={{ fontStyle: 'italic', color: '#715E72', textAlign: 'center', marginTop: '50px' }}>
                                     No relics found. Clear the Witching Hour rituals to secure your legacy!

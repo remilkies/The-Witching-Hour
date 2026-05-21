@@ -139,9 +139,11 @@ if (!hasCryptKeeperBadge) {
             wp: updatedWitch.wp, 
             dailyTasks: updatedWitch.dailyTasks, 
             completedTasks: updatedWitch.completedTasks, 
-            hasMidnightElixir: updatedWitch.hasMidnightElixir},
+            hasMidnightElixir: updatedWitch.hasMidnightElixir,
             achievements: updatedWitch.achievements
-     });
+}
+});
+
 } catch (error) {
     res.status(500).json({ message: `YOU DON DUCKED UP WITCH: ${error.message}` });
 }

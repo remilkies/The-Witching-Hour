@@ -55,11 +55,14 @@ app.post('/api/save-progress', async (req, res) => {
     try{
         const { username, pp, wp, completedTasks, achievements } = req.body;
 
+        const uniqueAchievements = achievements ? achievements.filter((badge, index, self) =>
+            index === self.findIndex((b) => b.title === badge.title)
+        ) : []; //OBJECT DUPLICATION SPELL - removes duplicate badges based on the title, if achievements exist, otherwise returns an empty array
         //find user by username (or is it more secure to use email?) and update stats
         //{ upsert: true } means "If they dont exist, create them o7"
         const updatedUser = await User.findOneAndUpdate(
             { username: username }, //who to find
-            { pp, wp, completedTasks, achievements }, //what to update/change
+            { pp, wp, completedTasks, achievements: uniqueAchievements }, //what to update/change
             { new: true, upsert: true } //return the updated user OR chreate one :D
         );
 

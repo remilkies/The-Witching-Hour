@@ -10,6 +10,7 @@ import TrophyRoom from "../componenets/Grimoire";
 import mainShelf from "../assets/mainShelf.png";
 import dreamcatcher from "../assets/dreamcatcher.png";
 import Window from "../assets/stainWindow.png";
+import floor from "../assets/floor.png";
 
 export default function Login() {
 
@@ -133,7 +134,7 @@ export default function Login() {
                 <TrophyRoom
                   isOpen={isTrophyRoomOpen}
                   onClose={() => setIsTrophyRoomOpen(false)}
-                  achievements={currentWitch?.achievements}
+                  achievements={currentWitch?.achievements || []}
                 />
 
                 <button onClick={handleLogout} className="submit-ritual-btn">
@@ -148,9 +149,11 @@ export default function Login() {
             ) : (
 
               <>
+              <div className={`auth-container ${authStage === 'ritual' ? 'ritual-mode' : 'wall-mode'}`}>
                 <AuthClock onSuccess={handleClockSuccess} isActive={authStage === 'ritual'} /> {/* passing in the isActive prop */}
+</div>
 
-                <div className={`login-shelf-container ${authStage === 'ritual'}`}>
+                <div className={`login-shelf-container ${authStage === 'ritual' ? 'fade-out-witchcraft' : ''}`}>
                   <img className="login-shelf" src={mainShelf} alt="Main Shelf" />
                 </div>
 
@@ -217,6 +220,7 @@ export default function Login() {
 
       <div className={`footer ${authStage === 'ritual' ? 'fade-out-witchcraft' : ''}`}>
         <p>Brought to you by REMByte</p>
+        <img src={floor} alt="wood floor" className="sactum-floor" />
       </div>
     </>
   )

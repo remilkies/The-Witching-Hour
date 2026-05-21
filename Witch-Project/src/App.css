@@ -173,11 +173,11 @@ z-index: 50;
 }
 
 .progressBarContainer{
-  position: fixed;
+  position: relative;
   width: 25%;
   margin-left: 3rem;
   margin-bottom: 3rem;
-  left: 0;
+  left: auto;
   bottom: 0;
   height: 40px;
   background-color: #342333;
@@ -209,7 +209,7 @@ z-index: 50;
 .wellness-backdrop{
   position: fixed;
   top: 0;
-  left: 0;
+  left: auto;
   width: 100vw;
   height: 100vh;
 
@@ -226,7 +226,7 @@ z-index: 50;
 .quest-backdrop{
   position: fixed;
   top: 0;
-  left: 0;
+  left: auto;
   width: 100vw;
   height: 100vh;
 
@@ -549,7 +549,6 @@ transition: none;
   bottom: 0;
   right: 0;
   width: 100%;
-  margin-top: 15rem;
 }
 
 .water-toast{
@@ -814,6 +813,7 @@ transition: none;
 } */
 
 .bat-window{
+
   width: auto;
   height: 90vh;
 }
@@ -1089,6 +1089,14 @@ transition: none;
   background-position: center;
 }
 
+.sanctum-floor {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200vw;
+  height: 20vh;
+  z-index: 10; /* Sits above the wallpaper but below the furniture */
+}
 /* 2. The Slider Track (200% width, side-by-side) */
 .sanctum-slider {
   display: flex;
@@ -1102,11 +1110,20 @@ transition: none;
   transform: translateX(-100vw); /* Slides the whole track to the left */
 }
 
-.sanctum-container{
+.sanctum-container .row{
   flex-direction: row;
   display: flex;
 
 }
+
+.dashboard-sanctum{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  /* overflow: hidden; */
+}
+
+
 /* 4. The Individual Room Sections (Dashboard vs App) */
 .sanctum-section {
   width: 100vw;
@@ -1115,8 +1132,6 @@ transition: none;
   flex-direction: column;
   align-items: center;
   padding: 50px;
-  /* Add a subtle dark overlay if you want the wallpaper to be less bright */
-  background: rgba(20, 15, 25, 0.4); 
 }
 
 .open-grimoire-btn{ /* THIS IS FOR THE BOOK STAND THINGY*/
@@ -1124,6 +1139,7 @@ transition: none;
   border: none;
   cursor: pointer;
   animation: basketWiggle 2.5s infinite ease-in-out;
+  bottom: 0;
 }
 /* Make image act like a button */
 .clickable-image {
