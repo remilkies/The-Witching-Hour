@@ -235,32 +235,32 @@ export default function App() {
 
   const [isCustomTimerRunning, setIsCustomTimerRunning] = useState(false); // New state to track if the custom timer is running
 
-  // useEffect(() => {
-  //   const curfewInterval = setInterval(() => {
-  //     const now = new Date();
+  useEffect(() => {
+    const curfewInterval = setInterval(() => {
+      const now = new Date();
 
-  //     if (now.getHours() === 0) {
-  //       hasTriggered7PM.current = false; // Reset the trigger at midnight
-  //     }
+      if (now.getHours() === 0) {
+        hasTriggered7PM.current = false; // Reset the trigger at midnight
+      }
 
-  //     if (now.getHours() >= 19 && !hasTriggered7PM.current) {
-  //       hasTriggered7PM.current = true; // Set the trigger to prevent multiple alarms
+      if (now.getHours() >= 19 && !hasTriggered7PM.current) {
+        hasTriggered7PM.current = true; // Set the trigger to prevent multiple alarms
 
-  //       setIsBreakModalOpen(false);
-  //       setIsQuestLogOpen(false); // Force close quest log when break starts
-  //       setBreakSecondsLeft(BREAK_LIMIT_SECONDS); // LOCK THE QUEST LOG FOR THE NIGHT, GO TO SLEEP, DREAM OF GOBLINS
-  //       setIsCerfewModalOpen(true);
-  //       // setCompletedWellnessTasks([]);
+        setIsBreakModalOpen(false);
+        setIsQuestLogOpen(false); // Force close quest log when break starts
+        setBreakSecondsLeft(BREAK_LIMIT_SECONDS); // LOCK THE QUEST LOG FOR THE NIGHT, GO TO SLEEP, DREAM OF GOBLINS
+        setIsCerfewModalOpen(true);
+        // setCompletedWellnessTasks([]);
 
-  //       console.log("THE 7PM WITCHING HOUR HAS ARRIVED >:D");
+        console.log("THE 7PM WITCHING HOUR HAS ARRIVED >:D");
 
-  //       const audio = new Audio(eveningAlarm);
-  //       audio.play();
-  //     }
-  //   }, 1000); // Check time every second
+        const audio = new Audio(eveningAlarm);
+        audio.play();
+      }
+    }, 1000); // Check time every second
 
-  //   return () => clearInterval(curfewInterval);
-  // }, []);
+    return () => clearInterval(curfewInterval);
+  }, []);
 
   //maximum 5 quests at a time, because we don't want to overwhelm our users with too many quests, that would be mean
   const canAddMoreTasks = tasks.length < 5; //REMEMBER TO TEST IF THE SYSTEM TOAST OVERLAYS EVERYTHING EVEN WHEN IT'S JUST OPEN IN THE BACKGROUND OR MINIMISED >:D PLEEEAAASE, IRLL LOOK SO COOL ?///T-T
