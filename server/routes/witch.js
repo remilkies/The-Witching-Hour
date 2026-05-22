@@ -80,7 +80,7 @@ const newWitch = new Witch({
     res.status(201).json({ 
         message: "Witch registered successfully",
         witch: newWitch });
-        
+
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
@@ -124,11 +124,11 @@ try{
     }
 
     // ? in case a witch has no achievements array yet >:D
-const hasCryptKeeperBadge = witch.achievements?.some(badge => badge.title === "Crypt Keeper of the Token");
+const hasSanctumBadge = witch.achievements?.some(badge => badge.title === "Sanctum Walker");
 
 let updatedWitch = witch;
 
-if (!hasCryptKeeperBadge) {
+if (!hasSanctumBadge) {
     updatedWitch = await Witch.findByIdAndUpdate(
         witch._id,
         {
@@ -153,7 +153,7 @@ if (!hasCryptKeeperBadge) {
                 }
             }
         },
-        { new: true}
+        { new: true} //reaturn freashy modified doc
     );
 }
     //etch ID and username into their secret sacred key
