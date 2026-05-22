@@ -60,6 +60,7 @@ Want to study some spells and run this locally?
   ```bash
   cd server
   npm install
+```
 * **Note: You will need to create a .env file in the /server folder with your MONGO_URI and a JWT_SECRET for the database connection ritual to work!**
   ```bash
   npm run dev
@@ -84,6 +85,6 @@ Want to study some spells and run this locally?
    
   ```bash
   npm run app:build
-
+```
 * **Remember:** You can't code a glass of water. Drink up.
 P.S If anyone figures out how to code water, let me know, so my boyfriend can get off my back (love you babe <3)
