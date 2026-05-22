@@ -1121,11 +1121,14 @@ transition: none;
   justify-content: center;
   flex-direction: column;
   /* overflow: hidden; */
+  text-align: center;
+  color: #EDD4D0;
 }
 
 
 /* 4. The Individual Room Sections (Dashboard vs App) */
 .sanctum-section {
+  display: relative;
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -1134,12 +1137,53 @@ transition: none;
   padding: 50px;
 }
 
+.dashboard-sanctum{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.dashboard-room{
+  overflow: hidden !important;
+}
+
+.app-room{
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding-bottom: 20vh;
+}
+
+.app-room::-webkit-scrollbar{
+  width: 8px;
+}
+
+.app-room::-webkit-scrollbar-track{
+  background-color: #342333;
+  border-radius: 4px;
+}
+
+.app-room::-webkit-scrollbar-thumb{
+  background: #715E72;
+  border-radius: 4px;
+}
 .open-grimoire-btn{ /* THIS IS FOR THE BOOK STAND THINGY*/
+  position: absolute;
+  bottom: 12vh;
   background: transparent;
   border: none;
   cursor: pointer;
   animation: basketWiggle 2.5s infinite ease-in-out;
-  bottom: 0;
+  z-index: 15;
+
+  height: auto;
+  width: 10vw;
+}
+
+.grimoire-holder{
+  height: auto;
+  width: 13vw;
 }
 /* Make image act like a button */
 .clickable-image {
