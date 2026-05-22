@@ -173,8 +173,8 @@ z-index: 50;
 }
 
 .progressBarContainer{
-  position: relative;
-  width: 25%;
+  position: fixed;
+  width: 15%;
   margin-left: 3rem;
   margin-bottom: 3rem;
   left: auto;

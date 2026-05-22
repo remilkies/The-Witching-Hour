@@ -125,15 +125,16 @@ export default function Sanctum() {
 
         {/* MAINAPP THINGY THING */}
 
-        <div className="sanctum-section">
-            <button
+        <div className="sanctum-section app-room">
+            
+
+            <div className="main-app-container-wrapper">
+                <MainApp />
+                <button
             onClick={() => setIsLookingAtApp(false)}
             >
                 Back To Sanctum
             </button>
-
-            <div className="main-app-container-wrapper">
-                <MainApp />
             </div>
         </div>
         </div>
