@@ -659,8 +659,8 @@ transition: none;
   transition: background-color 0.2s ease-in-out;
 }
 
-.auth-container.flash-red{
-  background-color: #67161F; /*THIS IS TOLEN FROM SPOILT MILK SO MAYYYYYBE THINK OF CHNAGING THIS MAYBE*/
+.auth-container.ritual-mode.flash-red{
+  background-color: #67161fa8; /*THIS IS TOLEN FROM SPOILT MILK SO MAYYYYYBE THINK OF CHNAGING THIS MAYBE*/
 }
 
 .login-container{
@@ -670,7 +670,7 @@ transition: none;
   width: 100vw !important;
   align-items: center;
   justify-content: space-around;
-  padding-top: 5em;
+  padding-top: 1em;
 
 }
 
@@ -682,6 +682,7 @@ transition: none;
 }
 
 .login-shelf-container{
+  position: relative;
   max-width: 400px;
   z-index: 100;
   transform: translateX(-83px);
@@ -815,7 +816,7 @@ transition: none;
 .bat-window{
 
   width: auto;
-  height: 90vh;
+  height: 75vh;
 }
 
 .bat-window img{
@@ -923,24 +924,37 @@ transition: none;
   width: 15vw;
   min-width: 150px;
 }
-.ritual-mode.auth-container{
+.auth-container.ritual-mode{
   height: 100vh;
   background-color: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
+  color: #EDD4D0;
+
 }
 
 .ritual-mode .auth-clock-wrapper {
-  width: 35vw;
+  width: 3vw;
   min-width: 300px;
 }
+
+.login-col.witch-alter-col.ritual-active{
+position: flex;
+justify-content: center;
+align-items: center;
+}
+
+
+
 /* smoooothly hides element during rutual transition */
 .fade-out-witchcraft{
   opacity: 0;
   pointer-events: none;
   transform: translateY(30px);
   transition: all 0.5 ease-in-out;
+  display: none;
 }
 /* =============================== */
 /* GRIMOIRE BOOK KEEPER BADGES */

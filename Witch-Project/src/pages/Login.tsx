@@ -112,7 +112,7 @@ export default function Login() {
 
         <Row className="login-container">
 
-          <Col md={4}>
+          <Col md={4} className={`${authStage === 'ritual' ? 'fade-out-witchcraft' : ''}`}>
             <img src={Window} alt="bat window" className="bat-window" />
           </Col>
 
