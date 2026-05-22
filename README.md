@@ -12,7 +12,15 @@ Welcome to **The Witching Hour**. This is a gamified, slightly aggressive, and h
 Crawl out of the darkness of your domain, complete your tasks, and let the dopamine (and the confetti) flow. >:D
 
 ## ✨ Features
+* **🛡️ The Witching Hour Trial (Creative Authentication):** No boring login forms here. To enter the Inner Sanctum, you must prove your humanity by timing a fast-moving, randomized mechanical clock hand. Miss the target hour? The bouncers reject your spell. Pass the ritual? You get a secure, token-based session.
 
+## 🌙 How the Creative Authentication Works
+1. **The Threshold:** The user submits their unique username and secret passphrase.
+2. **The Password Validation:** The backend pulls the account record, verifies the credentials using `bcrypt.compare()`, and signs a temporary JSON Web Token (JWT).
+3. **The Witching Hour Trial:** Instead of instantly granting access, the frontend locks into "Ritual Mode." A randomized target hour is assigned, and a mechanical clock hand begins sweeping forward at high speed.
+4. **Verification:** The user must hit "VERIFY" precisely when the hand aligns with the target hour (within a narrow margin of error). Success grants entry to the Inner Sanctum; failure triggers a visual reset sequence and reshuffles the target.
+
+## ✨ Back to Features
 * **📝 The Dopamine Machine:** A to-do list that doesn't just cross things off—it throws confetti and plays a little victory tune because you deserve it, and a little progress bar to keep track of the amazing work you've done <3
 * **⏳ The Time Lord:** Set your project timers. *Note: You cannot work for more than 45 minutes straight. The app will literally yell at you with a giant pop-up to go touch grass (or at least your living room carpet).*
 * **💧 Survival Toggles:** Automated, non-negotiable wellness reminders
@@ -31,36 +39,48 @@ Crawl out of the darkness of your domain, complete your tasks, and let the dopam
   * **🐈‍⬛ Mem Mem:** THERE'S A KET. Their name is Mem.  Mem doesn't technically *do* anything, but he's adorable and deserves an honourable mention.
   * 
 ## 🛠️ Built With
-
+## The Visual Spellbook (Frontend):
 * **React** (Because components are magic)
-* **TypeScript** (To stop us from putting toy cars in the magic box)
+* **TypeScript** (To stop us from putting toy cars in the magic box; inside joke just for me teehee)
 * **Vite** (For lightning-fast development)
 * **CSS** (For the spooky-cutsey-cozy aesthetics)
-
+## The Cloud Domain (Backend & Auth):
+* **Node.js & Extress.js:** (Thd bouncers that handle the API portals)
+* **MongoDB & Mongoose:** (The sacred cloud grimoire for saving stats)
+* **Bycrpt & JWT:** (For stirring salty passwords into the cauldron and keep sessions secure)
 ## 🚀 Getting Started
 
 Want to study some spells and run this locally? 
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/remilkies/the-witching-hour.git]
-2. **Navigate into the crypt:**
+   git clone [https://github.com/remilkies/the-witching-hour.git]`
+
+2. **Summon the Backend Cauldron:**
+  ```bash
+  cd server
+  npm install
+* **Note: You will need to create a .env file in the /server folder with your MONGO_URI and a JWT_SECRET for the database connection ritual to work!**
+  ```bash
+  npm run dev
+
+3. **Navigate into the crypt (Open a second terminal):**
     ```bash
     cd Witch-Project
 
-3. **Summon the dependencies:**
+4. **Summon the dependencies:**
     ```bash
     npm install
 
 
-4. **Light the black flame candle (Start the dev server):**
+5. **Light the black flame candle (Start the dev server):**
 
     ```bash
     npm run dev
     
   **Or**
 
-4. **build dmg/exe to install application:**
+5. **build dmg/exe to install application:**
    
   ```bash
   npm run app:build

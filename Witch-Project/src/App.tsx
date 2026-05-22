@@ -82,6 +82,8 @@ const WELLNESS_POOLS = {
   ]
 };
 
+//ADD OPTION TO SET TIMER FOR EARLY BREAKS
+
 // 2. THE MEMORY
 export default function App() {
   const [showConfetti, setShowConfetti] = useState(false);
@@ -408,6 +410,40 @@ export default function App() {
   // const questContainerHeader = document.querySelector('.questContainerHeader'); THIS IS HOW YOU WOULD SELECT AN ELEMENT IN A NORMAL JAVASCRIPT FILE, BUT IN REACT, WE HANDLE THIS WITH STATE AND CONDITIONAL RENDERING
   //5. THE GLORIOUS RENDERING
 
+  //THE BRIDGING SPELL: using fetch to get the islands of front-end and backend to drop the draw bridge and speak to eachother >:D
+
+  const syncToCloud = async () => {
+    console.log("🪄 Casting the bridge spell...");
+
+    try{
+      const response = await fetch('http://localhost:5001/api/save-progress', {
+        method: 'POST', //cause we're sendind data
+        headers: {
+          'Content-Type': 'application/json', //telling the bouncers HEY JSON IS AT THE DOOR
+        },
+        body: JSON.stringify({
+          //the actual data payload >:D
+
+          //DEV MODE: HARD CODED FOR TESTING
+          email: "apprentice@test.com",
+          pp: 10,
+          wp: 5,
+          completedTasks: ["Test the Bridge"]
+        })
+      });
+
+      //wait for the bouncer's reply and read it
+      const data = await response.json();
+
+      if (response.ok){
+        console.log("Draw bridge down!", data.message);
+      } else {
+        console.log("The Bouncers said no:", data);
+      }
+    } catch (error) {
+      console.error("💀 The bridge collapsed:", error);
+    }
+  };
 
   return (
     <>
@@ -523,6 +559,11 @@ export default function App() {
       )}
 
       <div className="global-session-toggle">
+
+{/* <button onClick={syncToCloud}>
+  ☁️ Test Cloud Sync
+</button> */}
+
         <button onClick={handleToggleSession} style={{ background: 'transparent', border: 'none', cursor: 'pointer', transition: 'transform 0.2s' }}
           onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
           onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
@@ -572,7 +613,7 @@ export default function App() {
                   }}
 
                   placeholder="What we cookin good lookin?" />
-                <button className="addTask-btn" onClick={handleAddTask}>
+                <button className="addTask-btn" onClick={handleAddTask} >
                   <img className="addTask-btn-icon" src={addTaskIcon} alt="Add Quest Icon" /> </button>
 
               </div>
@@ -594,8 +635,16 @@ export default function App() {
 
           <Col md={6}>
             <Timer isPaused={isBreakModalOpen || !isSessionActive}
-              onMinutePassed={() => setPp((prev) => prev + 1)} // This callback function is passed down to the Timer component and will be called every time a minute passes while the timer is running. It updates the PP (Productivity Points) state by incrementing it by 1 for each minute of focused work completed. The onMinutePassed prop allows the Timer component to communicate back to the App component whenever a minute has passed, enabling the app to reward the user with PP accordingly.
-              onTimerActiveChange={setIsCustomTimerRunning}
+            //curly brackets make multiple actions easier to fire
+              onMinutePassed={() => {
+                setPp((prev) => prev + 1); 
+                console.log("A minute of hard work has passed! +1 Productivity Point Awarded")
+              }} // This callback function is passed down to the Timer component and will be called every time a minute passes while the timer is running. It updates the PP (Productivity Points) state by incrementing it by 1 for each minute of focused work completed. The onMinutePassed prop allows the Timer component to communicate back to the App component whenever a minute has passed, enabling the app to reward the user with PP accordingly.
+
+              onTimerActiveChange={(isActive) => {
+                setIsCustomTimerRunning(isActive);
+                setIsSessionActive(isActive); // IGNITES THE GLO0BAL SESSION
+              }}
             />
           </Col>
 

@@ -1,9 +1,11 @@
+//CASTLE GATES: Setpup that connects the bouncers and tells the server what port to listen to :D
+
 require('dotenv').config();
 
 // const express = require('cors'): This is like trying to build a house using the "No Trespassing" sign as the foundation. You need the actual express library to build the server structure.
 const express = require('express');//fixed
 const cors = require('cors');
-const { default: mongoose } = require('mongoose');// npm install mongoose
+const mongoose = require('mongoose');// npm install mongoose
 
 // THE DEV DEBUG PROTOCOL
 console.log("Cheaking the sacred keys...");
@@ -11,11 +13,17 @@ console.log("Is MONGO_URI present?", !!process.env.MONGO_URI)
 
 //initialise the express app
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 //THE BOUNCERS
 app.use(cors()); //allows react to talk to this server
 app.use(express.json()); //allows the server to read incoming json data
+
+//connects the authentication router thingy
+const witchRoutes = require('./routes/witch')
+app.use('/api', witchRoutes);
+
+//all the database connections and other routes can go under here
 
 const sacredKey = process.env.MONGO_URI; //LOCAL CONSTANT CAUSE I'M TIRED OF BEING GASLIT BY MY CONSOLE
 
@@ -36,6 +44,62 @@ mongoose.connect(sacredKey)
 //when the browser visits the url, the server sends back json response
 app.get('/api/health', (req, res) => {
     res.json({messege: "The Bouncers are ready to bounce"});
+});
+
+const User = require('./models/Witch'); //Importing the user cookie cutter(blueprint) (node and js speak the same language so you don't need the extention ".js" to introduce them <33)
+
+//THE SAVE PROGRESS PORTAL 
+app.post('/api/save-progress', async (req, res) => {
+    console.log("🔔 Ding Dong! Someone is at the door!");
+    console.log("Request Body:", req.body);
+    try{
+        const { username, pp, wp, completedTasks, achievements } = req.body;
+
+        const uniqueAchievements = achievements ? achievements.filter((badge, index, self) =>
+            index === self.findIndex((b) => b.title === badge.title)
+        ) : []; //OBJECT DUPLICATION SPELL - removes duplicate badges based on the title, if achievements exist, otherwise returns an empty array
+        //find user by username (or is it more secure to use email?) and update stats
+        //{ upsert: true } means "If they dont exist, create them o7"
+        const updatedUser = await User.findOneAndUpdate(
+            { username: username }, //who to find
+            { pp, wp, completedTasks, achievements: uniqueAchievements }, //what to update/change
+            { new: true, upsert: true } //return the updated user OR chreate one :D
+        );
+
+        res.json({ message: "✨Progress synced to the Cloud Domain✨", user: updatedUser });
+    } catch (err) {
+        res.status(500).json({message: "💀 The save spell failed", error: err.message})
+    }
+})
+
+app.post('/api/consume-elixir', async (req, res) => {
+    console.log("🧪 Someone is trying to drink the Midnight Elixir!");
+    try {
+        const { username } = req.body;
+        const today = new Date().toDateString();
+
+        //WHO GOES THERE WITCH?
+        const user = await User.findOne({ username: username });
+
+        if (!user) {
+            return res.status(404).json({ messege: "Witch not found!!" });
+        }
+
+        //DID YOU DRINK TODAY??
+        if(user.elixirUsedDate === today) {
+            return res.status(403).json({ messege: "You already consumed your elixir today! Go to sleep!" });
+        }
+
+        //UPDATE THE DB TO COMSUMED
+        user.hasMidnightElixir = false;
+        user.elixirUsedDate = today;
+        await user.save();
+
+        res.json({ message: "🧪 Elixir consumed! You have 15 minutes.", user: user });
+
+    } catch (error) {
+        res.status(500).json({ message: "The elixir exploded", error: error.message });
+    }
 });
 
 //SERVER START >:D

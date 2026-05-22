@@ -14,7 +14,7 @@ import alarm3 from "/alarm3.mp3";
 export default function Timer( {
   isPaused,
   onMinutePassed,
-  onTinerActiveChange
+  onTimerActiveChange
 }: {
   isPaused: boolean;
   onMinutePassed: () => void; // Callback for when a minute passes
@@ -131,12 +131,24 @@ useEffect(() => {
   const handleConfirmAndStart = () => {
     setIsSetting(false);
     setIsRunning(true);
+
+    onTimerActiveChange(true); //SO I DON'T HAVE TO KEEP CLICKING SPERATE GLOBAL BUTTONS TO START THE GLOBAL SESSION AND THEN THE TIMER T-T
+
     setToastMsg(`Timer set for ${timerMinutes} minutes >:D`);
     setTimeout(() => setToastMsg(''), 3000);
   };
 
   const handlePauseResume = () => {
+    const nextState = !isRunning; //are we pausing or resuming
     setIsRunning(!isRunning);
+
+    onTimerActiveChange(nextState); //NOTIFY THE GLOBAL SESSION OF THE CHANGE SO IT CAN PAUSE/RESUME TOO
+  
+    if (nextState) {
+      setToastMsg('Timer Resumed');
+    } else {
+      setToastMsg('Timer Paused');
+    }
   };
 
   //calculating the nagles
