@@ -560,9 +560,9 @@ export default function App() {
 
       <div className="global-session-toggle">
 
-<button onClick={syncToCloud}>
+{/* <button onClick={syncToCloud}>
   ☁️ Test Cloud Sync
-</button>
+</button> */}
 
         <button onClick={handleToggleSession} style={{ background: 'transparent', border: 'none', cursor: 'pointer', transition: 'transform 0.2s' }}
           onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}

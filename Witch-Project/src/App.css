@@ -816,7 +816,7 @@ transition: none;
 .bat-window{
 
   width: auto;
-  height: 75vh;
+  height: 70vh;
 }
 
 .bat-window img{
@@ -976,12 +976,13 @@ align-items: center;
   z-index: 2000;
   -webkit-backdrop-filter: blur(8px);  /*for safari people*/
 }
+
 /* Layout structure for the open book content */
 .grimoire-container {
   position: relative;
   width: 750px;
   height: 550px;
-  background-color: #f7e1d7; /* Fallback book parchment color */
+  background-color: #f7e1d7; /* Fallback book parchment color - insert the png later*/
   border-radius: 12px;
   padding: 30px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -990,15 +991,13 @@ align-items: center;
 
 .badges-flex-layout {
   display: flex;
-  flex-wrap: wrap;
-  gap: 25px;
-  margin-top: 20px;
-  max-height: 320px;
-  overflow-y: auto;
+  flex-direction: row;
+  justify-content: start;
+
   padding: 10px;
 }
 
-/* 🌟 Hover Tooltip Trigger Box */
+/* Hover Tooltip Trigger Box */
 .grimoire-badge-wrapper {
   position: relative;
   cursor: pointer;
@@ -1007,6 +1006,11 @@ align-items: center;
   animation: badgeSpawn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
+
+.grimoire-badge-wrapper img{
+  width: auto;
+  height: 80px;
+}
 @keyframes badgeSpawn {
   to { opacity: 1; transform: scale(1); }
 }
@@ -1098,7 +1102,7 @@ align-items: center;
 .sanctum-wallpaper-wrapper {
   width: 100vw;
   height: 100vh;
-  overflow-x: hidden; /* Hides the other half of the room! */
+  overflow: hidden; /* Hides the other half of the room! */
 
   background-size: cover;
   background-position: center;
@@ -1125,11 +1129,18 @@ align-items: center;
   transform: translateX(-100vw); /* Slides the whole track to the left */
 }
 
+.sanctum-container{
+  width: 100%;
+  height: auto;
+}
+
 .sanctum-container .row{
-  flex-direction: row;
-  display: flex;
+    display: flex;
+    flex-direction: row;
+  justify-content: space-around;
 
 }
+
 
 .dashboard-sanctum{
   display: flex;
@@ -1138,18 +1149,21 @@ align-items: center;
   /* overflow: hidden; */
   text-align: center;
   color: #EDD4D0;
+  height: 80vh;
+  width: 100%;
 }
 
 
 /* 4. The Individual Room Sections (Dashboard vs App) */
 .sanctum-section {
-  display: relative;
+  position: relative;
   width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 50px;
+  /* padding: 50px; */
+  box-sizing: border-box;
 }
 
 .dashboard-sanctum{
@@ -1164,7 +1178,7 @@ align-items: center;
 }
 
 .app-room{
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
 
   padding-bottom: 20vh;
@@ -1183,9 +1197,36 @@ align-items: center;
   background: #715E72;
   border-radius: 4px;
 }
+
+.sanctum-menu-column{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.sanctum-menu-zone{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  align-items: center;
+  max-width: 350px;
+  margin-top: 2rem;
+  z-index: 20;
+}
+
+.ritual-controls{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
 .open-grimoire-btn{ /* THIS IS FOR THE BOOK STAND THINGY*/
   position: absolute;
   bottom: 12vh;
+  left: 50%;
+  transform: translateY(50%); /*ABSOLUTE CENTEREDNESS REGALESS OF COLUMNS >:D*/
   background: transparent;
   border: none;
   cursor: pointer;
@@ -1200,7 +1241,8 @@ align-items: center;
   height: auto;
   width: 13vw;
 }
-/* Make image act like a button */
+
+/* Make image badge act like a button */
 .clickable-image {
   cursor: pointer;
   transition: transform 0.2s ease;

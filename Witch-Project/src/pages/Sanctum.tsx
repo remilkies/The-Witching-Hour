@@ -60,17 +60,17 @@ export default function Sanctum() {
     <>
     <div className="sanctum-wallpaper-wrapper">
         <div className={`sanctum-slider ${lookingAtApp ? "slide-to-app" : ""}`}>
-        <div className="sanctum-section">
+        <div className="sanctum-section dashboard-room">
 
     <div className="dashboard-sanctum">
-        <h2>Welocome to the Inner Sanctum, {currentWitch.username}!</h2>
-        <p>PP: {currentWitch.pp} | WP: {currentWitch.wp}</p>
+        <h2 style={{marginTop: "1em"}}>Welcome to the Inner Sanctum, {currentWitch.username}!</h2>
+        <p>PP: {currentWitch.pp} | WP: {currentWitch.wp}</p> {/*maybe change this to say something else if the user hasnt accumulated aby points yet*/}
 
         <Container fluid className="sanctum-container">
         {/* THIS IS FOR THE AUTHENTICATION TRANSITION */}
 
 
-        <Row>
+        <Row className="sanctum-row">
 
           <Col md={4}>
             <img src={Window} alt="bat window" className="bat-window" />
@@ -80,7 +80,8 @@ export default function Sanctum() {
           <Col md={4}>
         {/* bookshelf and grimoire */}
         
-
+<div className="sanctum-menu-column">
+    <div className="sanctum-menu-zone">
         <button onClick={() => setIsLookingAtApp(true)} className="submit-ritual-btn">
             Turn to the Couldrom
         </button>
@@ -94,10 +95,9 @@ export default function Sanctum() {
     Banish Self from Coven
 </button>
 </div>
+</div>
+</div>
 
-<button className="open-grimoire-btn" onClick={() => setIsGrimoireOpen(true)}>
-            <img src={GrimoireHolder} alt="grimoire holder" className="grimoire-holder" />
-        </button>
 
 
         <Grimoire
@@ -114,6 +114,10 @@ export default function Sanctum() {
         </Row>
       </Container>
 
+<button className="open-grimoire-btn" onClick={() => setIsGrimoireOpen(true)}>
+            <img src={GrimoireHolder} alt="grimoire holder" className="grimoire-holder" />
+        </button>
+
 <img src={floor} alt="wood floor" className="sanctum-floor" />
 
         </div>
@@ -125,7 +129,7 @@ export default function Sanctum() {
             <button
             onClick={() => setIsLookingAtApp(false)}
             >
-                Look back at the bookshelf
+                Back To Sanctum
             </button>
 
             <div className="main-app-container-wrapper">

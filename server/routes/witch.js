@@ -49,13 +49,38 @@ const hashedPassword = await bcrypt.hash(password, salt); //the password is thro
 //create a brand new Witch object using the schema :D
 const newWitch = new Witch({
     username: username,
-    password: hashedPassword // SAVED THE NEW SALTED POTION, NEVER THE RAW INGRIDIENTS
+    password: hashedPassword, // SAVED THE NEW SALTED POTION, NEVER THE RAW INGRIDIENTS
+    pp: 0,
+    wp: 0,
+    achievements: [
+        
+            {
+                title: "Crypt Keeper of the Token",
+                description: "Successfully implemented secure JWT and bcrypt authentication potections.",
+                longDescription: "The shadows themselves cannot pierce this encryption. By stirring bcrypt salts into the database cauldron and sealing sessions with custom JSON Web Tokens, the sanctum remains safe from rogue elements.",
+                iconUrl: "/badges/crypt-keeper.png", //maps to public folder
+                dateEarned: new Date()
+            },
+            {
+                
+                    title: "Coven Initiate",
+                    description: "Signed the Grimoire and offically joined the coven.",
+                    longDescription: "By making an account, you have shown your commitment to the craft. The Grimoire recognizes your potential and welcomes you into the coven with open arms.",
+                    iconUrl: "/badges/default-badge.png", //maps to public folder
+                    dateEarned: new Date()
+                
+            }
+        
+    ]
 });
 
 //permenantly save this new witch in to MongoDB so the database can foresee their login
-    const savedWitch = await newWitch.save();
-    res.status(201).json({ message: "Witch registered successfully",
-    witch: savedWitch });
+    await newWitch.save();
+
+    res.status(201).json({ 
+        message: "Witch registered successfully",
+        witch: newWitch });
+        
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
@@ -99,7 +124,7 @@ try{
     }
 
     // ? in case a witch has no achievements array yet >:D
-const hasCryptKeeperBadge = witch.achievements?.some(badge => badge.title === "Crypt Keeper fo the Token");
+const hasCryptKeeperBadge = witch.achievements?.some(badge => badge.title === "Crypt Keeper of the Token");
 
 let updatedWitch = witch;
 
@@ -107,18 +132,29 @@ if (!hasCryptKeeperBadge) {
     updatedWitch = await Witch.findByIdAndUpdate(
         witch._id,
         {
-            $push:{
+            $addToSet:{ //NO DUPLICATES
                 achievements: {
-                    title: "Crypt Keeper of the Token",
-                    description: "Successfully implemented secure JWT and bcrypt authentication potections.",
-                    longDescription: "The shadows themselves cannot pierce this encryption. By stirring bcrypt salts into the database cauldron and sealing sessions with custom JSON Web Tokens, the sanctum remains safe from rogue elements.",
-                    iconUrl: "/badges/crypt-keeper.png", //maps to public folder
+                    $each: [ //IN CASE THEY LOGIN MULTIPLE TIMES BEFORE THE FRONTEND CAN UPDATE THEIR ACHIEVEMENTS, WE DONT WANT TO GIVE THEM MULTIPLE CRYPT KEEPER BADGES >:D
+                        {
+                    title: "Sanctum Walker",
+                    description: "Successfully entered the Inner Sanctum.",
+                    longDescription: "This place is sacred and so are the people that enter, treat yourself with care and the coven shall reward you with peace.",
+                    iconUrl: "/badges/entrance-badge.png", //maps to public folder
                     dateEarned: new Date()
+                        },
+                    {
+                        title: "Sentinal of the Sanctum",
+                        description: "Successfully navigated the treacherous path to the Inner Sanctum.",
+                        longDescription: "The path to the Inner Sanctum is filled with trials and challenges, but you have proven your worth by navigating it successfully. The coven recognizes your determination and resilience.",
+                        iconUrl: "/badges/path-badge.png", //maps to public folder
+                        dateEarned: new Date()
+                    }
+                    ]
                 }
             }
         },
         { new: true}
-    )
+    );
 }
     //etch ID and username into their secret sacred key
     const token = jwt.sign(
