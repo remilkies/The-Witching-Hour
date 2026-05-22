@@ -83,7 +83,7 @@ export default function Sanctum() {
 <div className="sanctum-menu-column">
     <div className="sanctum-menu-zone">
         <button onClick={() => setIsLookingAtApp(true)} className="submit-ritual-btn">
-            Turn to the Couldrom
+            Start the Witching Hour
         </button>
 
 <div className="ritual-controls">
@@ -130,7 +130,7 @@ export default function Sanctum() {
 
             <div className="main-app-container-wrapper">
                 <MainApp />
-                <button
+                <button className="submit-ritual-btn back-to-sanctum-btn"
             onClick={() => setIsLookingAtApp(false)}
             >
                 Back To Sanctum
@@ -138,6 +138,7 @@ export default function Sanctum() {
             </div>
         </div>
         </div>
+        
         </div>
         </>
   )

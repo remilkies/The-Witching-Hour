@@ -33,7 +33,7 @@ export default function Grimoire({ isOpen, onClose, achievements = [] }: Grimoir
                 <div className="grimoire-container" onClick={(e) => e.stopPropagation()}> {/* THE MEANS STOP THE CLICK FROM BUBBLING OUT*/}
 
                     <div className="grimoire-content">
-                        <h1>🏆 Your Grimoire achievements</h1>
+                        <h1>Your Grimoire achievements</h1>
                         <p className="grimoire-subtitle">Behold your coven badges of honour</p>
                         <hr className="grinoire-divider" />
 
