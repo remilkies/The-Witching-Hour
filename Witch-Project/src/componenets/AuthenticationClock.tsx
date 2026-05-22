@@ -30,6 +30,7 @@ export default function WitchingHourAuth({ onSuccess, isActive }: WitchingHourPr
   const [isTicking, setIsTicking] = useState(false); //wether the trap is running hehehe
   const [authStatus, setAuthStatus] = useState<'idle' | 'failed' | 'success'>('idle'); //aaaand the unlimate verdict of the trial
 
+  const [successCount, setSuccessCount] = useState(0); //track how many times a user has succesfully passed the ritual (because i mean and i want them to do it more than once >:D)
 
 
 //REAL WORLD TIME TELLING CLOCK SPELL 
@@ -90,6 +91,17 @@ useEffect(() => {
     }
   }, [isActive]); //run once on the condition of isActive in the dependancy
 
+  const handleFail = () => { //flash MEANECING RED, wait 1.5s, and reset the trap
+    setIsTicking(false);
+    setAuthStatus('failed');
+    //hehe but i am mean enough to punish your failure
+    setSuccessCount(0); //reset the sucess count on fail, they have to get 3 in a row to unlock the site, so if they mess up even once, they have to start the ritual from scratch >:D
+
+    setTimeout(() => {
+      generateNewTrap();
+    }, 1500); 
+  };
+
   //ticking heartbeat
   useEffect(() => {
     let timer: ReturnType<typeof setInterval> | null = null;
@@ -128,23 +140,26 @@ useEffect(() => {
 
     //margin of error of 12 degrees, because who needs precision when dealing with witchcraft?
     if (difference <= 12) {
+      const newCount = successCount + 1;
+      setSuccessCount(newCount);
+
+      if (newCount >= 3){
       setAuthStatus('success');
       setTimeout(() => {
         onSuccess(); //call the sucess callback and unlock site after a short DRAMATIC PAUSE
       }, 1500);
     } else {
+      setAuthStatus('success');
+      setTimeout(() => {
+        generateNewTrap();
+      }, 1000); //i'll give you a second to breathe before the next round, i'm not that mean :P
+    }
+   } else {
       handleFail();
     }
   };
 
-  const handleFail = () => { //flash MEANECING RED, wait 1.5s, and reset the trap
-    setIsTicking(false);
-    setAuthStatus('failed');
 
-    setTimeout(() => {
-      generateNewTrap();
-    }, 1500); 
-  };
 
   return (
     <div className={`auth-container 
@@ -153,6 +168,9 @@ useEffect(() => {
   <div className="auth-header">
         <h1>PROVE YOU ARE THE HUMAN YOU CLAIM</h1>
         <p>Click VERIFY when the hand strikes <strong>{targetHour}</strong>...</p>
+        <p className="ritual-progress">
+          Rituals Completed: {successCount} / 3
+        </p>
       </div>
 )}
       
@@ -188,7 +206,7 @@ useEffect(() => {
           onClick={handleVerifyClick}
           disabled={!isTicking}
           >
-            {authStatus === 'success' ? 'ACCESS GRANTED' : 'VERIFY'}
+            {authStatus === 'success' && successCount >= 3 ? 'ACCESS GRANTED' : 'VERIFY'}
           </button>
       </div>
 )}
