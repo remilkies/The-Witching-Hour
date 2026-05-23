@@ -48,7 +48,28 @@ Crawl out of the darkness of your domain, complete your tasks, and let the dopam
 * **Node.js & Extress.js:** (Thd bouncers that handle the API portals)
 * **MongoDB & Mongoose:** (The sacred cloud grimoire for saving stats)
 * **Bycrpt & JWT:** (For stirring salty passwords into the cauldron and keep sessions secure)
+
   
+## 🌙 Application Flow
+
+```text
+User Input (Credentials) → React Frontend (/login or /register) → Express Backend (bcrypt & jwt) → MongoDB Database
+                                                                                                         ↓
+                                                                                               (Data Verified / Saved)
+                                                                                                         ↓
+                                                                                     Express Backend (Returns JWT & User Data)
+                                                                                                         ↓
+                                                                                   React Frontend (Triggers Witching Hour Clock)
+                                                                                                         ↓
+                                                                 User Input (3x Timing Trial) → React Frontend (Local Validation)
+                                                                                                         ↓
+                                                                                                  (Trial Passed)
+                                                                                                         ↓
+                                                                                   Visual Rendering (Sanctum Dashboard & Badges)
+```
+
+---
+
 ## 🔮 Cloning Spell
 Want to study some spells and run this locally? 
 
