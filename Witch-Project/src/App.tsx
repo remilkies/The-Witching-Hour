@@ -172,13 +172,17 @@ export default function App() {
 
       //save everything into localStorage immidietly so if they reload the page 5 seconds later the app remembers today's date and doesn't re-roll their quests again
       //svae the new day's data
-      localStorage.setItem("witching-daily-task", JSON.stringify(newQuests));
-      localStorage.getItem("witching-completed-tasks", JSON.stringify([]));
-      localStorage.getItem("witching-daily-date", today);
+      localStorage.setItem("witching-daily-tasks", JSON.stringify(newQuests));
+      localStorage.setItem("witching-completed-tasks", JSON.stringify([]));
+      localStorage.setItem("witching-daily-date", today);
     }
   }, []); // useEffect is told to only run the thing once because of empty dependency
 
+
+  // ======================
   //THE AUTO-SAVE SPELL
+  // =======================
+
   useEffect(() => { //seperate useEffect bc 'completedWellnessTasks' is in the dependancy array at the bottom.
    //take whatever is currently in the completed list and hard-saves it to the browser's memeory
     localStorage.setItem("witching-completed-tasks", JSON.stringify(completedWellnessTasks));
@@ -194,6 +198,7 @@ export default function App() {
   const [breakSecondsLeft, setBreakSecondsLeft] = useState(BREAK_LIMIT_SECONDS);
 
   const [isQuestLogOpen, setIsQuestLogOpen] = useState(false);
+
 
   const [showWaterToast, setShowWaterToast] = useState(false);
 
@@ -228,6 +233,17 @@ export default function App() {
       return () => clearTimeout(timeout);
     }
   }, [showBreakOverToast]);
+
+const [showSaveToast, setShowSaveToast] = useState(false);
+
+useEffect(() => {
+  if (showSaveToast) {
+    const timeout = setTimeout(() => {
+      setShowSaveToast(false);
+    }, 6000); // 6 seconds
+      return () => clearTimeout(timeout);
+  }
+}, [showSaveToast]);
 
   const [isCerfewModalOpen, setIsCerfewModalOpen] = useState(false);
   // This is a little ref that we can use to trigger the 7PM alarm only once, 
@@ -316,6 +332,51 @@ export default function App() {
     // const audio = new Audio(alarm);
     // audio.play();
   };
+  const syncToCloud = async (currentPP, currentWP, currentTasks) => {
+    console.log("🪄 Casting the auto save spell...");
+
+    const loggedInWitch = localStorage.getItem("witching-username"); // In a real app, you'd get this from your auth system
+
+    if (!loggedInWitch) {
+      console.log("No witch logged in, skipping cloud save!");
+      return;
+    }
+
+    try{
+      const response = await fetch('http://localhost:5001/api/save-progress', {
+        method: 'PUT', // NOT PUSH cause we're NOT sendind data | PUT or PATCH is best for updating existing data o7
+        headers: {
+          'Content-Type': 'application/json', //telling the bouncers HEY JSON IS AT THE DOOR
+        },
+        body: JSON.stringify({
+          //the actual data payload >:D
+
+          //DEV MODE: HARD CODED FOR TESTING
+          // email: "apprentice@test.com",
+          // pp: pp,
+          // wp: wp,
+          // completedTasks: ["Test the Bridge"]
+
+          username: loggedInWitch,
+          pp: currentPP,
+          wp: currentWP,
+          completedTasks: currentTasks
+        })
+      });
+
+      //wait for the bouncer's reply and read it
+      const data = await response.json();
+
+      if (response.ok){
+        console.log("☁️ Oracle Updated!", data.message);
+        setShowSaveToast(true); // IGNITE THE CLOD SAVE APPRCIATETION TOAST <3
+      } else {
+        console.log("The Bouncers said no:", data);
+      }
+    } catch (error) {
+      console.error("💀 The bridge collapsed:", error);
+    }
+  };
 
   const handleFinishBreak = () => {
     const secondsSpentOnBreak = BREAK_LIMIT_SECONDS - breakSecondsLeft;
@@ -323,13 +384,26 @@ export default function App() {
     const breakWp = minutesOnBreak > 0 ? minutesOnBreak : 0; // Base wellness points from break time (1 WP per minute, minimum 0)
 
     const bonusWp = completedWellnessTasks.length * 15;
-    setWp((prev) => prev + breakWp + bonusWp); // Add both base WP from break time and bonus WP from completed wellness tasks
 
+    
+    // setWp((prev) => prev + breakWp + bonusWp); // Add both base WP from break time and bonus WP from completed wellness tasks
 
+    // NEW STUFF FOR THE COULD SYNIC THINGY TO WORK
+const newWpTotal = wp + breakWp + bonusWp;
+setWp(newWpTotal); // Update WP state with the new total
+
+let newPpTotal = pp;
     if (!isCustomTimerRunning) {
       const minutesWorked = Math.floor(workSeconds / 60);
-      setPp((prev) => prev + minutesWorked); // Add PP based on minutes worked in the session
+      
+      // setPp((prev) => prev + minutesWorked); // Add PP based on minutes worked in the session
+      // NEW STUFF FOR CLOUD SYNC
+      newPpTotal = pp + minutesWorked;
+      setPp(newPpTotal);
     }
+
+    // AUTO SAVE TRIGGER
+    syncToCloud(newPpTotal, newWpTotal, completedWellnessTasks); //SEND EXACT TOTALS TO THE VAULT >;D
 
     setWorkSeconds(0); // Reset work seconds for the next session
     setIsBreakModalOpen(false); //BANISH THE MODAL. YOU CAN WORK NOW :D
@@ -412,38 +486,7 @@ export default function App() {
 
   //THE BRIDGING SPELL: using fetch to get the islands of front-end and backend to drop the draw bridge and speak to eachother >:D
 
-  const syncToCloud = async () => {
-    console.log("🪄 Casting the bridge spell...");
 
-    try{
-      const response = await fetch('http://localhost:5001/api/save-progress', {
-        method: 'POST', //cause we're sendind data
-        headers: {
-          'Content-Type': 'application/json', //telling the bouncers HEY JSON IS AT THE DOOR
-        },
-        body: JSON.stringify({
-          //the actual data payload >:D
-
-          //DEV MODE: HARD CODED FOR TESTING
-          email: "apprentice@test.com",
-          pp: 10,
-          wp: 5,
-          completedTasks: ["Test the Bridge"]
-        })
-      });
-
-      //wait for the bouncer's reply and read it
-      const data = await response.json();
-
-      if (response.ok){
-        console.log("Draw bridge down!", data.message);
-      } else {
-        console.log("The Bouncers said no:", data);
-      }
-    } catch (error) {
-      console.error("💀 The bridge collapsed:", error);
-    }
-  };
 
   return (
     <>
@@ -480,6 +523,20 @@ export default function App() {
             <p>Break over! Click the Start button to resume your productivity session &lt;3</p>
 
             <div className="toast-time-bar"></div>
+          </div>
+        )}
+
+        {/* CONFIM AUTO SAVE SPELL WORKED TOAST */}
+        {showSaveToast && (
+          <div className="water-toast">
+            <div className="water-toast-header">
+            <h3> ݁₊ ⊹ . ݁˖ .Oracle Updated ݁₊ ⊹ . ݁˖ . ݁</h3>
+
+            <button className="toast-close" onClick={() => setShowSaveToast(false)}>
+              X
+            </button>
+            </div>
+            <p>Progress saved for <strong>{localStorage.getItem("witching-username") || "Mysterious Witch"}</strong>The coven is proud of your dedication and you should be too &lt;3</p>
           </div>
         )}
       {isQuestLogOpen && (

@@ -185,6 +185,42 @@ if (!hasSanctumBadge) {
 }
 });
 
+// ========================================
+// 3. THE AUTO-SAVE-SPELL (UPDATE PROGESS)
+// ========================================
+
+router.put('/save-progress', async (req, res) => {
+
+    try {
+
+        //umpack front end payload
+        const {username, pp, wp, completedTasks, hasMidnightElixir} = req.body;
+
+        //find the witch by their coven name and update their stats
+        const updatedWitch = await Witch.findOneAndUpdate(
+            { username: username },
+            {
+                pp: pp,
+                wp: wp,
+                completedTasks: completedTasks,
+            },
+            { new: true } //tells Mongo to gGIVE ME BACK MY FREASHLY UPDATED DATA 
+        );
+
+        //if the witch vanished, tell the frontend
+        if (!updatedwitch) {
+            return res.status(404).json({ message: 'Witch not found in the Oracle! Did you vanish?' });
+        }
+
+        //SUCCESS! LET THE ANOUNCE TO THE MASSES AND LET IT BE KNOWN THAT THE DRAWBRIDGE WAS CROSSED
+        res.status(200).json({
+            message: `Progress saved for ${updatedWitch.username}. The coven is proud of your dedication!`,
+            witch: updatedWitch
+        });
+    } catch (error) {
+        res.status(500).json({ message: `The Oracle told to beware: ${error.message}` });
+    }
+})
 //READ ONE USER
 router.get('/:id', async (req, res) => {
     try{

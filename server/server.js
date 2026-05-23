@@ -72,7 +72,8 @@ app.post('/api/save-progress', async (req, res) => {
     }
 })
 
-app.post('/api/consume-elixir', async (req, res) => {
+//chnaged post to put so it alighns with the Front end spells
+app.put('/api/consume-elixir', async (req, res) => {
     console.log("🧪 Someone is trying to drink the Midnight Elixir!");
     try {
         const { username } = req.body;
