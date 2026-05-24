@@ -41,7 +41,7 @@ const Witch = new mongoose.Schema({
 
         // Architect of the MEARN Sanctum (for sbuilding the entire full-stack application)
         // Master of Two Realms (For succesfully connecting the frontend and the backend)
-        // Crypt Keeper of the Keys (For successfully implementing secure jwt and bcrypt authentication)
+        
         // Frontend Sorcerer (For bringing wireframs to life >:D)
         dateEarned: { type: Date, default: Date.now },
         iconUrl: { type: String, default: "" }

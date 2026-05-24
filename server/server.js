@@ -1,5 +1,8 @@
 //CASTLE GATES: Setpup that connects the bouncers and tells the server what port to listen to :D
 
+// The Golden Rule: Is it worth storing in the DB?
+// The rule of thumb is: If a user can bypass a restriction by hitting Refresh (F5) or restarting the app, it must live in the database. If hasMidnightElixir only lives in the frontend React state, a sumbag witch (aka me) could drink the elixir, get their 15-minute productivity boost, refresh the app to reset the state back to true, and drink it again. Storing it in the database prevents this ✨Infinite Elixir Exploit✨.
+
 require('dotenv').config();
 
 // const express = require('cors'): This is like trying to build a house using the "No Trespassing" sign as the foundation. You need the actual express library to build the server structure.
@@ -48,29 +51,30 @@ app.get('/api/health', (req, res) => {
 
 const User = require('./models/Witch'); //Importing the user cookie cutter(blueprint) (node and js speak the same language so you don't need the extention ".js" to introduce them <33)
 
-//THE SAVE PROGRESS PORTAL 
-app.post('/api/save-progress', async (req, res) => {
-    console.log("🔔 Ding Dong! Someone is at the door!");
-    console.log("Request Body:", req.body);
-    try{
-        const { username, pp, wp, completedTasks, achievements } = req.body;
+//THE SAVE PROGRESS PORTAL  - handled in the routes/witch.js now, but keeping this here for reference and because I like commenting stuff (and to look back it old stuff for reference for different projects)  :D
+// app.post('/api/save-progress', async (req, res) => {
+//     console.log("🔔 Ding Dong! Someone is at the door!");
+//     console.log("Request Body:", req.body);
+//     try{
+//         const { username, pp, wp, completedTasks, achievements } = req.body;
 
-        const uniqueAchievements = achievements ? achievements.filter((badge, index, self) =>
-            index === self.findIndex((b) => b.title === badge.title)
-        ) : []; //OBJECT DUPLICATION SPELL - removes duplicate badges based on the title, if achievements exist, otherwise returns an empty array
-        //find user by username (or is it more secure to use email?) and update stats
-        //{ upsert: true } means "If they dont exist, create them o7"
-        const updatedUser = await User.findOneAndUpdate(
-            { username: username }, //who to find
-            { pp, wp, completedTasks, achievements: uniqueAchievements }, //what to update/change
-            { new: true, upsert: true } //return the updated user OR chreate one :D
-        );
+//         const uniqueAchievements = achievements ? achievements.filter((badge, index, self) =>
+//             index === self.findIndex((b) => b.title === badge.title)
+//         ) : []; //OBJECT DUPLICATION SPELL - removes duplicate badges based on the title, if achievements exist, otherwise returns an empty array
+//         //find user by username (or is it more secure to use email?) and update stats
+//         //{ upsert: true } means "If they dont exist, create them o7"
+//         const updatedUser = await User.findOneAndUpdate(
+//             { username: username }, //who to find
+//             { pp, wp, completedTasks, achievements: uniqueAchievements }, //what to update/change
+//             { new: true, upsert: true } //return the updated user OR chreate one :D
+//         );
 
-        res.json({ message: "✨Progress synced to the Cloud Domain✨", user: updatedUser });
-    } catch (err) {
-        res.status(500).json({message: "💀 The save spell failed", error: err.message})
-    }
-})
+//         res.json({ message: "✨Progress synced to the Cloud Domain✨", user: updatedUser });
+//     } catch (err) {
+//         res.status(500).json({message: "💀 The save spell failed", error: err.message})
+//     }
+// })
+
 
 //chnaged post to put so it alighns with the Front end spells
 app.put('/api/consume-elixir', async (req, res) => {
