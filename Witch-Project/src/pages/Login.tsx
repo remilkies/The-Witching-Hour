@@ -82,10 +82,11 @@ export default function Login() {
     setAuthStage('passed');
 
     //SAVE COVEN USERNAME SO THE AUTO-SAVE SPELL CAN FIND IT LATER <3
-    if (currentWitch && currentWitch.username){
-      localStorage.setItem("witching-username", currentWitch.username);
+    // ✨ THE PURIFIED SPELL: Save the local state variable directly! ✨
+    if (username){
+      localStorage.setItem("witching-username", username);
     }
-    
+
     //redirect user to the dashbpord room
     //window.location.href = "/dashboard"
   
