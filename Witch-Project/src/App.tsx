@@ -179,9 +179,6 @@ export default function App() {
   }, []); // useEffect is told to only run the thing once because of empty dependency
 
 
-  // ======================
-  //THE AUTO-SAVE SPELL
-  // =======================
 
   useEffect(() => { //seperate useEffect bc 'completedWellnessTasks' is in the dependancy array at the bottom.
    //take whatever is currently in the completed list and hard-saves it to the browser's memeory
@@ -245,6 +242,62 @@ useEffect(() => {
   }
 }, [showSaveToast]);
 
+  // ======================
+  //THE AUTO-SAVE SPELL
+  // =======================
+
+  const syncToCloud = async (currentPP: number, currentWP: number, currentTasks: string[]) => {
+
+    console.log("🪄 Casting the auto save spell...");
+
+    //peer into the crystal ball (local storage)
+    const loggedInWitch = localStorage.getItem("witching-username"); // In a real app, you'd get this from your auth system
+
+    if (!loggedInWitch) {
+      console.log("No witch logged in, skipping cloud save!");
+      return;
+    }
+
+
+    try{
+      
+      const response = await fetch('http://localhost:5001/api/save-progress', {
+        method: 'PUT', // NOT PUSH cause we're NOT sendind data | PUT or PATCH is best for updating existing data o7
+        headers: {
+          'Content-Type': 'application/json', //telling the bouncers HEY JSON IS AT THE DOOR
+        },
+        body: JSON.stringify({
+          //the actual data payload >:D
+
+          //DEV MODE: HARD CODED FOR TESTING
+          // email: "apprentice@test.com",
+          // pp: pp,
+          // wp: wp,
+          // completedTasks: ["Test the Bridge"]
+
+          username: loggedInWitch,
+          pp: currentPP,
+          wp: currentWP,
+          completedTasks: currentTasks
+        })
+      });
+
+      //wait for the bouncer's reply and read it
+      const data = await response.json();
+      console.log("The Oracle Has Spoken:", data);
+
+      if (response.ok){
+        console.log("☁️ Oracle Updated!", data.message);
+        setShowSaveToast(true); // IGNITE THE CLOD SAVE APPRCIATETION TOAST <3
+      } else {
+        console.log("The Bouncers said no:", data);
+      }
+    } catch (error) {
+      console.error("Auto-save spell interrupted", error);
+    }
+
+  };
+
   const [isCerfewModalOpen, setIsCerfewModalOpen] = useState(false);
   // This is a little ref that we can use to trigger the 7PM alarm only once, 
   const hasTriggered7PM = React.useRef(false);
@@ -272,6 +325,17 @@ useEffect(() => {
 
         const audio = new Audio(eveningAlarm);
         audio.play();
+
+        //==================================
+        // 7THE 7PM CURFEW AUTO-SAVE SPELL
+        //==================================
+
+        const latestPP = parseInt(localStorage.getItem("witching-pp") || "0");
+        const latestWP = parseInt(localStorage.getItem("witching-wp") || "0");
+        const latestTasks = JSON.parse(localStorage.getItem("witching-completed-tasks") || "[]");
+
+        syncToCloud(latestPP, latestWP, latestTasks);
+
       }
     }, 1000); // Check time every second
 
@@ -332,51 +396,8 @@ useEffect(() => {
     // const audio = new Audio(alarm);
     // audio.play();
   };
-  const syncToCloud = async (currentPP, currentWP, currentTasks) => {
-    console.log("🪄 Casting the auto save spell...");
 
-    const loggedInWitch = localStorage.getItem("witching-username"); // In a real app, you'd get this from your auth system
 
-    if (!loggedInWitch) {
-      console.log("No witch logged in, skipping cloud save!");
-      return;
-    }
-
-    try{
-      const response = await fetch('http://localhost:5001/api/save-progress', {
-        method: 'PUT', // NOT PUSH cause we're NOT sendind data | PUT or PATCH is best for updating existing data o7
-        headers: {
-          'Content-Type': 'application/json', //telling the bouncers HEY JSON IS AT THE DOOR
-        },
-        body: JSON.stringify({
-          //the actual data payload >:D
-
-          //DEV MODE: HARD CODED FOR TESTING
-          // email: "apprentice@test.com",
-          // pp: pp,
-          // wp: wp,
-          // completedTasks: ["Test the Bridge"]
-
-          username: loggedInWitch,
-          pp: currentPP,
-          wp: currentWP,
-          completedTasks: currentTasks
-        })
-      });
-
-      //wait for the bouncer's reply and read it
-      const data = await response.json();
-
-      if (response.ok){
-        console.log("☁️ Oracle Updated!", data.message);
-        setShowSaveToast(true); // IGNITE THE CLOD SAVE APPRCIATETION TOAST <3
-      } else {
-        console.log("The Bouncers said no:", data);
-      }
-    } catch (error) {
-      console.error("💀 The bridge collapsed:", error);
-    }
-  };
 
   const handleFinishBreak = () => {
     const secondsSpentOnBreak = BREAK_LIMIT_SECONDS - breakSecondsLeft;
@@ -536,7 +557,7 @@ let newPpTotal = pp;
               X
             </button>
             </div>
-            <p>Progress saved for <strong>{localStorage.getItem("witching-username") || "Mysterious Witch"}</strong>The coven is proud of your dedication and you should be too &lt;3</p>
+            <p>Progress saved for <strong>{localStorage.getItem("witching-username") || "Mysterious Witch"}</strong> The coven is proud of your dedication and you should be too &lt;3</p>
           </div>
         )}
       {isQuestLogOpen && (

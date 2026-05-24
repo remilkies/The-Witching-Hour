@@ -81,6 +81,11 @@ export default function Login() {
     console.log("Humanity verified! Access granted to the Inner Sanctum");
     setAuthStage('passed');
 
+    //SAVE COVEN USERNAME SO THE AUTO-SAVE SPELL CAN FIND IT LATER <3
+    if (currentWitch && currentWitch.username){
+      localStorage.setItem("witching-username", currentWitch.username);
+    }
+    
     //redirect user to the dashbpord room
     //window.location.href = "/dashboard"
   
