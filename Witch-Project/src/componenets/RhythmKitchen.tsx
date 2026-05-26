@@ -2,22 +2,25 @@ import React, {useState, useEffect } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import '../App.css';
-import Grimoire from "../componenets/Grimoire";
-import MainApp from "../App";
+
 import Window from "../assets/stainWindow.png";
-import GrimoireHolder from "../assets/grimoireHolder.png";
+
 import floor from "../assets/floor.png";
 
-export default function Sanctum() {
+export default function RhythmKitchen() {
     const location = useLocation();
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
 
     //unpaack data sent from loigin >:D
-    const currentWitch = location.state?.witch;
-    const [isGrimoireOpen, setIsGrimoireOpen] = useState(false);    
+    const currentWitch = location.state?.witch || {
+        username: "Auch-Witch",
+        pp: 0,
+        pw: 0
+    };
 
-    const [lookingAtApp, setIsLookingAtApp] = useState(false);
+
+   
 
     //local state to keep track of wether the music link is actuve
     const [isSpotifyConnected, setIsSpoitifyConnected] = useState(false);
@@ -54,51 +57,12 @@ export default function Sanctum() {
       console.log("🔮 Teleporting to the Spotify OAuth Gate...");
 
       //direct link to the backend login endpoint :P
-      window.location.href = "http://localhost:5001/api/spotify/login";
+      window.location.href = "http://127.0.0.1:5001/api/spotify/login";
     };
-
-
-    if (!currentWitch){
-        navigate("/login")
-        return null; //if we don't have a witch, banich them back to the login page and render nothing
-    }
-
-      //LOGOUT SPELL
-  const handleLogout = () => {
-    localStorage.removeItem("witch_temp_token");
-    alert("Logged out safely. The shadows consume your presence")
-    navigate("/login");
-  }
-
-
-  //THE SPELL OF BANISHMENT (DELETE ACCOUNT FROM DATABASE)
-  const handleDeleteAccount = async () => {
-    if (!currentWitch?.id) return;
-
-    const doubleCheak = window.confirm("Are you sure you wish to be banished from the coven? This spellconnot be undone!");
-    if (!doubleCheak) return;
-
-    try {
-      //HITS BACKEND ROUTER.DELETE("/:id") ENPOINT
-      const response = await fetch(`http://localhost:5001/api/${currentWitch.id}`, {
-        method: "DELETE"
-      });
-
-      if (!response.ok) throw new Error("Banishment failed. Your soul stays here.");
-
-      alert("Account permanantly deleted");
-      handleLogout();
-
-    } catch (err: any) {
-      alert(err.message);
-
-    }
-  };
-
   return (
     <>
     <div className="sanctum-wallpaper-wrapper">
-        <div className={`sanctum-slider ${lookingAtApp ? "slide-to-app" : ""}`}>
+        
         <div className="sanctum-section dashboard-room">
 
     <div className="dashboard-sanctum">
@@ -117,25 +81,6 @@ export default function Sanctum() {
 
           {/* MAIN ALTER LOGIN/REGISTRATION COL */}
           <Col md={4}>
-        {/* bookshelf and grimoire */}
-        
-<div className="sanctum-menu-column">
-    <div className="sanctum-menu-zone">
-        <button onClick={() => setIsLookingAtApp(true)} className="submit-ritual-btn">
-            Start the Witching Hour
-        </button>
-
-<div className="ritual-controls">
-<button onClick={handleLogout} className="submit-ritual-btn">
-    Leave Coven
-</button>
-
-<button onClick={handleDeleteAccount} className="submit-ritual-btn delete-account-btn">
-    Banish Self from Coven
-</button>
-</div>
-</div>
-</div>
 
 <div className="sanctum-control-room">
   <div className="spotify-card">
@@ -159,14 +104,6 @@ export default function Sanctum() {
   </div>
 </div>
 
-
-
-        <Grimoire
-            isOpen={isGrimoireOpen}
-            onClose={() => setIsGrimoireOpen(false)}
-            achievements={currentWitch.achievements}
-            />
-
           </Col>
 
           <Col md={4}>
@@ -175,32 +112,15 @@ export default function Sanctum() {
         </Row>
       </Container>
 
-<button className="open-grimoire-btn" onClick={() => setIsGrimoireOpen(true)}>
-            <img src={GrimoireHolder} alt="grimoire holder" className="grimoire-holder" />
-        </button>
 
 <img src={floor} alt="wood floor" className="sanctum-floor" />
 
         </div>
         </div>
 
-        {/* MAINAPP THINGY THING */}
 
-        <div className="sanctum-section app-room">
-            
+        </div>
 
-            <div className="main-app-container-wrapper">
-                <MainApp />
-                <button className="submit-ritual-btn back-to-sanctum-btn"
-            onClick={() => setIsLookingAtApp(false)}
-            >
-                Back To Sanctum
-            </button>
-            </div>
-        </div>
-        </div>
-        
-        </div>
         </>
   )
 }

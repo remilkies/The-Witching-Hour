@@ -10,7 +10,10 @@ const express = require('express');//fixed
 const cors = require('cors');
 const mongoose = require('mongoose');// npm install mongoose
 
+
+const spotifyRoutes = require('./routes/spotifyRoutes'); //IMPORTING THE SPOTIFY RHYTHM KITCHEN TO THE SANCTUM
 // THE DEV DEBUG PROTOCOL
+
 console.log("Cheaking the sacred keys...");
 console.log("Is MONGO_URI present?", !!process.env.MONGO_URI)
 
@@ -21,6 +24,10 @@ const PORT = process.env.PORT || 5001;
 //THE BOUNCERS
 app.use(cors()); //allows react to talk to this server
 app.use(express.json()); //allows the server to read incoming json data
+console.log("Bouncers are in position, ready to guard the castle gates!");
+
+
+app.use('/api/spotify', spotifyRoutes);
 
 //connects the authentication router thingy
 const witchRoutes = require('./routes/witch')

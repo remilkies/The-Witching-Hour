@@ -1274,6 +1274,11 @@ align-items: center;
   filter: drop-shadow(0 0 10px rgba(153, 110, 141, 0.8));
 }
 
+.spotify-card{
+  background-color: #251b25;
+  padding: 20px;
+  border-radius: 8px;
+}
 @keyframes basketWiggle{
   0%, 100% { transform: rotate(0deg); }
   10%, 30% { transform: rotate(-8deg); }
