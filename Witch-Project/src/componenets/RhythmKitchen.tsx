@@ -23,7 +23,7 @@ export default function RhythmKitchen() {
 
   //unpaack data sent from loigin >:D
   const currentWitch = location.state?.witch || {
-    username: "Witch Apprentice",
+    username: "Coven Apprentice",
     pp: 0,
     pw: 0
   };
