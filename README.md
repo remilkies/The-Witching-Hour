@@ -24,6 +24,7 @@ Crawl out of the darkness of your domain, complete your tasks, and let the dopam
 * **📝 The Dopamine Machine:** A to-do list that doesn't just cross things off—it throws confetti and plays a little victory tune because you deserve it, and a little progress bar to keep track of the amazing work you've done <3
 * **⏳ The Time Lord:** Set your project timers. *Note: You cannot work for more than 45 minutes straight. The app will literally yell at you with a giant pop-up to go touch grass (or at least your living room carpet).*
 * **💧 Survival Toggles:** Automated, non-negotiable wellness reminders
+* **🔮 Rhythm Realm Portal:** Click the radio to connect your Spotify account straight to the Inner Sanctum. This self-healing, remote-control alchemical mirror continuously polls the music leylines, broadcasts popup toasts when a new track starts brewing, and effortlessly resurrects dead access tokens right in the background so the rhythm never stops. >:D (Design inspired by Hazbin Hotel <3)
 
   
 * **🛑 Aggressive Wellness Timer & Economy**
@@ -35,8 +36,7 @@ Crawl out of the darkness of your domain, complete your tasks, and let the dopam
 ## Coming Soon 
 * **🔮 The Vibe Check (Ambient Audio):** * Click the glowing purple fireplace for crackling fire sounds.
   * Click the gothic window for soothing rain ambiance.
-  * Click the radio to blast MY mixtapes. (if you really want you can clone this and replace the audio files with your own but.....you're not gonna do that <3>) (Design inspired by Hazbin Totel)
-  * **🐈‍⬛ Mem Mem:** THERE'S A KET. Their name is Mem.  Mem doesn't technically *do* anything, but he's adorable and deserves an honourable mention.
+  * **🐈‍⬛ Mem Mem:** KET. Their name is Mem.  Mem doesn't technically *do* anything, but he's adorable and deserves an honourable mention.
     
 ## 🛠️ Built With
 ## The Visual Spellbook (Frontend):
@@ -107,5 +107,29 @@ Want to study some spells and run this locally?
   ```bash
   npm run app:build
 ```
+
+## 🎧 Opening the Portal to the Rhythm Realm (Spotify Setup)
+
+Want to connect your own magical musical leylines to the Inner Sanctum? Because this app acts as a remote control for your live Spotify session, you will need to register your own local version of the grimoire with the Spotify High Council. 
+
+**Note:** You must have an active **Spotify Premium** account and have Spotify playing on a device (desktop or mobile) for the Web API controls to work!
+
+### 📜 Step 1: Petition the High Council (Create an App)
+1. Head over to the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard) and log in.
+2. Click **Create App**.
+3. Give your app a name (e.g., "Rhythm Kitchen Local") and a short description.
+4. For the **Redirect URI**, you *must* enter exactly this coordinate for the local portal to catch the keys:
+   `http://127.0.0.1:5001/api/spotify/callback`
+5. Check the Web API box, agree to the terms, and hit save!
+
+### 🔑 Step 2: Scribe Your Secret Keys
+Once your app is created, go to its Settings page. You will see a `Client ID` and a `Client Secret`. **Do not share these with anyone!**
+
+1. In the `server` folder of this project, create a new file and name it exactly `.env`
+2. Add your keys to the file like this:
+   ```env
+   CLIENT_ID=your_client_id_here
+   CLIENT_SECRET=your_client_secret_here
+
 * **Remember:** You can't code a glass of water. Drink up.
 P.S If anyone figures out how to code water, let me know, so my boyfriend can get off my back (love you babe <3)
