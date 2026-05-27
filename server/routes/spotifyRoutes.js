@@ -95,4 +95,50 @@ router.get('/callback', async (req, res) => { //Spotify accpeted the login and t
     
 });
 
+// ====================================
+//  3. ROUTE 3: THE RESSURECTION SPELL
+// ====================================
+
+router.get('/refresh_token', async (req, res) => { //This is the secret spell that lets us get a new access token without having to go through the whole login process again
+    console.log("🔮 [Spotify Auth] The access token died! Attempting to revive it...");
+    const refresh_token = req.query.refresh_token;
+
+    if (!refresh_token) {
+        console.log("☠️  [Spotify Auth] ERROR: No refresh token provided for resurrection spell.");
+        return res.status(400).json({error: "No refresh token provided."});
+    }
+
+    try {
+        const response = await fetch('https://accounts.spotify.com/api/token', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Basic ' + Buffer.from(Client_ID + ':' + CLIENT_SECRET).toString('base64')
+            },
+            body: querystring.stringify({
+                grant_type: 'refresh_token',
+                refresh_token: refresh_token
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error("☠️  [Spotify Auth] ERROR from Spotify during ressurection", data);
+            throw new Error(data.error_description || 'Token refresh failed');
+        }
+
+        console.log("🎵 [Spotify Auth] Resurrection successful! New access token acquired.");
+
+        res.json({
+            access_token: data.access_token,
+            //somtimes spotify grants a new refresh token but sometimes not soooo if they dont we use the OG one o7
+            refresh_token: data.refresh_token || refresh_token
+        });
+    } catch (error) {
+        console.error("☠️ [Spotify Auth] Resurrection spell failed:", error);
+        res.status(500).json({error: error.message});
+    }
+});
+
 module.exports = router;
