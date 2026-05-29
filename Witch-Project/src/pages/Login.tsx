@@ -142,14 +142,14 @@ export default function Login() {
                   onClose={() => setIsTrophyRoomOpen(false)}
                   achievements={currentWitch?.achievements || []}
                 />
-
+{/* 
                 <button onClick={handleLogout} className="submit-ritual-btn">
                   Leave Coven (Logout)
                 </button>
 
                 <button onClick={handleDeleteAccount} className="submit-ritual-btn">
                   Banish Account
-                </button>
+                </button> */}
               </div>
 
             ) : (

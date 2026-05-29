@@ -6,8 +6,28 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import Login from './pages/Login';
 import Sanctum from './pages/Sanctum';
-import RhythmKitchen from './componenets/RhythmKitchen';
+// import RhythmKitchen from './componenets/RhythmKitchen';
 
+// ==================================
+// SPOTIFY HASH REALM TRAFFIC CONTROL (DUDE KILL ME THIS IS SO MUCH MORE WORK THAN I THOUGHT HOLY COW)
+// ==================================
+
+const params = new URLSearchParams(window.location.search);
+const spotifyToken = params.has('spotify_token');
+const spotifyRefresh = params.get('spotify_refresh');
+
+if (window.location.pathname.includes('/sanctum') || spotifyToken) {
+
+  if (spotifyToken) {
+    localStorage.setItem('spotify_access_token', spotifyToken);
+  }
+
+  if (spotifyRefresh) {
+    localStorage.setItem('spotify_refresh_token', spotifyRefresh)
+  }
+
+  window.location.href = window.location.origin + '/#/sanctum'
+}
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

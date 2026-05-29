@@ -85,7 +85,7 @@ export default function RhythmKitchen() {
 
     try {
       console.log("🥀 Attempting the resurrection spell...");
-      const response = await fetch(`http://127.0.0.1:5001/api/spotify/frefresh_token?refresh_token=${refreshToken}`);
+      const response = await fetch(`http://127.0.0.1:5001/api/spotify/refresh_token?refresh_token=${refreshToken}`);
       const data = await response.json();
 
       if (data.access_token) {
@@ -255,50 +255,47 @@ export default function RhythmKitchen() {
                 {isPanelOpen && (
                   <div className="sanctum-control-room">
                     <div className="spotify-card">
-                      <h3>Rhythm Kitchen Status</h3>
-                    <button className="close-rhythm-btn" onClick={() => setIsPanelOpen(false)}>x</button>
+                      <button className="close-rhythm-btn toast-close" onClick={() => setIsPanelOpen(false)}>x</button>
+                      <h3> ݁₊ ⊹ . ݁˖ .Spotify Portal ݁₊ ⊹ . ݁˖ . ݁</h3>
+                    
 
                       {isSpotifyConnected ? (
 
                           currentTrack ? (
                             <>
-                            <div style={{ color: "#1DB954", fontWeight: "bold" }}>
-                              <p>Connected to Spotify! Your musical rituals are ready to commence.</p>
-                              {/* ------------ INSEART LIVE TRACK DISPLAY HERE >:D ----------------- */}
-                            </div>
 
-                            <div className="alchemy-player-display" style={{ marginTop: "1em", textAlign: "center" }}>
+                            <div className="alchemy-player-display">
 
                               <img src={currentTrack.albumImg}
-                                alt="Akbum Artwork"
-                                style={{ width: "160px", height: "160px", borderRadius: "10px", boxShadow: "0 4px 8px rgba(0,0,0,0.2)", marginBottom: "1em" }} />
+                                alt="Album Artwork"
+                                style={{ width: "300px", height: "300px", borderRadius: "10px", boxShadow: "0 4px 8px rgba(0,0,0,0.2)", marginBottom: "1em", padding: "3px" }} />
 
                               {/* TRACK DETAILS */}
-                              <h4 style={{ color: "#1DB954" }}>{currentTrack.title}</h4>
+                              <h4 style={{ color: "#1DB954", fontSize: "13rem" }}>{currentTrack.title}</h4>
                               <p style={{ color: "#1DB954", fontStyle: "italic" }}>{currentTrack.artist}</p>
 
                               {/* RITUAL CONTROLS */}
                               <div className="player-buttons" style={{ marginTop: "20px", display: "flex", justifyContent: "center", gap: "15px" }}>
 
                                 <button className="spotify-action-btn" onClick={() => sendPlayerCommands("previous", "POST")}
-                                  style={{ backgroundColor: "#1DB954", color: "#fff", border: "none", padding: "10px 20px", borderRadius: "20px", cursor: "pointer" }}>
+                                  >
                                   ◀◀
                                 </button>
 
                                 {currentTrack.isPlaying ? (
                                   <button className="spotify-action-btn" onClick={() => sendPlayerCommands("pause", "PUT")}
-                                    style={{ backgroundColor: "#1DB954", color: "#fff", border: "none", padding: "10px 20px", borderRadius: "20px", cursor: "pointer" }}>
+                                    >
                                     ⏸
                                   </button>
                                 ) : (
                                   <button className="spotify-action-btn" onClick={() => sendPlayerCommands("play", "PUT")}
-                                    style={{ backgroundColor: "#1DB954", color: "#fff", border: "none", padding: "10px 20px", borderRadius: "20px", cursor: "pointer" }}>
+                                    >
                                     ▶
                                   </button>
                                 )}
 
                                 <button className="spotify-action-btn" onClick={() => sendPlayerCommands("next", "POST")}
-                                  style={{ backgroundColor: "#1DB954", color: "#fff", border: "none", padding: "10px 20px", borderRadius: "20px", cursor: "pointer" }}>
+                                  >
                                   ▶▶
                                 </button>
                               </div>

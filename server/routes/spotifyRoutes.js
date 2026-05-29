@@ -86,7 +86,7 @@ router.get('/callback', async (req, res) => { //Spotify accpeted the login and t
         console.log("🎵 [Spotify Auth] 8. Teleporting witch back to the Sanctum...");
 
         // for my own ✨personal use✨, i'm gonna redirect back to my React App dashboard >:D
-        res.redirect(`http://localhost:5173/#/?spotify_token=${access_token}&spotify_refresh=${refresh_token}`); //ALWAYS CHEAK WHAT PORT REACT/FRONT END IS RUNNING ON IN CONSOLE
+        res.redirect(`http://localhost:5173/sanctum?spotify_token=${access_token}&spotify_refresh=${refresh_token}`); //ALWAYS CHEAK WHAT PORT REACT/FRONT END IS RUNNING ON IN CONSOLE
 
     } catch(error) {
         console.error("☠️ Spotify Setup Error:", error);

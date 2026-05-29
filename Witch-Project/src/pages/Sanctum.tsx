@@ -15,7 +15,29 @@ export default function Sanctum() {
     const [searchParams, setSearchParams] = useSearchParams();
 
     //unpaack data sent from loigin >:D
-    const currentWitch = location.state?.witch;
+    // const currentWitch = location.state?.witch;
+        // get data from navigation state, fallback to localStorage if we just redirected from spotify
+
+        const [currentWitch, setCurrentWitch] = useState(() => {
+console.log("[Sanctum Boot 1] Sanctum is mounting...");
+console.log("[Sanctum Boot 2] location.state?witch is:", location.state?.witch);
+          if (location.state?.witch) {
+            console.log("[Sanctum Boot 3] Witch identified in nav! Sealing in localStorgae...");
+            localStorage.setItem("current_witch", JSON.stringify(location.state.witch));
+    
+            return location.state.witch
+    
+          }
+    
+    
+    
+          const savedWitch = localStorage.getItem("current_witch");
+    console.log("[Sanctum Boot 4] Cheaked localStorage fo 'current_witch'. Result:", savedWitch);
+          return savedWitch ? JSON.parse(savedWitch) : null
+    
+        });
+
+        
     const [isGrimoireOpen, setIsGrimoireOpen] = useState(false);    
 
     const [lookingAtApp, setIsLookingAtApp] = useState(false);
@@ -23,32 +45,33 @@ export default function Sanctum() {
     //local state to keep track of wether the music link is actuve
     const [isSpotifyConnected, setIsSpoitifyConnected] = useState(false);
 
-    useEffect(() => {
-      //look for the url the backend forewarded for the ✨tokens✨
-      const token = searchParams.get("spotify_token");
-      const refresh = searchParams.get("spotify_refresh")
 
-      if (token && refresh) {
-        console.log("⚡ [Sanctum] Caught the Spotifiy keys flying through the ether!")
+    // useEffect(() => {
+    //   //look for the url the backend forewarded for the ✨tokens✨
+    //   const token = searchParams.get("spotify_token");
+    //   const refresh = searchParams.get("spotify_refresh")
 
-        //sealing in local storage so they survive browser refreashes
-        localStorage.setItem("spotify_access_token", token);
-        localStorage.setItem("spotify_refresh_token", refresh);
+    //   if (token && refresh) {
+    //     console.log("⚡ [Sanctum] Caught the Spotifiy keys flying through the ether!")
 
-        setIsSpoitifyConnected(true);
+    //     //sealing in local storage so they survive browser refreashes
+    //     localStorage.setItem("spotify_access_token", token);
+    //     localStorage.setItem("spotify_refresh_token", refresh);
 
-        //✨VANISHING ACT✨ - clear the tokens from the url so they dont linger around
-        //CHANGES '/sanctum?spotify_token=insertrandomstring123' back to just the good ol '/sanctum'
-        setSearchParams({});
-      } else {
-        //do we alreayd have and existing token from the previous session 
-        console.log("👻 No new Spotify keys found in the ether. Checking for existing tokens in the shadows...")
-        const existingToken = localStorage.getItem("spotify_access_token");
-        if (existingToken) {
-          setIsSpoitifyConnected(true);
-        }
-      }
-    }, [searchParams, setSearchParams]); //dependancies for the useEffect - we want to re-run this effect if the search params change (like when we get new tokens) or if the function to set search params changes (which is unlikely but good practice to include) :D
+    //     setIsSpoitifyConnected(true);
+
+    //     //✨VANISHING ACT✨ - clear the tokens from the url so they dont linger around
+    //     //CHANGES '/sanctum?spotify_token=insertrandomstring123' back to just the good ol '/sanctum'
+    //     setSearchParams({});
+    //   } else {
+    //     //do we alreayd have and existing token from the previous session 
+    //     console.log("👻 No new Spotify keys found in the ether. Checking for existing tokens in the shadows...")
+    //     const existingToken = localStorage.getItem("spotify_access_token");
+    //     if (existingToken) {
+    //       setIsSpoitifyConnected(true);
+    //     }
+    //   }
+    // }, [searchParams, setSearchParams]); //dependancies for the useEffect - we want to re-run this effect if the search params change (like when we get new tokens) or if the function to set search params changes (which is unlikely but good practice to include) :D
 
     //the button ritual for the backend teleportation portal
     const handleConnectSpotify = () => {
@@ -58,15 +81,25 @@ export default function Sanctum() {
       window.location.href = "http://localhost:5001/api/spotify/login";
     };
 
-
-    if (!currentWitch){
+useEffect(() => {//useEffect so it triggers safely after React handles its business, and just return null if the witch isn't authenticated yet
+      if (!currentWitch) { //React doesn't like side-effects during render cycles!
+        console.error("[Sanctium Gaurd] FATAL: currentWitch is null! The shadows are consuming you! Retreating to /login...")
         navigate("/login")
-        return null; //if we don't have a witch, banich them back to the login page and render nothing
+       
+    } else {
+      console.log("[Sanctum Gaurd] Witch identity verified. Safe to stay.")
     }
+}, [currentWitch, navigate]);
+
+if (!currentWitch){
+  return null; //if we don't have a witch, banich them back to the login page and render nothing
+}
+
 
       //LOGOUT SPELL
   const handleLogout = () => {
     localStorage.removeItem("witch_temp_token");
+    localStorage.removeItem("current_witch");
     alert("Logged out safely. The shadows consume your presence")
     navigate("/login");
   }
