@@ -6,6 +6,8 @@ import '../App.css';
 import Window from "../assets/stainWindow.png";
 
 import floor from "../assets/floor.png";
+import Radio from "../assets/witchingRadio.png";
+import Table from "../assets/witchingTable.png";
 
 interface TrackData {
   title: string;
@@ -27,6 +29,8 @@ export default function RhythmKitchen() {
     pp: 0,
     pw: 0
   };
+
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
 
   // --- RHYTHM STATES ---
 
@@ -54,6 +58,10 @@ export default function RhythmKitchen() {
       localStorage.setItem("spotify_refresh_token", refresh);
 
       setIsSpoitifyConnected(true);
+      setIsPanelOpen(true); //automatically slide panel open
+
+      setToastMessage("🔮 Portal Stabalized! Spotify portal linked to the Sanctum >:D");
+      setShowToast(true);
 
       //✨VANISHING ACT✨ - clear the tokens from the url so they dont linger around
       //CHANGES '/sanctum?spotify_token=insertrandomstring123' back to just the good ol '/sanctum'
@@ -165,6 +173,15 @@ export default function RhythmKitchen() {
     }
   };
 
+  useEffect(() => {
+    if(showToast) {
+      const timer = setTimeout(() => {
+      setShowToast(false);
+    }, 30000);
+    return () => clearTimeout(timer);
+  }
+}, [showToast]);
+
   //cheak the playback mirror every 4 seconds >:D
   useEffect(() => {
     if (!isSpotifyConnected) {
@@ -212,11 +229,6 @@ export default function RhythmKitchen() {
 
   return (
     <>
-      <div className="sanctum-wallpaper-wrapper">
-
-        <div className="sanctum-section dashboard-room">
-
-          <div className="dashboard-sanctum">
 
             {showToast && (
               <div className="water-toast">
@@ -232,34 +244,29 @@ export default function RhythmKitchen() {
             )}
 
 
-            <h2 style={{ marginTop: "1em" }}>Welcome to the Inner Sanctum, {currentWitch.username}!</h2>
-            <p>PP: {currentWitch.pp} | WP: {currentWitch.wp}</p> {/*maybe change this to say something else if the user hasnt accumulated aby points yet*/}
-
-            <Container fluid className="sanctum-container">
-              {/* THIS IS FOR THE AUTHENTICATION TRANSITION */}
-
-
-              <Row className="sanctum-row">
-
-                <Col md={4}>
-                  <img src={Window} alt="bat window" className="bat-window" />
-                </Col>
 
                 {/* MAIN CONTROL ALCHEMAL STATION */}
-                <Col md={4}>
 
+
+
+
+
+                {/* controls pannel display thing */}
+                {isPanelOpen && (
                   <div className="sanctum-control-room">
                     <div className="spotify-card">
                       <h3>Rhythm Kitchen Status</h3>
+                    <button className="close-rhythm-btn" onClick={() => setIsPanelOpen(false)}>x</button>
 
                       {isSpotifyConnected ? (
-                        <>
-                          <div style={{ color: "#1DB954", fontWeight: "bold" }}>
-                            <p>Connected to Spotify! Your musical rituals are ready to commence.</p>
-                            {/* ------------ INSEART LIVE TRACK DISPLAY HERE >:D ----------------- */}
-                          </div>
 
-                          {currentTrack ? (
+                          currentTrack ? (
+                            <>
+                            <div style={{ color: "#1DB954", fontWeight: "bold" }}>
+                              <p>Connected to Spotify! Your musical rituals are ready to commence.</p>
+                              {/* ------------ INSEART LIVE TRACK DISPLAY HERE >:D ----------------- */}
+                            </div>
+
                             <div className="alchemy-player-display" style={{ marginTop: "1em", textAlign: "center" }}>
 
                               <img src={currentTrack.albumImg}
@@ -273,35 +280,36 @@ export default function RhythmKitchen() {
                               {/* RITUAL CONTROLS */}
                               <div className="player-buttons" style={{ marginTop: "20px", display: "flex", justifyContent: "center", gap: "15px" }}>
 
-                                <button onClick={() => sendPlayerCommands("previous", "POST")}
+                                <button className="spotify-action-btn" onClick={() => sendPlayerCommands("previous", "POST")}
                                   style={{ backgroundColor: "#1DB954", color: "#fff", border: "none", padding: "10px 20px", borderRadius: "20px", cursor: "pointer" }}>
                                   ◀◀
                                 </button>
 
                                 {currentTrack.isPlaying ? (
-                                  <button onClick={() => sendPlayerCommands("pause", "PUT")}
+                                  <button className="spotify-action-btn" onClick={() => sendPlayerCommands("pause", "PUT")}
                                     style={{ backgroundColor: "#1DB954", color: "#fff", border: "none", padding: "10px 20px", borderRadius: "20px", cursor: "pointer" }}>
                                     ⏸
                                   </button>
                                 ) : (
-                                  <button onClick={() => sendPlayerCommands("play", "PUT")}
+                                  <button className="spotify-action-btn" onClick={() => sendPlayerCommands("play", "PUT")}
                                     style={{ backgroundColor: "#1DB954", color: "#fff", border: "none", padding: "10px 20px", borderRadius: "20px", cursor: "pointer" }}>
                                     ▶
                                   </button>
                                 )}
 
-                                <button onClick={() => sendPlayerCommands("next", "POST")}
+                                <button className="spotify-action-btn" onClick={() => sendPlayerCommands("next", "POST")}
                                   style={{ backgroundColor: "#1DB954", color: "#fff", border: "none", padding: "10px 20px", borderRadius: "20px", cursor: "pointer" }}>
                                   ▶▶
                                 </button>
                               </div>
                             </div>
+                            </>
                           ) : (
                             <div style={{ color: "#1DB954" }}>
                               <p>No track is currently playing in the Rhythm Realm. Wake up Spotify on your phone or PC to stream the leylines!</p>
                             </div>
-                          )}
-                        </>
+                          )
+
                       ) : (
                         <div>
                           <p>The Rhythm Realm is currently silent</p>
@@ -314,23 +322,19 @@ export default function RhythmKitchen() {
                       )}
                     </div>
                   </div>
+                )}
+                  
+                  <div className="alter-setup">
+            <img src={Radio}
+            className="magical-radio"
+            onClick={() => setIsPanelOpen(!isPanelOpen)}
+            alt="Alchemal Radio Control" 
+            />
+            <img src={Table}
+            alt="Ritual Table"
+            className="ritual-table"/>
 
-                </Col>
-
-                <Col md={4}>
-                  <img src={Window} alt="bat window" className="bat-window" />
-                </Col>
-              </Row>
-            </Container>
-
-
-            <img src={floor} alt="wood floor" className="sanctum-floor" />
-
-          </div>
-        </div>
-
-
-      </div>
+                </div>
 
     </>
   )

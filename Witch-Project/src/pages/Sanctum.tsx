@@ -7,6 +7,7 @@ import MainApp from "../App";
 import Window from "../assets/stainWindow.png";
 import GrimoireHolder from "../assets/grimoireHolder.png";
 import floor from "../assets/floor.png";
+import RhythmKitchen from "../componenets/RhythmKitchen";
 
 export default function Sanctum() {
     const location = useLocation();
@@ -137,15 +138,15 @@ export default function Sanctum() {
 </div>
 </div>
 
-<div className="sanctum-control-room">
+{/* <div className="sanctum-control-room">
   <div className="spotify-card">
     <h3>Rhythm Kitchen Status</h3>
 
     {isSpotifyConnected ? (
       <div style={{color: "#1DB954", fontWeight: "bold"}}>
-        <p>Connected to Spotify! Your musical rituals are ready to commence.</p>
+        <p>Connected to Spotify! Your musical rituals are ready to commence.</p> */}
         {/* ------------ INSEART LIVE TRACK DISPLAY HERE >:D ----------------- */}
-        </div>
+        {/* </div>
     ) : (
       <div>
         <p>The Rhythm Realm is currently silent</p>
@@ -157,7 +158,7 @@ export default function Sanctum() {
 
     )}
   </div>
-</div>
+</div> */}
 
 
 
@@ -175,6 +176,10 @@ export default function Sanctum() {
         </Row>
       </Container>
 
+{/* SUMMON THE RHYTHM PORTAL COMP[ONENTS >;D */}
+<RhythmKitchen />
+
+{/* grimoire holder */}
 <button className="open-grimoire-btn" onClick={() => setIsGrimoireOpen(true)}>
             <img src={GrimoireHolder} alt="grimoire holder" className="grimoire-holder" />
         </button>
