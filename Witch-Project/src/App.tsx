@@ -97,14 +97,14 @@ export default function App() {
 
   const [isSessionActive, setIsSessionActive] = useState(false);
 
-  const [pp, setPp] = useState(() => {
+  const [pp, setPp] = useState<number>(() => {
     const savedPp = localStorage.getItem("witching-pp");
     if (savedPp) return JSON.parse(savedPp);
-    return savedPp ? parseInt(savedPp) : 0; //first time player starts with 0 points, but if there is a saved value, use that instead
+    return savedPp ? parseInt(savedPp, 10) : 0; //first time player starts with 0 points, but if there is a saved value, use that instead
   }); //Productivity Points
-  const [wp, setWp] = useState(() => {
+  const [wp, setWp] = useState<number>(() => {
     const savedWp = localStorage.getItem("witching-wp");
-    return savedWp ? parseInt(savedWp) : 0; //first time player starts with 0 points, but if there is a saved value, use that instead
+    return savedWp ? parseInt(savedWp, 10) : 0; //first time player starts with 0 points, but if there is a saved value, use that instead
   }); // Wellness Points
 
   const handleToggleSession = () => {
@@ -304,6 +304,10 @@ useEffect(() => {
 
   const [isCustomTimerRunning, setIsCustomTimerRunning] = useState(false); // New state to track if the custom timer is running
 
+  // =============================
+  // 7PM AUTO-SAVE CURFEW THING
+    // =============================
+
   useEffect(() => {
     const curfewInterval = setInterval(() => {
       const now = new Date();
@@ -330,17 +334,17 @@ useEffect(() => {
         // 7THE 7PM CURFEW AUTO-SAVE SPELL
         //==================================
 
-        const latestPP = parseInt(localStorage.getItem("witching-pp") || "0");
-        const latestWP = parseInt(localStorage.getItem("witching-wp") || "0");
-        const latestTasks = JSON.parse(localStorage.getItem("witching-completed-tasks") || "[]");
+        // const latestPP = parseInt(localStorage.getItem("witching-pp") || "0");
+        // const latestWP = parseInt(localStorage.getItem("witching-wp") || "0");
+        // const latestTasks = JSON.parse(localStorage.getItem("witching-completed-tasks") || "[]");
 
-        syncToCloud(latestPP, latestWP, latestTasks);
+        syncToCloud(pp, wp, completedWellnessTasks);
 
       }
     }, 1000); // Check time every second
 
     return () => clearInterval(curfewInterval);
-  }, []);
+  }, [pp, wp, completedWellnessTasks]);
 
   //maximum 5 quests at a time, because we don't want to overwhelm our users with too many quests, that would be mean
   const canAddMoreTasks = tasks.length < 5; //REMEMBER TO TEST IF THE SYSTEM TOAST OVERLAYS EVERYTHING EVEN WHEN IT'S JUST OPEN IN THE BACKGROUND OR MINIMISED >:D PLEEEAAASE, IRLL LOOK SO COOL ?///T-T
@@ -413,18 +417,20 @@ useEffect(() => {
 const newWpTotal = wp + breakWp + bonusWp;
 setWp(newWpTotal); // Update WP state with the new total
 
-let newPpTotal = pp;
+let currentAccuratePP = pp;
+
+
     if (!isCustomTimerRunning) {
-      const minutesWorked = Math.floor(workSeconds / 60);
+      const minutesWorked = Math.floor(WORK_LIMIT_SECONDS / 60);
       
       // setPp((prev) => prev + minutesWorked); // Add PP based on minutes worked in the session
       // NEW STUFF FOR CLOUD SYNC
-      newPpTotal = pp + minutesWorked;
-      setPp(newPpTotal);
+      currentAccuratePP = pp + minutesWorked;
+      setPp(currentAccuratePP);
     }
 
     // AUTO SAVE TRIGGER
-    syncToCloud(newPpTotal, newWpTotal, completedWellnessTasks); //SEND EXACT TOTALS TO THE VAULT >;D
+    syncToCloud(currentAccuratePP, newWpTotal, completedWellnessTasks); //SEND EXACT TOTALS TO THE VAULT >;D
 
     setWorkSeconds(0); // Reset work seconds for the next session
     setIsBreakModalOpen(false); //BANISH THE MODAL. YOU CAN WORK NOW :D
