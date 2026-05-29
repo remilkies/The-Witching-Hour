@@ -268,11 +268,11 @@ export default function RhythmKitchen() {
 
                               <img src={currentTrack.albumImg}
                                 alt="Album Artwork"
-                                style={{ width: "300px", height: "300px", borderRadius: "10px", boxShadow: "0 4px 8px rgba(0,0,0,0.2)", marginBottom: "1em", padding: "3px" }} />
+                                className="album-artwork"/>
 
                               {/* TRACK DETAILS */}
-                              <h4 style={{ color: "#1DB954", fontSize: "13rem" }}>{currentTrack.title}</h4>
-                              <p style={{ color: "#1DB954", fontStyle: "italic" }}>{currentTrack.artist}</p>
+                              <h4 style={{ fontSize: "2rem", marginBottom: "0" }}>{currentTrack.title}</h4>
+                              <p style={{ fontStyle: "italic" }}>{currentTrack.artist}</p>
 
                               {/* RITUAL CONTROLS */}
                               <div className="player-buttons" style={{ marginTop: "20px", display: "flex", justifyContent: "center", gap: "15px" }}>

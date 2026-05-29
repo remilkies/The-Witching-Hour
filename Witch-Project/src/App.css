@@ -31,7 +31,7 @@ button,
 input[type="button"],
 input[type="submit"],
 [role="button"] {
-  cursor: url('../src/assets/customCursor.svg') 0 0, pointer !important;
+  cursor: url('../src/assets/customCursor.svg') 16 16, pointer !important;
 }
 
 html{
@@ -1296,8 +1296,8 @@ align-items: center;
 
 .sanctum-control-room{
   position: absolute;
-  /* bottom: 30vh; */
-  left: 25%;
+  top: 10vh;
+  left: 15%;
   /* transform: translateX(-50%); */
   width: auto;
   z-index: 100;
@@ -1305,25 +1305,44 @@ align-items: center;
 }
 .spotify-card{
   background-color: #251b25;
-  padding: 20px;
+  padding: 20px 40px 30px 40px;
   border-radius: 8px;
+  color: #EDD4D0;
 }
 
-.spotify-action-btn{
-  background-color: #1DB954; 
-  color: #fff;
+.album-artwork{
+width: 300px; 
+height: 300px; 
+border-radius: 10px; 
+box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+
+ padding: 3px;
+}
+.spotify-action-btn{  
+  background-color: #EDD4D0;
+  color: #342333;
+  animation: magicalPluse 2s infinite;
    border: none;
     padding: 10px 20px; 
     border-radius: 20px;
     cursor: pointer;
+
+}
+
+
+.spotify-action-btn:hover{
+  background-color: #715E72;
+  color: #EDD4D0;
+  transform: scale(1.05);
 }
 
 .close-rhythm-btn{
-  margin-bottom: 1px;
-margin-left: 13em;
+
 position: relative;
-  right: 0;
-  top: 0 !important;
+display: flex;
+text-align: right !important;
+
+
 }
 
 .alter-setup{
