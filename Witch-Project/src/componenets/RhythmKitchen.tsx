@@ -253,6 +253,10 @@ export default function RhythmKitchen() {
 
                 {/* controls pannel display thing */}
                 {isPanelOpen && (
+<>
+{/* CLICK POUTSIDE THE PLAYER TO CLOSE THE MOADL THINGY */}
+                  <div className="modal-backdrop-overlay" onClick={() => setIsPanelOpen(false)}/> 
+
                   <div className="sanctum-control-room">
                     <div className="spotify-card">
                       <button className="close-rhythm-btn toast-close" onClick={() => setIsPanelOpen(false)}>x</button>
@@ -319,6 +323,7 @@ export default function RhythmKitchen() {
                       )}
                     </div>
                   </div>
+                  </>
                 )}
                   
                   <div className="alter-setup">
