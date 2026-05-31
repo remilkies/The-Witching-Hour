@@ -73,13 +73,6 @@ console.log("[Sanctum Boot 2] location.state?witch is:", location.state?.witch);
     //   }
     // }, [searchParams, setSearchParams]); //dependancies for the useEffect - we want to re-run this effect if the search params change (like when we get new tokens) or if the function to set search params changes (which is unlikely but good practice to include) :D
 
-    //the button ritual for the backend teleportation portal
-    const handleConnectSpotify = () => {
-      console.log("🔮 Teleporting to the Spotify OAuth Gate...");
-
-      //direct link to the backend login endpoint :P
-      window.location.href = "http://localhost:5001/api/spotify/login";
-    };
 
 useEffect(() => {//useEffect so it triggers safely after React handles its business, and just return null if the witch isn't authenticated yet
       if (!currentWitch) { //React doesn't like side-effects during render cycles!

@@ -285,7 +285,9 @@ export default function RhythmKitchen() {
     console.log("🔮 Teleporting to the Spotify OAuth Gate...");
 
     //direct link to the backend login endpoint :P
-    window.location.href = "http://127.0.0.1:5001/api/spotify/login";
+    // window.location.href = "http://127.0.0.1:5001/api/spotify/login";
+    // Use window.open with "_blank" to trigger Electron's new external portal guard!
+    window.open("http://127.0.0.1:5001/api/spotify/login", "_blank");
   };
 
   return (

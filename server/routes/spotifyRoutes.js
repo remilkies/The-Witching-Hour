@@ -85,11 +85,40 @@ router.get('/callback', async (req, res) => { //Spotify accpeted the login and t
         console.log("🎵 [Spotify Auth] 7. Welcome to Rhythm Kitchen! Token acquired.");
         console.log("🎵 [Spotify Auth] 8. Teleporting witch back to the Sanctum...");
 
-        // for my own ✨personal use✨, i'm gonna redirect back to my React App dashboard >:D
+                // for my own ✨personal use✨, i'm gonna redirect back to my React App dashboard >:D
         // res.redirect(`http://localhost:5173/sanctum?spotify_token=${access_token}&spotify_refresh=${refresh_token}`); //ALWAYS CHEAK WHAT PORT REACT/FRONT END IS RUNNING ON IN CONSOLE
 
         // NEW SPELL FOR DEEP-LINKING (whatever that it :P - LET'S LEARN ): Redirect to your custom app protocol instead of localhost!
-            res.redirect(`witchinghour://sanctum?spotify_token=${access_token}&spotify_refresh=${refresh_token}`)
+        // res.redirect(`witchinghour://sanctum?spotify_token=${access_token}&spotify_refresh=${refresh_token}`)
+
+        const deepLink = `witchinghour://sanctum?spotify_token=${access_token}&spotify_refresh=${refresh_token}`;
+
+        // Send a tiny, friendly HTML page that forces the browser to open the app
+        res.send(`
+            <html>
+                <head>
+                    <title>Returning to the Sanctum...</title>
+                    <style>
+                        body { background-color: #3A2D34; color: white; font-family: sans-serif; text-align: center; padding: 50px; }
+                        a { color: #1DB954; font-size: 20px; text-decoration: none; border: 2px solid #1DB954; padding: 10px 20px; border-radius: 20px; display: inline-block; margin-top: 20px;}
+                    </style>
+                </head>
+                <body>
+                    <h2>🔮 The Ritual is Complete!</h2>
+                    <p>Teleporting you back to The Witching Hour...</p>
+                    <p>If your browser asks for permission to open the app, click <strong>Allow</strong>.</p>
+                    <p>If you aren't teleported automatically, click the button below:</p>
+                    <a href="${deepLink}">Return to Sanctum</a>
+                    
+                    <script>
+                        // Try to auto-redirect immediately
+                        window.location.href = "${deepLink}";
+                    </script>
+                </body>
+            </html>
+        `);
+
+
     } catch(error) {
         console.error("☠️ Spotify Setup Error:", error);
         res.status(500).send("☠️  The ritual has been interrupted: " + error.message);

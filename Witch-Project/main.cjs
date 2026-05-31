@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, shell } = require('electron');
 const path = require('path');
 
 
@@ -61,6 +61,15 @@ function createWindow() {
             contextIsolation: false, // Make sure this is false if using nodeIntegration!
             backgroundThrottling: false,
         }
+    });
+
+    // NEW SPELL: THE EXTERNAL PORTAL GAURD
+    mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+        if (url.startsWith('http')) {
+            shell.openExternal(url); //force it to open in Chrom/Safari T-T
+            return { action: 'deny' }; //stop electron from opening a new electron window
+        }
+        return { action: 'allow'};
     });
 
     if (app.isPackaged){
