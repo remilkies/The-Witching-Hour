@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { Container, Row, Col } from "react-bootstrap";
+import { useLocation, useSearchParams } from "react-router-dom";
+
+// import { Container, Row, Col } from "react-bootstrap";
+
+
+
 import '../App.css';
 
-import Window from "../assets/stainWindow.png";
+// import Window from "../assets/stainWindow.png";
 
-import floor from "../assets/floor.png";
+// import floor from "../assets/floor.png";
 import Radio from "../assets/witchingRadio.png";
 import Table from "../assets/witchingTable.png";
 
@@ -18,6 +22,15 @@ interface TrackData {
   durationMs: number;
   id: string;
 }
+
+// Since Vite/React, we need to use window.require to grab Electron
+// const { ipcRenderer } = window.require('electron');
+
+//THE SAFE IMPORT SHIELD
+// cheaks if window.require exists before trying to use it
+const ipcRenderer = typeof window !== 'undefined' && window.require
+  ? window.require('electron').ipcRenderer
+  : null;
 
 export default function RhythmKitchen() {
   const location = useLocation();
@@ -34,7 +47,7 @@ export default function RhythmKitchen() {
 
   // --- RHYTHM STATES ---
 
-  const [isSpotifyConnected, setIsSpoitifyConnected] = useState(false);     //local state to keep track of wether the music link is actuve
+  const [isSpotifyConnected, setIsSpotifyConnected] = useState(false);     //local state to keep track of wether the music link is actuve
   const [currentTrack, setCurrentTrack] = useState<TrackData | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [showToast, setShowToast] = useState(false);
@@ -57,7 +70,7 @@ export default function RhythmKitchen() {
       localStorage.setItem("spotify_access_token", token);
       localStorage.setItem("spotify_refresh_token", refresh);
 
-      setIsSpoitifyConnected(true);
+      setIsSpotifyConnected(true);
       setIsPanelOpen(true); //automatically slide panel open
 
       setToastMessage("🔮 Portal Stabalized! Spotify portal linked to the Sanctum >:D");
@@ -71,10 +84,58 @@ export default function RhythmKitchen() {
       console.log("👻 No new Spotify keys found in the ether. Checking for existing tokens in the shadows...")
       const existingToken = localStorage.getItem("spotify_access_token");
       if (existingToken) {
-        setIsSpoitifyConnected(true);
+        setIsSpotifyConnected(true);
       }
     }
   }, [searchParams, setSearchParams]); //dependancies for the useEffect - we want to re-run this effect if the search params change (like when we get new tokens) or if the function to set search params changes (which is unlikely but good practice to include) :D
+
+  // ============================================
+  // 1.5 --- ELECTRON DEEP LINK LISTENER ---
+  // ============================================
+  useEffect(() => {
+
+    // THE SAFETY SHIELD: if in a normal web browser, skip this whooooole ritual <3
+
+    if (!ipcRenderer){
+      console.log("🌐 Running in a standard web browser. Electron IPC bridge is offline.");
+      return;
+    }
+    const handleDeepLink = (_event: any, url: string) => {
+
+      console.log("🔮 Deep link caught by the frontend mirror:", url);
+
+      try {
+        //convert the string url (witchinghour://sanctum?spotify_token=...) into an easily readable object
+        const parseUrl = new URL(url);
+        const token = parseUrl.searchParams.get("spotify_token");
+        const refresh = parseUrl.searchParams.get("spotify_refresh");
+
+        if (token && refresh) {
+          console.log("⚡ [Deep Link] Sealed the deep link tokens into the Vault!");
+          localStorage.setItem("spotify_access_token", token);
+          localStorage.setItem("spotify_refresh_token", refresh);
+
+          setIsSpotifyConnected(true);
+          setIsPanelOpen(true);
+
+          setToastMessage("🔮 Portal Stabilized! Deep link established from the desktop application.");
+          setShowToast(true);
+
+        }
+        
+      } catch (err) {
+      console.error("💀 Failed to parse the deep link spell properties:", err);
+    }
+  };
+
+  //attach the telepatchic lister to the Ellectron channel
+  ipcRenderer.on('spotify-deep-link', handleDeepLink);
+
+  //clean up  ritual circle when leaving the room
+  return () => {
+    ipcRenderer.removeListener('spotify-deep-link', handleDeepLink);
+  }
+}, []);
 
   const refreshAccessToken = async () => {
     const refreshToken = localStorage.getItem("spotify_refresh_token");
@@ -129,7 +190,7 @@ export default function RhythmKitchen() {
           return fetchPlaybackData(); //try fetching the playback data again with the new token
         } else {
           console.log("Resurrection failed...the token remains dead. Forcing re-login...");
-          setIsSpoitifyConnected(false); //reconnect your spotify...sorry love
+          setIsSpotifyConnected(false); //reconnect your spotify...sorry love
           localStorage.removeItem("spotify_access_token");
           localStorage.removeItem("spotify_refresh_token");
           return

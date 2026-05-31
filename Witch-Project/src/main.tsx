@@ -13,7 +13,7 @@ import Sanctum from './pages/Sanctum';
 // ==================================
 
 const params = new URLSearchParams(window.location.search);
-const spotifyToken = params.has('spotify_token');
+const spotifyToken = params.get('spotify_token');
 const spotifyRefresh = params.get('spotify_refresh');
 
 if (window.location.pathname.includes('/sanctum') || spotifyToken) {

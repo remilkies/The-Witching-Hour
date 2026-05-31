@@ -40,6 +40,14 @@
   "build": {
     "appId": "com.rembyte.witchinghour",
     "productName": "The Witching Hour",
+    "protocols": [
+      {
+        "name": "witchinghour",
+        "schemes": [
+          "witchinghour"
+        ]
+      }
+    ],
     "directories": {
       "output": "release"
     },
