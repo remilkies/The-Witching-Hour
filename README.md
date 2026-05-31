@@ -13,14 +13,6 @@ Crawl out of the darkness of your domain, complete your tasks, and let the dopam
 
 ## ✨ Features
 * **🛡️ The Witching Hour Trial (Creative Authentication):** No boring login forms here. To enter the Inner Sanctum, you must prove your humanity by timing a fast-moving, randomized mechanical clock hand. Miss the target hour? The bouncers reject your spell. Pass the ritual? You get a secure, token-based session.
-
-## 🌙 How the Creative Authentication Works
-1. **The Threshold:** The user submits their unique username and secret passphrase.
-2. **The Password Validation:** The backend pulls the account record, verifies the credentials using `bcrypt.compare()`, and signs a temporary JSON Web Token (JWT).
-3. **The Witching Hour Trial:** Instead of instantly granting access, the frontend locks into "Ritual Mode." A randomized target hour is assigned, and a mechanical clock hand begins sweeping forward at high speed.
-4. **Verification:** The user must hit "VERIFY" precisely when the hand aligns with the target hour (within a narrow margin of error). Success grants entry to the Inner Sanctum; failure triggers a visual reset sequence and reshuffles the target.
-
-## ✨ Back to Features
 * **📝 The Dopamine Machine:** A to-do list that doesn't just cross things off—it throws confetti and plays a little victory tune because you deserve it, and a little progress bar to keep track of the amazing work you've done <3
 * **⏳ The Time Lord:** Set your project timers. *Note: You cannot work for more than 45 minutes straight. The app will literally yell at you with a giant pop-up to go touch grass (or at least your living room carpet).*
 * **💧 Survival Toggles:** Automated, non-negotiable wellness reminders
@@ -38,6 +30,12 @@ Crawl out of the darkness of your domain, complete your tasks, and let the dopam
   * Click the gothic window for soothing rain ambiance.
   * **🐈‍⬛ Mem Mem:** KET. Their name is Mem.  Mem doesn't technically *do* anything, but he's adorable and deserves an honourable mention.
     
+    ## 🌙 How the Creative Authentication Works
+1. **The Threshold:** The user submits their unique username and secret passphrase.
+2. **The Password Validation:** The backend pulls the account record, verifies the credentials using `bcrypt.compare()`, and signs a temporary JSON Web Token (JWT).
+3. **The Witching Hour Trial:** Instead of instantly granting access, the frontend locks into "Ritual Mode." A randomized target hour is assigned, and a mechanical clock hand begins sweeping forward at high speed.
+4. **Verification:** The user must hit "VERIFY" precisely when the hand aligns with the target hour (within a narrow margin of error). Success grants entry to the Inner Sanctum; failure triggers a visual reset sequence and reshuffles the target.
+
 ## 🛠️ Built With
 ## The Visual Spellbook (Frontend):
 * **React** (Because components are magic)
@@ -45,9 +43,9 @@ Crawl out of the darkness of your domain, complete your tasks, and let the dopam
 * **Vite** (For lightning-fast development)
 * **CSS** (For the spooky-cutsey-cozy aesthetics)
 ## The Cloud Domain (Backend & Auth):
-* **Node.js & Extress.js:** (Thd bouncers that handle the API portals)
+* **Node.js & Express.js:** (The bouncers that handle the API portals)
 * **MongoDB & Mongoose:** (The sacred cloud grimoire for saving stats)
-* **Bycrpt & JWT:** (For stirring salty passwords into the cauldron and keep sessions secure)
+* **Bcrypt & JWT:** (For stirring salty passwords into the cauldron and keep sessions secure)
 
   
 ## 🌙 Application Flow
@@ -81,10 +79,10 @@ Want to study some spells and run this locally?
   ```bash
   cd server
   npm install
-```
-* **Note: You will need to create a .env file in the /server folder with your MONGO_URI and a JWT_SECRET for the database connection ritual to work!**
-  ```bash
   npm run dev
+
+* **Note: You will need to create a .env file in the /server folder with your MONGO_URI and a JWT_SECRET for the database connection ritual to work!**
+
 
 3. **Navigate into the crypt (Open a second terminal):**
     ```bash
@@ -106,11 +104,11 @@ Want to study some spells and run this locally?
    
   ```bash
   npm run app:build
-```
+
 
 ## 🎧 Opening the Portal to the Rhythm Realm (Spotify Setup)
 
-Want to connect your own magical musical leylines to the Inner Sanctum? Because this app acts as a remote control for your live Spotify session, you will need to register your own local version of the grimoire with the Spotify High Council. 
+Want to connect your own magical musical leylines to the Inner Sanctum? Because this app acts as a remote control for your live Spotify session, you will need to register your own local version of the grimoire with the Spotify High Council.
 
 **Note:** You must have an active **Spotify Premium** account and have Spotify playing on a device (desktop or mobile) for the Web API controls to work!
 
@@ -120,16 +118,22 @@ Want to connect your own magical musical leylines to the Inner Sanctum? Because 
 3. Give your app a name (e.g., "Rhythm Kitchen Local") and a short description.
 4. For the **Redirect URI**, you *must* enter exactly this coordinate for the local portal to catch the keys:
    `http://127.0.0.1:5001/api/spotify/callback`
-5. Check the Web API box, agree to the terms, and hit save!
+5. Check the Web API box, agree to sell your soul, and hit save!
 
 ### 🔑 Step 2: Scribe Your Secret Keys
-Once your app is created, go to its Settings page. You will see a `Client ID` and a `Client Secret`. **Do not share these with anyone!**
+For both the database ritual and the Spotify portal to work, you need a secret .env file.
+
 
 1. In the `server` folder of this project, create a new file and name it exactly `.env`
 2. Add your keys to the file like this:
    ```env
-   CLIENT_ID=your_client_id_here
-   CLIENT_SECRET=your_client_secret_here
+   MONGO_URI=your_mongodb_connection_string
+   JWT_SECRET=your_super_secret_jwt_string
+   CLIENT_ID=your_spotify_client_id
+   CLIENT_SECRET=your_spotify_client_secret
+   ```
+
+ **Do not share these with anyone!**
 
 * **Remember:** You can't code a glass of water. Drink up.
-P.S If anyone figures out how to code water, let me know, so my boyfriend can get off my back (love you babe <3)
+(P.S If anyone figures out how to code water, let me know <3)
