@@ -16,7 +16,7 @@ Crawl out of the darkness of your domain, complete your tasks, and let the dopam
 * **📝 The Dopamine Machine:** A to-do list that doesn't just cross things off—it throws confetti and plays a little victory tune because you deserve it, and a little progress bar to keep track of the amazing work you've done <3
 * **⏳ The Time Lord:** Set your project timers. *Note: You cannot work for more than 45 minutes straight. The app will literally yell at you with a giant pop-up to go touch grass (or at least your living room carpet).*
 * **💧 Survival Toggles:** Automated, non-negotiable wellness reminders
-* **🔮 Rhythm Realm Portal:** Click the radio to connect your Spotify account straight to the Inner Sanctum. This self-healing, remote-control alchemical mirror continuously polls the music leylines, broadcasts popup toasts when a new track starts brewing, and effortlessly resurrects dead access tokens right in the background so the rhythm never stops. >:D (Design inspired by Hazbin Hotel <3)
+* **🔮 Rhythm Realm Portal:** Click the radio to connect your Spotify account straight to the Inner Sanctum. This remote-control portal continuously polls the music leylines, broadcasts popup toasts when a new track starts brewing, and effortlessly resurrects dead access tokens right in the background so the rhythm never stops. >:D (Design inspired by Hazbin Hotel <3)
 
   
 * **🛑 Aggressive Wellness Timer & Economy**
