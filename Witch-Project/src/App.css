@@ -5,7 +5,7 @@ html, body, #root {
   margin: 0;
   /* Add this to your thumb selector */
 /* cursor: url('your-custom-grab-icon.svg'), grab; */
-cursor: url('../src/assets/customCursor.svg') 16 16, pointer !important;
+cursor: url('../src/assets/customCursor.svg') 0 0, pointer !important;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -31,7 +31,7 @@ button,
 input[type="button"],
 input[type="submit"],
 [role="button"] {
-  cursor: url('../src/assets/customCursor.svg') 16 16, pointer;
+  cursor: url('../src/assets/customCursor.svg') 0 0, pointer;
 }
 
 html{
@@ -706,6 +706,7 @@ transition: none;
   height: 100%;
   width: 35vw;
 }
+
 .login-card{
   background-color: #EDD4D0;
   border: 5px solid #342333;
@@ -717,6 +718,7 @@ transition: none;
   box-shadow: 0 10px 25px rgba(0, 0, 0,0.5);
   transition: all 0.5s ease-in-out;
   z-index: 10;
+  position: relative;
 
 }
 
@@ -730,6 +732,7 @@ transition: none;
 
 .witch-input-group{
   margin-bottom: 1.5rem;
+  position: relative;
 }
 
 .witch-input-group label {
@@ -750,6 +753,7 @@ transition: none;
   font-size: 1rem;
   color: #342333;
   font-weight: bold;
+  position: relative;
 }
 
 .witch-input:focus{
@@ -1201,10 +1205,11 @@ align-items: center;
 }
 
 .app-room::-webkit-scrollbar{
-  width: 8px;
+  /* width: 8px; */
+  display: none;
 }
 
-.app-room::-webkit-scrollbar-track{
+/* .app-room::-webkit-scrollbar-track{
   background-color: #342333;
   border-radius: 4px;
 }
@@ -1212,7 +1217,7 @@ align-items: center;
 .app-room::-webkit-scrollbar-thumb{
   background: #715E72;
   border-radius: 4px;
-}
+} */
 
 .sanctum-menu-column{
   display: flex;
