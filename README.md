@@ -105,7 +105,7 @@ Want to study some spells and run this locally?
    
   ```bash
   npm run app:build
-
+```
 
 ## 🎧 Opening the Portal to the Rhythm Realm (Spotify Setup)
 
