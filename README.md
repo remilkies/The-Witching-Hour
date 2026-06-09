@@ -80,6 +80,7 @@ Want to study some spells and run this locally?
   cd server
   npm install
   npm run dev
+```
 
 * **Note: You will need to create a .env file in the /server folder with your MONGO_URI and a JWT_SECRET for the database connection ritual to work!**
 
